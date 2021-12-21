@@ -5,6 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Proyecto_Intermodular"
         mc:Ignorable="d"
+        MinHeight="150"
+        MinWidth="200"
         Title="MainWindow" Height="450" Width="800" SizeChanged="Window_SizeChanged">
     
     <Grid>
