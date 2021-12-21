@@ -14,11 +14,11 @@ namespace Proyecto_Intermodular
         private double posY;
         private Border border;
 
-        public Table(int id, double posXPercent, double posYPercent)
+        public Table(int id, double posX, double posY)
         {
             this.id = id;
-            this.posXPercent = posXPercent;
-            this.posYPercent = posYPercent;
+            this.posX = posX;
+            this.posY = posY;
         }
 
         public int Id { get => id; set => id = value; }

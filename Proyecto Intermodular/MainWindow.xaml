@@ -6,6 +6,7 @@
         xmlns:local="clr-namespace:Proyecto_Intermodular"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800" SizeChanged="Window_SizeChanged">
+    
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="3*"/>
@@ -35,10 +36,21 @@
                             AllowDrop="True"
                             Drop="CnvTables_Drop"/>
 
-                        <Button Content="Change distribution"
-                            x:Name="btnDistribution"
-                            Grid.Row="2"
-                            Click="BtnDistribution_Click"/>
+                        <Grid Grid.Row="2">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Button Content="Change distribution"
+                                x:Name="btnDistribution"
+                                Click="BtnDistribution_Click"/>
+
+                            <Button Content="Save distribution"
+                                    Grid.Column="1"
+                                    x:Name="btnSaveDistribution"
+                                    Click="BtnSaveDistribution_Click"/>
+                        </Grid>
                     </Grid>
 
                     <Grid Grid.Column="1">
@@ -48,7 +60,6 @@
                         </Grid.RowDefinitions>
 
                         <Label Content="Actions"/>
-
                     </Grid>
                 </Grid>
             </TabItem>

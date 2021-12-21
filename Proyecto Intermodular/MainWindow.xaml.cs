@@ -13,13 +13,13 @@ namespace Proyecto_Intermodular
     public partial class MainWindow : Window
     {
         bool distribution = true;
+        bool initializeResize = true; // Controla bug de window resize
         int borderSize = 25;
         List<Table> tables;
 
         public MainWindow()
         {
             InitializeComponent();
-            WindowState = WindowState.Maximized;
 
             tables = new();
             tables.Add(new Table(1, 10, 10));
@@ -40,7 +40,6 @@ namespace Proyecto_Intermodular
             Canvas.SetTop(border, table.PosY);
 
             border.MouseMove += new MouseEventHandler((object sender, MouseEventArgs e) => {
-
                 if (e.LeftButton != MouseButtonState.Pressed) return;
 
                 if (distribution) DragDrop.DoDragDrop(border, new DataObject(DataFormats.Serializable, border), DragDropEffects.Move);
@@ -81,6 +80,19 @@ namespace Proyecto_Intermodular
 
         private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
         {
+            /*
+             Cuando se ejecuta el programa se llama a este evento,
+             al ser la primera vez que cambia de tamaño la ventana 
+             no existe oldWidth ni oldHeigth (vale 0) y cuando se hacen
+             los cálculos de left y top sale un número muy grande porque estamos
+             dividiendo entre cero.
+            */
+            if (initializeResize)
+            {
+                initializeResize = false;
+                return;
+            }
+
             Size oldSize = e.PreviousSize;
             Size newSize = e.NewSize;
 
@@ -97,6 +109,11 @@ namespace Proyecto_Intermodular
                 Canvas.SetLeft(border, newPoint.X);
                 Canvas.SetTop(border, newPoint.Y);
             }
+        }
+
+        private void BtnSaveDistribution_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }
