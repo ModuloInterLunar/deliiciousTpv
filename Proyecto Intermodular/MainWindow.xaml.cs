@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -14,7 +15,7 @@ namespace Proyecto_Intermodular
     {
         bool distribution = true;
         bool initializeResize = true; // Controla bug de window resize
-        int borderSize = 25;
+        int borderSize = Table.BORDER_SIZE;
         List<Table> tables;
 
         public MainWindow()
@@ -22,8 +23,8 @@ namespace Proyecto_Intermodular
             InitializeComponent();
 
             tables = new();
-            tables.Add(new Table(1, 10, 10));
-            tables.Add(new Table(3, 40, 40));
+            tables.Add(new Table(1, 0.10, 0.10));
+            tables.Add(new Table(3, 0.40, 0.40));
 
             tables.ForEach(table => AddTable(table));
         }
@@ -64,50 +65,49 @@ namespace Proyecto_Intermodular
             {
                 Point dropPos = e.GetPosition(cnvTables);
                 double offset = borderSize / 2;
+                Table table = GetTableFromUiElement(element);
 
-                double left = (dropPos.X > cnvTables.ActualWidth - borderSize) ? cnvTables.ActualWidth - borderSize : 
-                              (dropPos.X < borderSize / 2) ? 0 : dropPos.X - offset;
+                double left = (dropPos.X > cnvTables.ActualWidth - borderSize) ? cnvTables.ActualWidth - borderSize :
+                                (dropPos.X < offset) ? 0 : dropPos.X - offset;
 
                 double top = (dropPos.Y > cnvTables.ActualHeight - borderSize) ? cnvTables.ActualHeight - borderSize :
-                             (dropPos.Y < borderSize / 2) ? 0 : dropPos.Y - offset;
+                                (dropPos.Y < offset) ? 0 : dropPos.Y - offset;
 
+                Point newPoint = new(left, top);
+                table.SetPosition(newPoint, cnvTables.ActualWidth, cnvTables.ActualHeight);
                 Canvas.SetLeft(element, left);
                 Canvas.SetTop(element, top);
             }
+        }
+
+        private Table GetTableFromUiElement(UIElement element)
+        {
+            foreach (Table table in tables)
+            {
+                if (table.Border == element) return table;
+            }
+            return null;
+        }
+
+        private Table GetTableById(int id)
+        {
+            foreach (Table table in tables)
+            {
+                if (table.Id == id) return table;
+            }
+            return null;
         }
 
         private void BtnDistribution_Click(object sender, RoutedEventArgs e) => distribution = !distribution;
 
         private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
         {
-            /*
-             Cuando se ejecuta el programa se llama a este evento,
-             al ser la primera vez que cambia de tamaño la ventana 
-             no existe oldWidth ni oldHeigth (vale 0) y cuando se hacen
-             los cálculos de left y top sale un número muy grande porque estamos
-             dividiendo entre cero.
-            */
-            if (initializeResize)
+            foreach(Table table in tables)
             {
-                initializeResize = false;
-                return;
-            }
+                table.UpdatePosition(cnvTables.ActualWidth, cnvTables.ActualHeight);
 
-            Size oldSize = e.PreviousSize;
-            Size newSize = e.NewSize;
-
-            foreach(Border border in cnvTables.Children)
-            {
-                Point oldPoint = new(Canvas.GetLeft(border), Canvas.GetTop(border));
-                Point newPoint = new(oldPoint.X * newSize.Width / oldSize.Width, oldPoint.Y * newSize.Height / oldSize.Height);
-
-                if (newPoint.X + borderSize > cnvTables.ActualWidth) 
-                    newPoint.X = cnvTables.ActualWidth - borderSize;
-                if (newPoint.Y + borderSize > cnvTables.ActualHeight) 
-                    newPoint.Y = cnvTables.ActualHeight - borderSize;
-
-                Canvas.SetLeft(border, newPoint.X);
-                Canvas.SetTop(border, newPoint.Y);
+                Canvas.SetLeft(table.Border, table.PosX);
+                Canvas.SetTop(table.Border, table.PosY);
             }
         }
 
