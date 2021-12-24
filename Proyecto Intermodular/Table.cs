@@ -5,6 +5,7 @@ namespace Proyecto_Intermodular
 {
     class Table
     {
+        private static int DEFAULT_SIZE = 25;
         private int id;
         private double posXPercent;
         private double posYPercent;
@@ -28,8 +29,8 @@ namespace Proyecto_Intermodular
             this.id = id;
             this.posXPercent = posXPercent;
             this.posYPercent = posYPercent;
-            width = 25;
-            height = 25;
+            width = DEFAULT_SIZE;
+            height = DEFAULT_SIZE;
         }
 
         public int Id { get => id; set => id = value; }

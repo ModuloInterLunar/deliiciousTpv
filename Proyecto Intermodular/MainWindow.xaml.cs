@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -14,9 +15,8 @@ namespace Proyecto_Intermodular
     {
         bool distribution = true;
         bool isDroppingOverOtherTable = false;
-        // bool initializeResize = true; // Controla bug de window resize
-        int borderSize = 25;
         List<Table> tables;
+        Table selectedTable = null;
 
         public MainWindow()
         {
@@ -46,12 +46,7 @@ namespace Proyecto_Intermodular
                 if (e.LeftButton != MouseButtonState.Pressed) return;
 
                 if (distribution) DragDrop.DoDragDrop(border, new DataObject(DataFormats.Serializable, border), DragDropEffects.Move);
-                else MessageBox.Show("New ticket.");
-            });
-
-            border.DragEnter += new DragEventHandler((object sender, DragEventArgs e) =>
-            {
-                
+                else SelectTable(table);
             });
 
             border.Drop += new DragEventHandler((object sender, DragEventArgs e) => {
@@ -75,11 +70,18 @@ namespace Proyecto_Intermodular
             table.Border = border;
         }
 
+        private void SelectTable(Table table)
+        {
+            selectedTable = table;
+            lblTableSelected.Content = $"Table Selected: {selectedTable.Id}";
+        }
+
         private void DeleteTable(Table table)
         {
             isDroppingOverOtherTable = true;
             cnvTables.Children.Remove(table.Border);
             tables.Remove(table);
+            table = null;
         }
 
         private Table GetTable(UIElement element)
@@ -121,6 +123,12 @@ namespace Proyecto_Intermodular
             if(data is Border border) MoveTable(e, border);
         }
 
+        private void CnvTables_DragOver(object sender, DragEventArgs e)
+        {
+            object data = e.Data.GetData(DataFormats.Serializable);
+            if (data is Border border) MoveTable(e, border);
+        }
+
         private void BtnDistribution_Click(object sender, RoutedEventArgs e) => distribution = !distribution;
 
         private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
@@ -152,6 +160,13 @@ namespace Proyecto_Intermodular
 
             tables.Add(table);
             CreateTable(table);
+        }
+
+        private void BntDeleteTable_Click(object sender, RoutedEventArgs e)
+        {
+            if (selectedTable == null) return;
+            DeleteTable(selectedTable);
+            lblTableSelected.Content = "Table Selected:";
         }
     }
 }

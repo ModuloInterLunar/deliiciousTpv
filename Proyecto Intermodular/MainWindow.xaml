@@ -47,7 +47,8 @@
                             Grid.Row="1"
                             Background="BurlyWood"
                             AllowDrop="True"
-                            Drop="CnvTables_Drop"/>
+                            Drop="CnvTables_Drop"
+                            DragOver="CnvTables_DragOver"/>
 
                         <Grid Grid.Row="2">
                             <Grid.ColumnDefinitions>
@@ -62,7 +63,7 @@
                             <Button Content="Save distribution"
                                     Grid.Column="1"
                                     x:Name="btnSaveDistribution"
-                                    Click="BtnSaveDistribution_Click" Cursor=""/>
+                                    Click="BtnSaveDistribution_Click"/>
                         </Grid>
                     </Grid>
 
@@ -73,7 +74,29 @@
                         </Grid.RowDefinitions>
 
                         <Label Content="Actions"/>
-                        
+
+                        <Grid Grid.Row="1">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="30"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+
+                            <Label Content="Table Selected:"
+                                   x:Name="lblTableSelected"/>
+
+                            <Button x:Name="bntDeleteTable"
+                                Click="BntDeleteTable_Click"
+                                Content="Delete Table" 
+                                Grid.Column="2"/>
+                        </Grid>
                     </Grid>
                 </Grid>
             </TabItem>
