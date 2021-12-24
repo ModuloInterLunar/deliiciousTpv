@@ -5,8 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Proyecto_Intermodular"
         mc:Ignorable="d"
-        MinHeight="150"
-        MinWidth="200"
+        MinHeight="480"
+        MinWidth="720"
         Title="MainWindow" Height="450" Width="800" SizeChanged="Window_SizeChanged">
     
     <Grid>
@@ -30,7 +30,18 @@
                             <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
 
-                        <Label Content="Tables"/>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            
+                            <Label Content="Tables"/>
+                            <Button Grid.Column="1"
+                                    Content="Add Table"
+                                    x:Name="btnAddTable"
+                                    Click="BtnAddTable_Click"/>
+                        </Grid>
 
                         <Canvas x:Name="cnvTables"
                             Grid.Row="1"
@@ -51,7 +62,7 @@
                             <Button Content="Save distribution"
                                     Grid.Column="1"
                                     x:Name="btnSaveDistribution"
-                                    Click="BtnSaveDistribution_Click"/>
+                                    Click="BtnSaveDistribution_Click" Cursor=""/>
                         </Grid>
                     </Grid>
 
@@ -62,6 +73,7 @@
                         </Grid.RowDefinitions>
 
                         <Label Content="Actions"/>
+                        
                     </Grid>
                 </Grid>
             </TabItem>
