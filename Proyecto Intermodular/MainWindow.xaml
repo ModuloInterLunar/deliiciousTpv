@@ -61,9 +61,9 @@
                                 Click="BtnDistribution_Click"/>
 
                             <Button Content="Save distribution"
-                                    Grid.Column="1"
-                                    x:Name="btnSaveDistribution"
-                                    Click="BtnSaveDistribution_Click"/>
+                                Grid.Column="1"
+                                x:Name="btnSaveDistribution"
+                                Click="BtnSaveDistribution_Click"/>
                         </Grid>
                     </Grid>
 

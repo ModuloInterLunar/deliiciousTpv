@@ -5,7 +5,7 @@ namespace Proyecto_Intermodular
 {
     class Table
     {
-        private static int DEFAULT_SIZE = 25;
+        private readonly static int DEFAULT_SIZE = 25;
         private int id;
         private double posXPercent;
         private double posYPercent;
