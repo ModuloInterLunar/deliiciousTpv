@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -32,7 +31,7 @@ namespace Proyecto_Intermodular
         private void CreateTable(Table table)
         {
             Border border = new();
-            border.Background = (SolidColorBrush) new BrushConverter().ConvertFromString("#FF7AA0CD");
+            border.Background = (SolidColorBrush)new BrushConverter().ConvertFromString("#FF7AA0CD");
             border.CornerRadius = new(10);
             border.Name = $"border{table.Id}";
             border.MaxWidth = 100;
@@ -45,8 +44,8 @@ namespace Proyecto_Intermodular
             border.MouseMove += new MouseEventHandler((object sender, MouseEventArgs e) => {
                 if (e.LeftButton != MouseButtonState.Pressed) return;
 
+                SelectTable(table);
                 if (distribution) DragDrop.DoDragDrop(border, new DataObject(DataFormats.Serializable, border), DragDropEffects.Move);
-                else SelectTable(table);
             });
 
             border.Drop += new DragEventHandler((object sender, DragEventArgs e) => {
@@ -57,6 +56,7 @@ namespace Proyecto_Intermodular
 
                 Table tableForDelete = GetTable(borderForDelete);
                 DeleteTable(tableForDelete);
+                SelectTable(table);
             });
 
             Label label = new();
@@ -81,7 +81,6 @@ namespace Proyecto_Intermodular
             isDroppingOverOtherTable = true;
             cnvTables.Children.Remove(table.Border);
             tables.Remove(table);
-            table = null;
         }
 
         private Table GetTable(UIElement element)
