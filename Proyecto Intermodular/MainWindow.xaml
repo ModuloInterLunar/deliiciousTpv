@@ -56,9 +56,12 @@
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
 
-                            <Button Content="Change distribution"
+                            <ToggleButton Content="Change distribution"
                                 x:Name="btnDistribution"
-                                Click="BtnDistribution_Click"/>
+                                Checked="BtnDistribution_Click"
+                                IsChecked="True"
+                                Unchecked="BtnDistribution_Click">
+                            </ToggleButton>
 
                             <Button Content="Save distribution"
                                     Grid.Column="1"
