@@ -59,7 +59,6 @@
                             <ToggleButton Content="Change distribution"
                                 x:Name="btnDistribution"
                                 Checked="BtnDistribution_Click"
-                                IsChecked="True"
                                 Unchecked="BtnDistribution_Click">
                             </ToggleButton>
 
