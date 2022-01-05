@@ -12,7 +12,7 @@ namespace Proyecto_Intermodular
     /// 
     public partial class MainWindow : Window
     {
-        bool distribution = true;
+        bool distribution;
         bool isDroppingOverOtherTable;
         List<Table> tables;
         Table selectedTable;
