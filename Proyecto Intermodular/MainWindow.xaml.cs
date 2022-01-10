@@ -3,6 +3,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using Proyecto_Intermodular;
 
 namespace Proyecto_Intermodular
 {
@@ -169,6 +170,21 @@ namespace Proyecto_Intermodular
             if (selectedTable == null) return;
             DeleteTable(selectedTable);
             lblTableSelected.Content = "Table Selected:";
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            Employee employee = new Employee() { Id = "4", Dni = "12341234", IsAdmin = false, Surname = "juan", Username = "juanoto", Name = "Juan", Password = "asfdasfd"};
+            
+            try
+            {
+                Employee emp = DeliiAPI.CreateEmployee(employee);
+                MessageBox.Show(emp.ToString());
+            } 
+            catch (DeliiApiException ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
     }
 }
