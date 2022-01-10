@@ -105,7 +105,7 @@
             </TabItem>
 
             <TabItem Header="Option 2">
-
+                <Button Height="50" Width="200" Click="Button_Click">Send</Button>
             </TabItem>
             
         </TabControl>
