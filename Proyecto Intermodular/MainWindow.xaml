@@ -59,7 +59,6 @@
                             <ToggleButton Content="Change distribution"
                                 x:Name="btnDistribution"
                                 Checked="BtnDistribution_Click"
-                                IsChecked="True"
                                 Unchecked="BtnDistribution_Click">
                             </ToggleButton>
 
@@ -99,6 +98,43 @@
                                 Click="BntDeleteTable_Click"
                                 Content="Delete Table" 
                                 Grid.Column="2"/>
+
+                            <Grid Grid.Row="1" 
+                                  Grid.ColumnSpan="2" 
+                                  Grid.RowSpan="2">
+                                
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="30"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+
+                                <Label Content="Orders:"/>
+
+                                <ListBox Grid.Row="1"
+                                         x:Name="ordersList">
+                                    <ListBoxItem>
+                                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                            <Label>DISH NAME</Label>
+                                            <CheckBox VerticalContentAlignment="Center">Is served?</CheckBox>
+                                        </StackPanel>
+                                    </ListBoxItem>
+
+                                    <ListBoxItem>
+                                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                            <Label>DISH NAME</Label>
+                                            <CheckBox VerticalContentAlignment="Center">Is served?</CheckBox>
+                                        </StackPanel>
+                                    </ListBoxItem>
+
+                                    <ListBoxItem>
+                                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                            <Label>DISH NAME</Label>
+                                            <CheckBox VerticalContentAlignment="Center">Is served?</CheckBox>
+                                        </StackPanel>
+                                    </ListBoxItem>
+                                </ListBox>
+
+                            </Grid>
                         </Grid>
                     </Grid>
                 </Grid>

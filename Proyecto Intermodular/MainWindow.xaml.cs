@@ -12,7 +12,7 @@ namespace Proyecto_Intermodular
     /// 
     public partial class MainWindow : Window
     {
-        bool distribution = true;
+        bool distribution;
         bool isDroppingOverOtherTable;
         List<Table> tables;
         Table selectedTable;
@@ -48,8 +48,10 @@ namespace Proyecto_Intermodular
                 if (distribution) DragDrop.DoDragDrop(border, new DataObject(DataFormats.Serializable, border), DragDropEffects.Move);
             });
 
+            /*
             border.Drop += new DragEventHandler((object sender, DragEventArgs e) => {
                 Border borderForDelete = (Border)e.Data.GetData(DataFormats.Serializable);
+                MessageBox.Show(GetTable(borderForDelete).ToString());
                 if (border == borderForDelete) return;
 
                 table.ChangeTableSize(borderForDelete.Width, 0);
@@ -58,6 +60,7 @@ namespace Proyecto_Intermodular
                 DeleteTable(tableForDelete);
                 SelectTable(table);
             });
+            */
 
             Label label = new();
             label.Content = table.Id;
