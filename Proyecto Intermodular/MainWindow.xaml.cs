@@ -180,7 +180,8 @@ namespace Proyecto_Intermodular
             string user = txtBoxUser.Text;
             string pass = txtBoxPass.Password;
             string conf_pass = txtBoxConfPass.Password;
-            MessageBox.Show(pass);
+            Employee employee = Employee(name, surname, dni, user, pass, conf)
+            MessageBox.Show(employee);
 
         }
 
