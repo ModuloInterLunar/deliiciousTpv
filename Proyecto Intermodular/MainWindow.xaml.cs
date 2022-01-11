@@ -172,6 +172,18 @@ namespace Proyecto_Intermodular
             lblTableSelected.Content = "Table Selected:";
         }
 
+        private void BtnCrearEmpleado(object sender, RoutedEventArgs e)
+        {
+            string name = txtBoxName.Text;
+            string surname = txtBoxSurname.Text;
+            string dni = txtBoxDni.Text;
+            string user = txtBoxUser.Text;
+            string pass = txtBoxPass.Password;
+            string conf_pass = txtBoxConfPass.Password;
+            MessageBox.Show(pass);
+
+        }
+
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             Employee employee = new Employee() { Id = "4", Dni = "12341234", IsAdmin = false, Surname = "juan", Username = "juanoto", Name = "Juan", Password = "asfdasfd"};

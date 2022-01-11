@@ -25,5 +25,21 @@ namespace Proyecto_Intermodular
         public bool IsAdmin { get => isAdmin; set => isAdmin = value; }
 
         public override string ToString() => $"id: {id}, username: {username}, dni: {dni}, name: {name}, surname: {surname}, password: {password}, isAdmin: {isAdmin}";
+        public Employee(string id, string username, string dni, string name, string surname, string password, bool isAdmin)
+        {
+            Id = id;
+            Username = username;
+            Dni = dni;
+            Name = name;
+            Surname = surname;
+            Password = password;
+            IsAdmin = isAdmin;
+        }
+
+        public Employee()
+        {
+
+        }
+
     }
 }

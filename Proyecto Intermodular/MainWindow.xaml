@@ -8,7 +8,7 @@
         MinHeight="480"
         MinWidth="720"
         Title="MainWindow" Height="450" Width="800" SizeChanged="Window_SizeChanged">
-    
+
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="3*"/>
@@ -19,11 +19,13 @@
             <TabItem Header="Option 1">
                 <Grid>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="2*"/>
+                        <ColumnDefinition Width="151*"/>
+                        <ColumnDefinition Width="29*"/>
+                        <ColumnDefinition Width="85*"/>
+                        <ColumnDefinition Width="529*"/>
                     </Grid.ColumnDefinitions>
 
-                    <Grid x:Name="gridTables">
+                    <Grid x:Name="gridTables" Grid.ColumnSpan="3">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="*"/>
@@ -35,7 +37,7 @@
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
-                            
+
                             <Label Content="Tables"/>
                             <Button Grid.Column="1"
                                     Content="Add Table"
@@ -69,7 +71,7 @@
                         </Grid>
                     </Grid>
 
-                    <Grid Grid.Column="1">
+                    <Grid Grid.Column="3">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="*"/>
@@ -143,8 +145,58 @@
             <TabItem Header="Option 2">
                 <Button Height="50" Width="200" Click="Button_Click">Send</Button>
             </TabItem>
-            
+
+            <TabItem Header="Crear empleado" Height="20" VerticalAlignment="Top">
+
+                <Grid>
+
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="317.6"></ColumnDefinition>
+                        <ColumnDefinition/>
+                        <ColumnDefinition Width="2*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"></RowDefinition>
+                        <RowDefinition Height="*"></RowDefinition>
+                        <RowDefinition Height="*"></RowDefinition>
+                        <RowDefinition Height="*"></RowDefinition>
+                        <RowDefinition Height="*"></RowDefinition>
+                        <RowDefinition Height="*"></RowDefinition>
+                        <RowDefinition Height="*"></RowDefinition>
+                        <RowDefinition Height="*"></RowDefinition>
+                    </Grid.RowDefinitions>
+
+                    <Image Grid.Column="0" Grid.RowSpan="7" Source="C:\Users\mpcmp\OneDrive\Escritorio\gertrudis.jpg" Margin="30,30,30,30"/>
+
+                    <TextBlock Grid.Column="1" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="15" Text="Nombre:"/>
+                    <TextBlock Grid.Column="1" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="15" Text="Apellido:"/>
+                    <TextBlock Grid.Column="1" Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="15" Text="DNI:"/>
+                    <TextBlock Grid.Column="1" Grid.Row="3" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="15" Text="Nombre de usuario:"/>
+                    <TextBlock Grid.Column="1" Grid.Row="4" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="15" Text="Contraseña:"/>
+                    <TextBlock Grid.Column="1" Grid.Row="5" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="15" Text="Confirmar contraseña:"/>
+                    <TextBlock Grid.Column="1" Grid.Row="6" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="15" Text="Rol:"/>
+
+                    <TextBox Grid.Column="2" Grid.Row="0" FontSize="15" Margin="64,10,64,10" VerticalContentAlignment="Center" x:Name="txtBoxName"/>
+                    <TextBox Grid.Column="2" Grid.Row="1" FontSize="15" Margin="64,10,64,10" VerticalContentAlignment="Center" x:Name="txtBoxSurname"/>
+                    <TextBox Grid.Column="2" Grid.Row="2" FontSize="15" Margin="64,10,64,10" VerticalContentAlignment="Center" x:Name="txtBoxDni"/>
+                    <TextBox Grid.Column="2" Grid.Row="3" FontSize="15" Margin="64,10,64,10" VerticalContentAlignment="Center" x:Name="txtBoxUser"/>
+                    <PasswordBox Grid.Column="2" Grid.Row="4" FontSize="15" Margin="64,10,64,10" VerticalContentAlignment="Center" x:Name="txtBoxPass"/>
+                    <PasswordBox Grid.Column="2" Grid.Row="5" FontSize="15" Margin="64,10,64,10" VerticalContentAlignment="Center" x:Name="txtBoxConfPass"/>
+
+                    <ComboBox Grid.Column="2" Grid.Row="6" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Margin="80,10,80,10" x:Name="txtBoxRol">
+                        <ComboBoxItem HorizontalAlignment="Center" VerticalAlignment="Center">Administrador</ComboBoxItem>
+                        <ComboBoxItem HorizontalAlignment="Center" VerticalAlignment="Center" IsSelected="True">Empleado</ComboBoxItem>
+                    </ComboBox>
+
+                    <Button Grid.Column="2" Grid.Row="7" Width="60" Height="30" Content="Enviar" Click="BtnCrearEmpleado"/>
+
+                </Grid>
+
+            </TabItem>
+
         </TabControl>
+
     </Grid>
 
 </Window>
