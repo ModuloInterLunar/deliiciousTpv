@@ -19,9 +19,35 @@ namespace Proyecto_Intermodular
     /// </summary>
     public partial class Login : Window
     {
+        bool showPassword = false;
+
         public Login()
         {
             InitializeComponent();
+        }
+
+        private void btnShowHidePassword_Click(object sender, RoutedEventArgs e)
+        {
+            if (showPassword)
+            {
+                txtBoxPasswordHide.Password = txtBoxPasswordShow.Text;
+                txtBoxPasswordHide.Visibility = Visibility.Visible;
+                txtBoxPasswordShow.Visibility = Visibility.Collapsed;
+            }
+            else
+            {
+                txtBoxPasswordShow.Text = txtBoxPasswordHide.Password;
+                txtBoxPasswordHide.Visibility = Visibility.Collapsed;
+                txtBoxPasswordShow.Visibility = Visibility.Visible;
+            }
+
+            imageShowHidePassword.Source = new BitmapImage(new Uri(showPassword ? "./password_hide.png" : "./password_show.png", UriKind.Relative));
+            showPassword = !showPassword;
+        }
+
+        private void btnLogin_Click(object sender, RoutedEventArgs e)
+        {
+            // LOGIN
         }
     }
 }

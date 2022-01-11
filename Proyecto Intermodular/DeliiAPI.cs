@@ -13,7 +13,6 @@ namespace Proyecto_Intermodular
 {
     public static class DeliiAPI
     {
-        
         public static string Login(string username, string password)
         {
             HttpWebRequest httpWebRequest = (HttpWebRequest)WebRequest.Create("http://localhost:8080/api/employees/login");
@@ -37,14 +36,11 @@ namespace Proyecto_Intermodular
 
                 string result = ReadResponse(httpResponse);
                 return result;
-
             } 
             catch (WebException webException)
             {
                 return HandleWebException(webException);
             }
-
-            
         }
 
         public static Employee CreateEmployee(Employee employee)
