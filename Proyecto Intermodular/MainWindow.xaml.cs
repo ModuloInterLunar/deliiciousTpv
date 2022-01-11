@@ -167,5 +167,17 @@ namespace Proyecto_Intermodular
             DeleteTable(selectedTable);
             lblTableSelected.Content = "Table Selected:";
         }
+
+        private void BtnCrearEmpleado(object sender, RoutedEventArgs e)
+        {
+            string name = txtBoxName.Text;
+            string surname = txtBoxSurname.Text;
+            string dni = txtBoxDni.Text;
+            string user = txtBoxUser.Text;
+            string pass = txtBoxPass.Password;
+            string conf_pass = txtBoxConfPass.Password;
+            MessageBox.Show(pass);
+
+        }
     }
 }
