@@ -1,16 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Diagnostics;
+using System.IO;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace Proyecto_Intermodular
 {
@@ -28,6 +21,10 @@ namespace Proyecto_Intermodular
 
         private void btnShowHidePassword_Click(object sender, RoutedEventArgs e)
         {
+            // Muestra u oculta los carácteres de la contraseña
+            // Si la contraseña estaba oculta, asignamos el valor del PasswordBox al TextBox y ponemos la propiedad
+            // visibility en visible para el TextBox y en collapsed para el PasswordBox (al revés si la contraseña estuviese mostrándose).
+            // Además cambiamos el icono.
             if (showPassword)
             {
                 txtBoxPasswordHide.Password = txtBoxPasswordShow.Text;
@@ -45,9 +42,16 @@ namespace Proyecto_Intermodular
             showPassword = !showPassword;
         }
 
+        // LOGIN
         private void btnLogin_Click(object sender, RoutedEventArgs e)
         {
-            // LOGIN
+            DeliiAPI.Login(txtBoxUserName.Text, showPassword ? txtBoxPasswordShow.Text : txtBoxPasswordHide.Password);
+        }
+
+        // Para mostrar teclado de Windows
+        private void btnKeyBoard_Click(object sender, RoutedEventArgs e)
+        {
+            // TODO
         }
     }
 }

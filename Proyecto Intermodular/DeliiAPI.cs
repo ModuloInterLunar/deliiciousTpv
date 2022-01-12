@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Proyecto_Intermodular;
+using System.Threading;
 
 namespace Proyecto_Intermodular
 {
@@ -33,7 +34,7 @@ namespace Proyecto_Intermodular
             try
             {
                 HttpWebResponse httpResponse = (HttpWebResponse)httpWebRequest.GetResponse();
-
+                
                 string result = ReadResponse(httpResponse);
                 return result;
             } 
@@ -71,6 +72,10 @@ namespace Proyecto_Intermodular
             httpWebRequest.Method = "GET";
 
             string employeesJson = HandleResponse(httpWebRequest);
+
+            Thread.Sleep(5000);
+
+            Console.WriteLine("Not sleeping");
 
             if (employeesJson == null) return null;
 
