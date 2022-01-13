@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Proyecto_Intermodular
 {
-    class Employee
+    public class Employee
     {
         private string id;
         private string username;
