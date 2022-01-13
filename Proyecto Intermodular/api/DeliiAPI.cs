@@ -9,9 +9,35 @@ namespace Proyecto_Intermodular.api
 {
     public static class DeliiAPI
     {
+        private static string API_URL = "http://localhost:8080/";
+        public static Employee GetEmployeeFromToken()
+        {
+            string token = ApplicationState.GetValue<string>("token");
+            string path = "api/employees/-1";
+            HttpWebRequest httpWebRequest = (HttpWebRequest)WebRequest.Create(API_URL + path);
+            httpWebRequest.ContentType = "application/json";
+            httpWebRequest.Method = "GET";
+            httpWebRequest.Headers.Add("Authorization", "Bearer " + token);
+            try
+            {
+                HttpWebResponse httpResponse = (HttpWebResponse)httpWebRequest.GetResponse();
+
+                string result = ReadResponse(httpResponse);
+
+                Employee employee = JsonSerializer.Deserialize<Employee>(result, GetJsonOptions());
+
+                return employee;
+            }
+            catch (WebException webException)
+            {
+                HandleWebException(webException);
+                return null;
+            }
+        }
+
         public static string Login(string username, string password)
         {
-            HttpWebRequest httpWebRequest = (HttpWebRequest)WebRequest.Create("http://localhost:8080/login");
+            HttpWebRequest httpWebRequest = (HttpWebRequest)WebRequest.Create(API_URL + "login");
             httpWebRequest.ContentType = "application/json";
             httpWebRequest.Method = "POST";
 
@@ -21,7 +47,8 @@ namespace Proyecto_Intermodular.api
                 {
                     username,
                     password
-                }, GetJsonOptions());
+                }, 
+                GetJsonOptions());
 
                 streamWriter.Write(json);
             }
@@ -31,12 +58,16 @@ namespace Proyecto_Intermodular.api
                 HttpWebResponse httpResponse = (HttpWebResponse)httpWebRequest.GetResponse();
                 
                 string result = ReadResponse(httpResponse);
-                return result;
+
+                TokenResponse tokenResponse = JsonSerializer.Deserialize<TokenResponse>(result, GetJsonOptions());
+
+                return tokenResponse.Token;
             } 
             catch (WebException webException)
             {
-                return HandleWebException(webException);
+                HandleWebException(webException);
             }
+            return null;
         }
 
         public static Employee CreateEmployee(Employee employee)
@@ -74,7 +105,7 @@ namespace Proyecto_Intermodular.api
 
             if (employeesJson == null) return null;
 
-            List<Employee> employees = JsonSerializer.Deserialize<List<Employee>>(employeesJson);
+            List<Employee> employees = JsonSerializer.Deserialize<List<Employee>>(employeesJson, GetJsonOptions());
 
             return employees;
         }
@@ -99,13 +130,21 @@ namespace Proyecto_Intermodular.api
         {
             HttpWebResponse httpResponse = (HttpWebResponse)webException.Response;
             string result = ReadResponse(httpResponse);
-            JsonErrorResponse jsonErrorResponse = JsonSerializer.Deserialize<JsonErrorResponse>(result, GetJsonOptions());
-            string error = jsonErrorResponse.Message;
+            try
+            {
+                JsonErrorResponse jsonErrorResponse = JsonSerializer.Deserialize<JsonErrorResponse>(result, GetJsonOptions());
+                string error = jsonErrorResponse.Message;
 
-            if (error == "Employee not found!")
-                throw new UserNotFoundException(error);
-            else
-                throw new DeliiApiException(error);
+                if (error == "Employee not found!")
+                    throw new UserNotFoundException(error);
+                else
+                    throw new DeliiApiException(error);
+            }
+            catch
+            {
+                throw new DeliiApiException(result);
+            }
+
         }
 
         private static string ReadResponse(HttpWebResponse httpResponse)
@@ -133,5 +172,10 @@ namespace Proyecto_Intermodular.api
             public string Message { get => message; set => message = value; }
         }
 
+        class TokenResponse
+        {
+            private string token;
+            public string Token { get => token; set => token = value; }
+        }
     }
 }

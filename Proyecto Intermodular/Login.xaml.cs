@@ -46,7 +46,11 @@ namespace Proyecto_Intermodular
         {
             try
             {
-                DeliiAPI.Login(txtBoxUserName.Text, showPassword ? txtBoxPasswordShow.Text : txtBoxPasswordHide.Password);
+                string token = DeliiAPI.Login(txtBoxUserName.Text, showPassword ? txtBoxPasswordShow.Text : txtBoxPasswordHide.Password);
+                ApplicationState.SetValue("token", token);
+                MainWindow mainWindow = new();
+                mainWindow.Show();
+                Close();
             }
             catch(UserNotFoundException ex)
             {
