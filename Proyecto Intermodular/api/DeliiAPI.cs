@@ -102,8 +102,8 @@ namespace Proyecto_Intermodular.api
             JsonErrorResponse jsonErrorResponse = JsonSerializer.Deserialize<JsonErrorResponse>(result, GetJsonOptions());
             string error = jsonErrorResponse.Message;
 
-            if (error == "Employee not found!")
-                throw new UserNotFoundException(error);
+            if (error == "Employee not found!" || error == "")
+                throw new InvalidCredentialsException("El usuario o contraseña no válidos.");
             else
                 throw new DeliiApiException(error);
         }

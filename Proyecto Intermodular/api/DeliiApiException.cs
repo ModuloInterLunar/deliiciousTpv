@@ -10,11 +10,11 @@ namespace Proyecto_Intermodular.api
             System.Runtime.Serialization.StreamingContext context) : base (info, context) { }
     }
 
-    public class UserNotFoundException : DeliiApiException
+    public class InvalidCredentialsException : DeliiApiException
     {
-        public UserNotFoundException() : base() { }
-        public UserNotFoundException(string message) : base(message) { }
-        protected UserNotFoundException(System.Runtime.Serialization.SerializationInfo info,
+        public InvalidCredentialsException() : base() { }
+        public InvalidCredentialsException(string message) : base(message) { }
+        protected InvalidCredentialsException(System.Runtime.Serialization.SerializationInfo info,
             System.Runtime.Serialization.StreamingContext context) : base(info, context) { }
     }
 }

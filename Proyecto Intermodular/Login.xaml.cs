@@ -47,15 +47,16 @@ namespace Proyecto_Intermodular
             try
             {
                 DeliiAPI.Login(txtBoxUserName.Text, showPassword ? txtBoxPasswordShow.Text : txtBoxPasswordHide.Password);
+                lblError.Visibility = Visibility.Collapsed;
             }
-            catch(UserNotFoundException ex)
+            catch(InvalidCredentialsException ex)
             {
-                borderUserName.Background = new SolidColorBrush(Colors.Red);
-                txtBoxUserName.ToolTip = ex.Message;
+                lblError.Content = ex.Message;
+                lblError.Visibility = Visibility.Visible;
             }
             catch(DeliiApiException ex)
             {
-                MessageBox.Show($"Api error\nError message: {ex}");
+                MessageBox.Show($"Fatal Error.");
             }
         }
 

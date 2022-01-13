@@ -37,8 +37,7 @@
                     <TextBox Width="175" BorderThickness="0" Visibility="Visible" x:Name="txtBoxUserName" MaxLength="15" FontSize="15"/>
                 </StackPanel>
                 <Border BorderThickness="1" Height="3" Background="Black" Width="200" x:Name="borderUserName"/>
-                <Label Foreground="Red" Visibility="Collapsed"/>
-                <Separator Margin="0,0,0,10" BorderThickness="0"/>
+                <Separator Margin="0,0,0,10" Background="Transparent"/>
                 <Label Content="Password" FontSize="15" FontWeight="Bold"/>
                 <StackPanel Orientation="Horizontal">
                     <Image Width="20" Height="20" Source="/password_icon.png" />
@@ -49,6 +48,7 @@
                     </Button>
                 </StackPanel>
                 <Border BorderThickness="1" Height="3" Background="Black" Width="200"/>
+                <Label Foreground="Red" Visibility="Collapsed" x:Name="lblError"/>
             </StackPanel>
         </Grid>
 
