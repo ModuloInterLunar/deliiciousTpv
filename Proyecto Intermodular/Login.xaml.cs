@@ -1,9 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
 using System.Windows;
+using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using Proyecto_Intermodular.api;
 
 namespace Proyecto_Intermodular
 {
@@ -45,7 +44,19 @@ namespace Proyecto_Intermodular
         // LOGIN
         private void btnLogin_Click(object sender, RoutedEventArgs e)
         {
-            DeliiAPI.Login(txtBoxUserName.Text, showPassword ? txtBoxPasswordShow.Text : txtBoxPasswordHide.Password);
+            try
+            {
+                DeliiAPI.Login(txtBoxUserName.Text, showPassword ? txtBoxPasswordShow.Text : txtBoxPasswordHide.Password);
+            }
+            catch(UserNotFoundException ex)
+            {
+                borderUserName.Background = new SolidColorBrush(Colors.Red);
+                txtBoxUserName.ToolTip = ex.Message;
+            }
+            catch(DeliiApiException ex)
+            {
+                MessageBox.Show($"Api error\nError message: {ex}");
+            }
         }
 
         // Para mostrar teclado de Windows

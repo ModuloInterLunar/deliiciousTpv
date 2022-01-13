@@ -1,22 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Net;
-using System.Text;
-using System.Threading.Tasks;
 using System.Text.Json;
-using System.Text.Json.Serialization;
-using Proyecto_Intermodular;
 using System.Threading;
 
-namespace Proyecto_Intermodular
+namespace Proyecto_Intermodular.api
 {
     public static class DeliiAPI
     {
         public static string Login(string username, string password)
         {
-            HttpWebRequest httpWebRequest = (HttpWebRequest)WebRequest.Create("http://localhost:8080/api/employees/login");
+            HttpWebRequest httpWebRequest = (HttpWebRequest)WebRequest.Create("http://localhost:8080/login");
             httpWebRequest.ContentType = "application/json";
             httpWebRequest.Method = "POST";
 
@@ -105,8 +100,12 @@ namespace Proyecto_Intermodular
             HttpWebResponse httpResponse = (HttpWebResponse)webException.Response;
             string result = ReadResponse(httpResponse);
             JsonErrorResponse jsonErrorResponse = JsonSerializer.Deserialize<JsonErrorResponse>(result, GetJsonOptions());
-            throw new DeliiApiException(jsonErrorResponse.Message);
+            string error = jsonErrorResponse.Message;
 
+            if (error == "Employee not found!")
+                throw new UserNotFoundException(error);
+            else
+                throw new DeliiApiException(error);
         }
 
         private static string ReadResponse(HttpWebResponse httpResponse)
