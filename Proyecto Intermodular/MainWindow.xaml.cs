@@ -179,10 +179,21 @@ namespace Proyecto_Intermodular
             string dni = txtBoxDni.Text;
             string user = txtBoxUser.Text;
             string pass = txtBoxPass.Password;
-            string conf_pass = txtBoxConfPass.Password;
-            Employee employee = Employee(name, surname, dni, user, pass, conf)
-            MessageBox.Show(employee);
+            string confPass = txtBoxConfPass.Password;
+            string role = cbRole.SelectedItem.ToString();
+            bool isAdmin = false;
+            if (role == "Administrador")
+            {
+                isAdmin = true;
+            }
 
+            if (pass == confPass)
+            {
+                Employee employee = new Employee(name, surname, dni, user, pass, confPass, isAdmin);
+            } else {
+                MessageBox.Show("Las contraseñas no coinciden, vuelva a introducir la contraseña");
+            }
+            
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
