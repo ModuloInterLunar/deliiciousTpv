@@ -128,7 +128,6 @@
                                         </StackPanel>
                                     </ListBoxItem>
                                 </ListBox>
-
                             </Grid>
                         </Grid>
                     </Grid>
@@ -139,6 +138,11 @@
                 <Button Height="50" Width="200" Click="Button_Click">Send</Button>
             </TabItem>
 
+			      <TabItem Header="Cocina">
+                <StackPanel x:Name="panelKitchen" Orientation="Vertical">
+                </StackPanel>
+            </TabItem>
+            
         </TabControl>
     </Grid>
 
