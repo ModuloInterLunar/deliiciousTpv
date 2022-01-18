@@ -36,6 +36,16 @@ namespace Proyecto_Intermodular
             IsAdmin = isAdmin;
         }
 
+        public Employee(string username, string dni, string name, string surname, string password, bool isAdmin)
+        {
+            Username = username;
+            Dni = dni;
+            Name = name;
+            Surname = surname;
+            Password = password;
+            IsAdmin = isAdmin;
+        }
+
         public Employee()
         {
 

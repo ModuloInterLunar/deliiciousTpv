@@ -1,9 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
-using Proyecto_Intermodular;
+using System.Windows.Media.Imaging;
+using Proyecto_Intermodular.api;
 
 namespace Proyecto_Intermodular
 {
@@ -11,12 +14,14 @@ namespace Proyecto_Intermodular
     /// Interaction logic for MainWindow.xaml
     /// </summary>
     /// 
+
     public partial class MainWindow : Window
     {
         bool distribution;
         bool isDroppingOverOtherTable;
         List<Table> tables;
         Table selectedTable;
+        bool showPassword = false;
 
         public MainWindow()
         {
@@ -178,22 +183,59 @@ namespace Proyecto_Intermodular
             string surname = txtBoxSurname.Text;
             string dni = txtBoxDni.Text;
             string user = txtBoxUser.Text;
-            string pass = txtBoxPass.Password;
-            string confPass = txtBoxConfPass.Password;
-            string role = cbRole.SelectedItem.ToString();
+            string pass = showPassword ? txtBoxPass.Text : passBoxPass.Password;
+            string confPass = showPassword ? txtBoxConfPass.Text : passBoxConfPass.Password;
+            string role = cbRole.Text;
             bool isAdmin = false;
+            string confDni = @"\d{8}[A-Z]|[XYZ]\d{7}[A-Z]";
+
             if (role == "Administrador")
             {
                 isAdmin = true;
             }
 
-            if (pass == confPass)
-            {
-                Employee employee = new Employee(name, surname, dni, user, pass, confPass, isAdmin);
-            } else {
+            if (name == "" || surname == "" || dni == "" || user == "" || pass == "" || confPass == "") {
+                MessageBox.Show("Error, no pueden haber campos vacíos");
+            }
+
+            if (pass != confPass) {
                 MessageBox.Show("Las contraseñas no coinciden, vuelva a introducir la contraseña");
             }
+
+            if (name!="" && surname!="" && dni!="" && user!="" && pass!="" && confPass!="" && pass==confPass && Regex.IsMatch(dni, confDni)) {
+                Employee employee = new Employee(user, dni, name, surname, pass, isAdmin);
+                MessageBox.Show(employee.ToString());
+            }
             
+        }
+
+        private void btnShowHidePassword_Click(object sender, RoutedEventArgs e)
+        {
+            // Muestra u oculta los carácteres de la contraseña
+            // Si la contraseña estaba oculta, asignamos el valor del PasswordBox al TextBox y ponemos la propiedad
+            // visibility en visible para el TextBox y en collapsed para el PasswordBox (al revés si la contraseña estuviese mostrándose).
+            // Además cambiamos el icono.
+            if (showPassword)
+            {
+                passBoxPass.Password = txtBoxPass.Text;
+                passBoxConfPass.Password = txtBoxConfPass.Text;
+                passBoxPass.Visibility = Visibility.Visible;
+                txtBoxPass.Visibility = Visibility.Collapsed;
+                passBoxConfPass.Visibility = Visibility.Visible;
+                txtBoxConfPass.Visibility = Visibility.Collapsed;
+            }
+            else
+            {
+                txtBoxPass.Text = passBoxPass.Password;
+                txtBoxConfPass.Text = passBoxConfPass.Password;
+                passBoxPass.Visibility = Visibility.Collapsed;
+                passBoxConfPass.Visibility = Visibility.Collapsed;
+                txtBoxPass.Visibility = Visibility.Visible;
+                txtBoxConfPass.Visibility = Visibility.Visible;
+            }
+
+            imageShowHidePassword.Source = new BitmapImage(new Uri(showPassword ? "./password_hide.png" : "./password_show.png", UriKind.Relative));
+            showPassword = !showPassword;
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
