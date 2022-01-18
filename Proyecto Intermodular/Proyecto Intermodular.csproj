@@ -7,4 +7,31 @@
     <UseWPF>true</UseWPF>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Compile Remove="bin\Debug\images\**" />
+    <EmbeddedResource Remove="bin\Debug\images\**" />
+    <None Remove="bin\Debug\images\**" />
+    <Page Remove="bin\Debug\images\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="app_icon.png" />
+    <None Remove="password_hide.png" />
+    <None Remove="password_icon.png" />
+    <None Remove="password_show.png" />
+    <None Remove="user_icon.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="app_icon.png" />
+    <Resource Include="password_hide.png" />
+    <Resource Include="password_icon.png" />
+    <Resource Include="password_show.png" />
+    <Resource Include="user_icon.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="bin\Debug\net5.0-windows\ref\" />
+  </ItemGroup>
+
 </Project>

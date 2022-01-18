@@ -4,7 +4,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
-using Proyecto_Intermodular;
+using Proyecto_Intermodular.api;
 
 namespace Proyecto_Intermodular
 {
@@ -18,16 +18,55 @@ namespace Proyecto_Intermodular
         bool isDroppingOverOtherTable;
         List<Table> tables;
         Table selectedTable;
+
         List<Order> orders;
         Border myBorder1 = new Border();
         
         StackPanel stackPanel = new StackPanel();
 
 
+        Employee currentUser;
+
+
         public MainWindow()
         {
             InitializeComponent();
+            if (currentUser == null)
+                GetCurrentUser();
+            else
+                UpdateUI();
 
+            GenerateCanvasTables();
+        }
+
+
+        private void GetCurrentUser()
+        {
+            try
+            {
+                currentUser = DeliiAPI.GetEmployeeFromToken();
+                ApplicationState.SetValue("current_user", currentUser);
+                UpdateUI();
+            }
+            catch (DeliiApiException ex)
+            {
+                MessageBox.Show(ex.Message);
+                Close();
+            }
+        }
+
+        private void UpdateUI()
+        {
+            currentUser = ApplicationState.GetValue<Employee>("current_user");
+            Title = (currentUser == null)
+                    ? "Empleado: default user"
+                    : "Empleado: " + currentUser.FullName;
+        }
+
+        #region Tab 1
+
+        private void GenerateCanvasTables()
+        {
             tables = new();
             tables.Add(new Table(1, 0.10, 0.10, 25, 25));
             tables.Add(new Table(3, 0.40, 0.40));
@@ -232,16 +271,17 @@ namespace Proyecto_Intermodular
             DeleteTable(selectedTable);
             lblTableSelected.Content = "Table Selected:";
         }
+        #endregion
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             Employee employee = new Employee() { Id = "4", Dni = "12341234", IsAdmin = false, Surname = "juan", Username = "juanoto", Name = "Juan", Password = "asfdasfd"};
-            
+
             try
             {
                 Employee emp = DeliiAPI.CreateEmployee(employee);
                 MessageBox.Show(emp.ToString());
-            } 
+            }
             catch (DeliiApiException ex)
             {
                 MessageBox.Show(ex.Message);

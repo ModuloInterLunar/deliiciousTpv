@@ -8,14 +8,9 @@
         MinHeight="480"
         MinWidth="720"
         Title="MainWindow" Height="450" Width="800" SizeChanged="Window_SizeChanged">
-    
-    <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="3*"/>
-            <ColumnDefinition Width="5*"/>
-        </Grid.ColumnDefinitions>
 
-        <TabControl Grid.ColumnSpan="2">
+    <Grid>
+        <TabControl>
             <TabItem Header="Option 1">
                 <Grid>
                     <Grid.ColumnDefinitions>
@@ -35,7 +30,7 @@
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
-                            
+
                             <Label Content="Tables"/>
                             <Button Grid.Column="1"
                                     Content="Add Table"
@@ -102,7 +97,7 @@
                             <Grid Grid.Row="1" 
                                   Grid.ColumnSpan="2" 
                                   Grid.RowSpan="2">
-                                
+
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="30"/>
                                     <RowDefinition Height="*"/>
@@ -142,7 +137,8 @@
             <TabItem Header="Option 2">
                 <Button Height="50" Width="200" Click="Button_Click">Send</Button>
             </TabItem>
-			<TabItem Header="Cocina">
+
+			      <TabItem Header="Cocina">
                 <StackPanel x:Name="panelKitchen" Orientation="Vertical">
                 </StackPanel>
             </TabItem>
