@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using Proyecto_Intermodular.api;
 
 namespace Proyecto_Intermodular
@@ -12,12 +14,14 @@ namespace Proyecto_Intermodular
     /// Interaction logic for MainWindow.xaml
     /// </summary>
     /// 
+
     public partial class MainWindow : Window
     {
         bool distribution;
         bool isDroppingOverOtherTable;
         List<Table> tables;
         Table selectedTable;
+        bool showPassword = false;
 
         List<Order> orders;
         Border myBorder1 = new Border();
@@ -273,8 +277,58 @@ namespace Proyecto_Intermodular
         }
         #endregion
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void BtnCrearEmpleado(object sender, RoutedEventArgs e)
         {
+            string name = txtBoxName.Text;
+            string surname = txtBoxSurname.Text;
+            string dni = txtBoxDni.Text;
+            string user = txtBoxUser.Text;
+            string pass = showPassword ? txtBoxPass.Text : passBoxPass.Password;
+            string confPass = showPassword ? txtBoxConfPass.Text : passBoxConfPass.Password;
+            string role = cbRole.Text;
+            bool isAdmin = false;
+            string confDni = @"\d{8}[A-Z]|[XYZ]\d{7}[A-Z]";
+
+            if (role == "Administrador")
+            {
+                isAdmin = true;
+            }
+
+            if (name == "" || surname == "" || dni == "" || user == "" || pass == "" || confPass == "") {
+                MessageBox.Show("Error, no pueden haber campos vacíos");
+            }
+
+            if (pass.Length < 5) {
+                MessageBox.Show("La contraseña debe de tener al menos 5 caracteres");
+            }
+
+            if (pass != confPass) {
+                MessageBox.Show("Las contraseñas no coinciden, vuelva a introducir la contraseña");
+            }
+
+            if (name!="" && surname!="" && dni!="" && user!="" && pass!="" && confPass!="" && pass==confPass && Regex.IsMatch(dni, confDni)) {
+                Employee employee = new Employee(user, dni, name, surname, pass, isAdmin);
+                MessageBox.Show(employee.ToString());
+            }
+            
+        }
+
+        private void btnShowHidePassword_Click(object sender, RoutedEventArgs e)
+        {
+            // Muestra u oculta los carácteres de la contraseña
+            // Si la contraseña estaba oculta, asignamos el valor del PasswordBox al TextBox y ponemos la propiedad
+            // visibility en visible para el TextBox y en collapsed para el PasswordBox (al revés si la contraseña estuviese mostrándose).
+            // Además cambiamos el icono.
+            if (showPassword)
+            {
+                passBoxPass.Password = txtBoxPass.Text;
+                passBoxConfPass.Password = txtBoxConfPass.Text;
+                passBoxPass.Visibility = Visibility.Visible;
+                txtBoxPass.Visibility = Visibility.Collapsed;
+                passBoxConfPass.Visibility = Visibility.Visible;
+                txtBoxConfPass.Visibility = Visibility.Collapsed;
+            }
+            else
             Employee employee = new Employee() { Id = "4", Dni = "12341234", IsAdmin = false, Surname = "juan", Username = "juanoto", Name = "Juan", Password = "asfdasfd"};
 
             try
@@ -284,8 +338,17 @@ namespace Proyecto_Intermodular
             }
             catch (DeliiApiException ex)
             {
-                MessageBox.Show(ex.Message);
+                txtBoxPass.Text = passBoxPass.Password;
+                txtBoxConfPass.Text = passBoxConfPass.Password;
+                passBoxPass.Visibility = Visibility.Collapsed;
+                passBoxConfPass.Visibility = Visibility.Collapsed;
+                txtBoxPass.Visibility = Visibility.Visible;
+                txtBoxConfPass.Visibility = Visibility.Visible;
             }
+
+            imageShowHidePassword.Source = new BitmapImage(new Uri(showPassword ? "./password_hide.png" : "./password_show.png", UriKind.Relative));
+            showPassword = !showPassword;
         }
+
     }
 }

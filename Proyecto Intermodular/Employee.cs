@@ -28,6 +28,32 @@ namespace Proyecto_Intermodular
 
         public override string ToString() => $"id: {id}, username: {username}, dni: {dni}, name: {name}, surname: {surname}, password: {password}, isAdmin: {isAdmin}";
 
+        public Employee(string id, string username, string dni, string name, string surname, string password, bool isAdmin)
+        {
+            Id = id;
+            Username = username;
+            Dni = dni;
+            Name = name;
+            Surname = surname;
+            Password = password;
+            IsAdmin = isAdmin;
+        }
+
+        public Employee(string username, string dni, string name, string surname, string password, bool isAdmin)
+        {
+            Username = username;
+            Dni = dni;
+            Name = name;
+            Surname = surname;
+            Password = password;
+            IsAdmin = isAdmin;
+        }
+
+        public Employee()
+        {
+
+        }
+
         private String Capitalize(string str) => char.ToUpper(str[0]) + str.Substring(1);
     }
 }
