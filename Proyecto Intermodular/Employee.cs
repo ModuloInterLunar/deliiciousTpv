@@ -23,8 +23,11 @@ namespace Proyecto_Intermodular
         public string Surname { get => surname; set => surname = value; }
         public string Password { get => password; set => password = value; }
         public bool IsAdmin { get => isAdmin; set => isAdmin = value; }
+        public string FullName => Capitalize(name) + " " + Capitalize(surname);
+
 
         public override string ToString() => $"id: {id}, username: {username}, dni: {dni}, name: {name}, surname: {surname}, password: {password}, isAdmin: {isAdmin}";
+
         public Employee(string id, string username, string dni, string name, string surname, string password, bool isAdmin)
         {
             Id = id;
@@ -51,5 +54,6 @@ namespace Proyecto_Intermodular
 
         }
 
+        private String Capitalize(string str) => char.ToUpper(str[0]) + str.Substring(1);
     }
 }

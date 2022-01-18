@@ -13,26 +13,26 @@ namespace Proyecto_Intermodular
         string dish;
         bool isServed;
         bool isIncluded;
-        string staff;
+        string employee;
 
-        public Order(string id, string ticket, string dish, string staff)
+        public Order(string id, string ticket, string dish, string employee)
         {
             this.id = id;
             this.ticket = ticket;
             this.dish = dish;
             isServed = false;
             isIncluded = false;
-            this.staff = staff;
+            this.employee = employee;
         }
 
-        public Order(string id, string ticket, string dish, bool isServed, bool isIncluded, string staff)
+        public Order(string id, string ticket, string dish, bool isServed, bool isIncluded, string employee)
         {
             this.id = id;
             this.ticket = ticket;
             this.dish = dish;
             this.isServed = isServed;
             this.isIncluded = isIncluded;
-            this.staff = staff;
+            this.employee = employee;
         }
 
         public string Id { get => id; set => id = value; }
@@ -40,6 +40,6 @@ namespace Proyecto_Intermodular
         public string Dish { get => dish; set => dish = value; }
         public bool IsServed { get => isServed; set => isServed = value; }
         public bool IsIncluded { get => isIncluded; set => isIncluded = value; }
-        public string Staff { get => staff; set => staff = value; }
+        public string Employee { get => employee; set => employee = value; }
     }
 }

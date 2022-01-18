@@ -1,4 +1,4 @@
-﻿<Window x:Class="Proyecto_Intermodular.MainWindow"
+<Window x:Class="Proyecto_Intermodular.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -10,12 +10,7 @@
         Title="MainWindow" Height="450" Width="800" SizeChanged="Window_SizeChanged">
 
     <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="3*"/>
-            <ColumnDefinition Width="5*"/>
-        </Grid.ColumnDefinitions>
-
-        <TabControl Grid.ColumnSpan="2">
+        <TabControl>
             <TabItem Header="Option 1">
                 <Grid>
                     <Grid.ColumnDefinitions>
@@ -104,7 +99,7 @@
                             <Grid Grid.Row="1" 
                                   Grid.ColumnSpan="2" 
                                   Grid.RowSpan="2">
-                                
+
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="30"/>
                                     <RowDefinition Height="*"/>
@@ -135,7 +130,6 @@
                                         </StackPanel>
                                     </ListBoxItem>
                                 </ListBox>
-
                             </Grid>
                         </Grid>
                     </Grid>
@@ -144,7 +138,6 @@
 
             <TabItem Header="Option 2">
             </TabItem>
-
             <TabItem Header="Crear empleado" Height="20" VerticalAlignment="Top">
 
                 <Grid>
@@ -198,7 +191,10 @@
                 </Grid>
 
             </TabItem>
-
+			      <TabItem Header="Cocina">
+                <StackPanel x:Name="panelKitchen" Orientation="Vertical">
+                </StackPanel>
+            </TabItem>
         </TabControl>
 
     </Grid>
