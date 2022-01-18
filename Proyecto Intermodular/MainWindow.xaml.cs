@@ -328,16 +328,8 @@ namespace Proyecto_Intermodular
                 passBoxConfPass.Visibility = Visibility.Visible;
                 txtBoxConfPass.Visibility = Visibility.Collapsed;
             }
-            else
-            Employee employee = new Employee() { Id = "4", Dni = "12341234", IsAdmin = false, Surname = "juan", Username = "juanoto", Name = "Juan", Password = "asfdasfd"};
-
-            try
-            {
-                Employee emp = DeliiAPI.CreateEmployee(employee);
-                MessageBox.Show(emp.ToString());
-            }
-            catch (DeliiApiException ex)
-            {
+            else 
+            { 
                 txtBoxPass.Text = passBoxPass.Password;
                 txtBoxConfPass.Text = passBoxConfPass.Password;
                 passBoxPass.Visibility = Visibility.Collapsed;
