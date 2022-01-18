@@ -238,19 +238,5 @@ namespace Proyecto_Intermodular
             showPassword = !showPassword;
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            Employee employee = new Employee() { Id = "4", Dni = "12341234", IsAdmin = false, Surname = "juan", Username = "juanoto", Name = "Juan", Password = "asfdasfd"};
-            
-            try
-            {
-                Employee emp = DeliiAPI.CreateEmployee(employee);
-                MessageBox.Show(emp.ToString());
-            } 
-            catch (DeliiApiException ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
-        }
     }
 }
