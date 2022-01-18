@@ -198,6 +198,10 @@ namespace Proyecto_Intermodular
                 MessageBox.Show("Error, no pueden haber campos vacíos");
             }
 
+            if (pass.Length < 5) {
+                MessageBox.Show("La contraseña debe de tener al menos 5 caracteres");
+            }
+
             if (pass != confPass) {
                 MessageBox.Show("Las contraseñas no coinciden, vuelva a introducir la contraseña");
             }
