@@ -27,18 +27,32 @@ namespace Proyecto_Intermodular
                 GetCurrentUser();
             else
                 UpdateUI();
-
             GenerateCanvasTables();
         }
 
 
-        private void GetCurrentUser()
+        private async void GetCurrentUser()
         {
             try
             {
-                currentUser = DeliiAPI.GetEmployeeFromToken();
+                //DeliiAPI.GetEmployeeFromToken().ContinueWith(task =>
+                //{
+                //    if (task.IsFaulted)
+                //        MessageBox.Show(task.Exception.Message);
+                //    currentUser = task.Result;
+                //    ApplicationState.SetValue("current_user", currentUser);
+                //    Application.Current.Dispatcher.Invoke(() =>
+                //    {
+                //        UpdateUI();
+                //    });
+                //}); 
+
+                currentUser = await DeliiApi.GetEmployeeFromToken();
                 ApplicationState.SetValue("current_user", currentUser);
-                UpdateUI();
+                Application.Current.Dispatcher.Invoke(() =>
+                {
+                    UpdateUI();
+                });
             }
             catch (DeliiApiException ex)
             {
@@ -210,19 +224,5 @@ namespace Proyecto_Intermodular
         }
         #endregion
 
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            Employee employee = new Employee() { Id = "4", Dni = "12341234", IsAdmin = false, Surname = "juan", Username = "juanoto", Name = "Juan", Password = "asfdasfd"};
-
-            try
-            {
-                Employee emp = DeliiAPI.CreateEmployee(employee);
-                MessageBox.Show(emp.ToString());
-            }
-            catch (DeliiApiException ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
-        }
     }
 }

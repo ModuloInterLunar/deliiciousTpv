@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -42,17 +43,27 @@ namespace Proyecto_Intermodular
         }
 
         // LOGIN
-        private void btnLogin_Click(object sender, RoutedEventArgs e)
+        private async void btnLogin_Click(object sender, RoutedEventArgs e)
         {
             try
             {
-                string token = DeliiAPI.Login(txtBoxUserName.Text, showPassword ? txtBoxPasswordShow.Text : txtBoxPasswordHide.Password);
+                string username = txtBoxUserName.Text;
+                string password = showPassword ? txtBoxPasswordShow.Text : txtBoxPasswordHide.Password;
+
+                string token = await DeliiApi.Login(username, password);
                 ApplicationState.SetValue("token", token);
-                MainWindow mainWindow = new();
-                mainWindow.Show();
-                Close();
+                Application.Current.Dispatcher.Invoke(
+                    () =>
+                    {
+                        MainWindow mainWindow = new();
+                        mainWindow.Show();
+                        Close();
+                    }
+                );
+
+
             }
-            catch(UserNotFoundException ex)
+            catch (UserNotFoundException ex)
             {
                 borderUserName.Background = new SolidColorBrush(Colors.Red);
                 txtBoxUserName.ToolTip = ex.Message;

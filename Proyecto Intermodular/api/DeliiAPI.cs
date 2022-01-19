@@ -4,178 +4,90 @@ using System.IO;
 using System.Net;
 using System.Text.Json;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace Proyecto_Intermodular.api
 {
-    public static class DeliiAPI
+    public static class DeliiApi
     {
-        private static string API_URL = "http://localhost:8080/";
-        public static Employee GetEmployeeFromToken()
+        private static string URL = "http://localhost:8080/";
+        private static string API_URL = URL + "api/";
+
+        public static async Task<Employee> GetEmployeeFromToken()
         {
-            string token = ApplicationState.GetValue<string>("token");
-            string path = "api/employees/-1";
-            HttpWebRequest httpWebRequest = (HttpWebRequest)WebRequest.Create(API_URL + path);
-            httpWebRequest.ContentType = "application/json";
-            httpWebRequest.Method = "GET";
-            httpWebRequest.Headers.Add("Authorization", "Bearer " + token);
-            try
-            {
-                HttpWebResponse httpResponse = (HttpWebResponse)httpWebRequest.GetResponse();
+            string uri = API_URL + "employees/-1";
+            string employeeJson = await DeliiApiClient.Get(uri);
 
-                string result = ReadResponse(httpResponse);
-
-                Employee employee = JsonSerializer.Deserialize<Employee>(result, GetJsonOptions());
-
-                return employee;
-            }
-            catch (WebException webException)
-            {
-                HandleWebException(webException);
-                return null;
-            }
+            Employee employee = JsonSerializer.Deserialize<Employee>(employeeJson, DeliiApiClient.GetJsonOptions());
+            return employee;
         }
 
-        public static string Login(string username, string password)
+        public static async Task<string> Login(string username, string password)
         {
-            HttpWebRequest httpWebRequest = (HttpWebRequest)WebRequest.Create(API_URL + "login");
-            httpWebRequest.ContentType = "application/json";
-            httpWebRequest.Method = "POST";
-
-            using (StreamWriter streamWriter = new StreamWriter(httpWebRequest.GetRequestStream()))
-            {
-                string json = JsonSerializer.Serialize(new
-                {
-                    username,
-                    password
-                }, 
-                GetJsonOptions());
-
-                streamWriter.Write(json);
-            }
+            string uri = URL + "login";
+            Authentifier auth = new Authentifier(username, password);
 
             try
             {
-                HttpWebResponse httpResponse = (HttpWebResponse)httpWebRequest.GetResponse();
-                
-                string result = ReadResponse(httpResponse);
-
-                TokenResponse tokenResponse = JsonSerializer.Deserialize<TokenResponse>(result, GetJsonOptions());
+                string tokenJson = await DeliiApiClient.Post(uri, auth);
+                TokenResponse tokenResponse = JsonSerializer.Deserialize<TokenResponse>(tokenJson, DeliiApiClient.GetJsonOptions());
 
                 return tokenResponse.Token;
             } 
-            catch (WebException webException)
+            catch (DeliiApiException ex)
             {
-                HandleWebException(webException);
+                if (ex.Message.Contains("Employee not found"))
+                    throw new UserNotFoundException(ex.Message);
+                throw new DeliiApiException(ex.Message);
             }
-            return null;
         }
 
-        public static Employee CreateEmployee(Employee employee)
+        public static async Task<Employee> CreateEmployee(Employee employee)
         {
-            HttpWebRequest httpWebRequest = (HttpWebRequest)WebRequest.Create("http://localhost:8080/api/employees");
-            httpWebRequest.ContentType = "application/json";
-            httpWebRequest.Method = "POST";
+            string uri = API_URL + "employees";
+            string employeeJson = await DeliiApiClient.Post(uri, employee);
 
-            using (StreamWriter streamWriter = new StreamWriter(httpWebRequest.GetRequestStream()))
-            {
-                string json = JsonSerializer.Serialize(employee, GetJsonOptions());
-
-                streamWriter.Write(json);
-            }
-
-
-            string employeeJson = HandleResponse(httpWebRequest);
-
-            Employee emp = JsonSerializer.Deserialize<Employee>(employeeJson, GetJsonOptions());
+            Employee emp = JsonSerializer.Deserialize<Employee>(employeeJson, DeliiApiClient.GetJsonOptions());
 
             return emp;
-
         }
 
-        public static List<Employee> GetAllEmployees()
+        public static async Task<List<Employee>> GetAllEmployees()
         {
-            HttpWebRequest httpWebRequest = (HttpWebRequest)WebRequest.Create("http://localhost:8080/api/employees");
-            httpWebRequest.Method = "GET";
+            string uri = API_URL + "employees";
+            string employeesJson = await DeliiApiClient.Get(uri);
 
-            string employeesJson = HandleResponse(httpWebRequest);
-
-            Thread.Sleep(5000);
-
-            Console.WriteLine("Not sleeping");
-
-            if (employeesJson == null) return null;
-
-            List<Employee> employees = JsonSerializer.Deserialize<List<Employee>>(employeesJson, GetJsonOptions());
+            List<Employee> employees = JsonSerializer.Deserialize<List<Employee>>(employeesJson, DeliiApiClient.GetJsonOptions());
 
             return employees;
         }
+    }
 
+    class Authentifier
+    {
+        private string username;
+        private string password;
 
-        private static string HandleResponse(HttpWebRequest httpWebRequest)
+        public string Username { get => username; set => username = value; }
+        public string Password { get => password; set => password = value; }
+
+        public Authentifier(string username, string password)
         {
-            try
-            {
-                HttpWebResponse httpResponse = (HttpWebResponse)httpWebRequest.GetResponse();
-
-                string result = ReadResponse(httpResponse);
-                return result;
-            }
-            catch (WebException webException)
-            {
-                return HandleWebException(webException);
-            }
+            this.username = username;
+            this.password = password;
         }
-
-        private static string HandleWebException(WebException webException)
-        {
-            HttpWebResponse httpResponse = (HttpWebResponse)webException.Response;
-            string result = ReadResponse(httpResponse);
-            try
-            {
-                JsonErrorResponse jsonErrorResponse = JsonSerializer.Deserialize<JsonErrorResponse>(result, GetJsonOptions());
-                string error = jsonErrorResponse.Message;
-
-                if (error == "Employee not found!")
-                    throw new UserNotFoundException(error);
-                else
-                    throw new DeliiApiException(error);
-            }
-            catch
-            {
-                throw new DeliiApiException(result);
-            }
-
-        }
-
-        private static string ReadResponse(HttpWebResponse httpResponse)
-        {
-            using (StreamReader streamReader = new StreamReader(httpResponse.GetResponseStream()))
-            {
-                return streamReader.ReadToEnd();
-            }
-
-        }
+    }
 
 
-        private static JsonSerializerOptions GetJsonOptions()
-        {
-            JsonSerializerOptions options = new JsonSerializerOptions();
-            options.PropertyNameCaseInsensitive = true;
-            options.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
-            return options;
-        }
+    class JsonErrorResponse
+    {
+        private string message;
+        public string Message { get => message; set => message = value; }
+    }
 
-
-        class JsonErrorResponse
-        {
-            private string message;
-            public string Message { get => message; set => message = value; }
-        }
-
-        class TokenResponse
-        {
-            private string token;
-            public string Token { get => token; set => token = value; }
-        }
+    class TokenResponse
+    {
+        private string token;
+        public string Token { get => token; set => token = value; }
     }
 }
