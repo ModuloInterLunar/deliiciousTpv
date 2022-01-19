@@ -272,8 +272,8 @@ namespace Proyecto_Intermodular
             label6.Content = "Camarero:";
             Label label7 = new Label();
             label7.Content = order.Employee;
-            Button btnCookedDish = new Button();
 
+            Button btnCookedDish = new Button();
             btnCookedDish.Click += (Object sender, RoutedEventArgs e) => {
                 btnCookedDish.Content = "En espera";
                 myBorder1.Background = Brushes.Green;
@@ -301,8 +301,6 @@ namespace Proyecto_Intermodular
             string surname = txtBoxSurname.Text;
             string dni = txtBoxDni.Text;
             string user = txtBoxUser.Text;
-            string pass = showPassword ? txtBoxPass.Text : passBoxPass.Password;
-            string confPass = showPassword ? txtBoxConfPass.Text : passBoxConfPass.Password;
             string role = cbRole.Text;
             bool isAdmin = false;
             string confDni = @"\d{8}[A-Z]|[XYZ]\d{7}[A-Z]";
@@ -312,7 +310,7 @@ namespace Proyecto_Intermodular
                 isAdmin = true;
             }
 
-            if (name == "" || surname == "" || dni == "" || user == "" || pass == "" || confPass == "") {
+            if (name == "" || surname == "" || dni == "" || user == "" || passwdInput.Text == "" || passwdInputConfirm.Text == "") {
                 MessageBox.Show("Error, no pueden haber campos vacíos");
                 return;
             }
@@ -323,51 +321,22 @@ namespace Proyecto_Intermodular
                 return;
             }
 
-            if (pass.Length < 5) {
+            if (passwdInput.Text.Length < 5) {
                 MessageBox.Show("La contraseña debe de tener al menos 5 caracteres");
                 return;
 
             }
 
-            if (pass != confPass) {
+            if (passwdInput.Text != passwdInputConfirm.Text) {
                 MessageBox.Show("Las contraseñas no coinciden, vuelva a introducir la contraseña");
                 return;
             }
 
 
-            Employee employee = new Employee(user, dni, name, surname, pass, isAdmin);
+            Employee employee = new Employee(user, dni, name, surname, passwdInput.Text, isAdmin);
             
             Employee createdEmployee = await DeliiApi.CreateEmployee(employee);
             MessageBox.Show(createdEmployee.ToString());
-        }
-
-        private void btnShowHidePassword_Click(object sender, RoutedEventArgs e)
-        {
-            // Muestra u oculta los carácteres de la contraseña
-            // Si la contraseña estaba oculta, asignamos el valor del PasswordBox al TextBox y ponemos la propiedad
-            // visibility en visible para el TextBox y en collapsed para el PasswordBox (al revés si la contraseña estuviese mostrándose).
-            // Además cambiamos el icono.
-            if (showPassword)
-            {
-                passBoxPass.Password = txtBoxPass.Text;
-                passBoxConfPass.Password = txtBoxConfPass.Text;
-                passBoxPass.Visibility = Visibility.Visible;
-                txtBoxPass.Visibility = Visibility.Collapsed;
-                passBoxConfPass.Visibility = Visibility.Visible;
-                txtBoxConfPass.Visibility = Visibility.Collapsed;
-            }
-            else 
-            { 
-                txtBoxPass.Text = passBoxPass.Password;
-                txtBoxConfPass.Text = passBoxConfPass.Password;
-                passBoxPass.Visibility = Visibility.Collapsed;
-                passBoxConfPass.Visibility = Visibility.Collapsed;
-                txtBoxPass.Visibility = Visibility.Visible;
-                txtBoxConfPass.Visibility = Visibility.Visible;
-            }
-
-            imageShowHidePassword.Source = new BitmapImage(new Uri(showPassword ? "./password_hide.png" : "./password_show.png", UriKind.Relative));
-            showPassword = !showPassword;
         }
         #endregion
 
