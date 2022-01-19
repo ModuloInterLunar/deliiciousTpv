@@ -39,6 +39,7 @@ namespace Proyecto_Intermodular
                 GetCurrentUser();
             else
                 UpdateUI();
+
             GenerateCanvasTables();
         }
 
@@ -190,6 +191,7 @@ namespace Proyecto_Intermodular
 
         private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
         {
+            if (tables == null ) return;
             tables.ForEach(table =>
             {
                 table.UpdatePosition(cnvTables.ActualWidth, cnvTables.ActualHeight);
@@ -206,17 +208,17 @@ namespace Proyecto_Intermodular
 
         private void BtnAddTable_Click(object sender, RoutedEventArgs e)
         {
-            int availableId = 1;
-            bool isIdTaken = true;
+            //string availableId = "1";
+            //bool isIdTaken = true;
 
-            while (isIdTaken)
-                if (tables.Find(table => table.Id == availableId) == null) isIdTaken = false;
-                else availableId++;
+            //while (isIdTaken)
+            //    if (tables.Find(table => table.Id == availableId) == null) isIdTaken = false;
+            //    else availableId++;
 
-            Table table = new(availableId, 0.10, 0.10);
+            //Table table = new(availableId, 0.10, 0.10);
 
-            tables.Add(table);
-            CreateTable(table);
+            //tables.Add(table);
+            //CreateTable(table);
         }
 
         private void BntDeleteTable_Click(object sender, RoutedEventArgs e)
@@ -229,11 +231,9 @@ namespace Proyecto_Intermodular
 
 
         #region Cocina
-        private void GenerateCanvasTables()
+        private async void GenerateCanvasTables()
         {
-            tables = new();
-            tables.Add(new Table(1, 0.10, 0.10, 25, 25));
-            tables.Add(new Table(3, 0.40, 0.40));
+            tables = await DeliiApi.GetAllTables();
 
             tables.ForEach(table => CreateTable(table));
 

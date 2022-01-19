@@ -34,7 +34,6 @@ namespace Proyecto_Intermodular.userControls
 
         private void txtBox_LostFocus(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show(txtBox.Text);
             if (txtBox.Text == null || txtBox.Text == "")
             {
                 txtBox.Text = Hint;
