@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Proyecto_Intermodular"
+        xmlns:uc="clr-namespace:Proyecto_Intermodular.userControls"
         mc:Ignorable="d"
         MinHeight="480"
         MinWidth="720"
@@ -169,23 +170,17 @@
                     <TextBlock Grid.Column="1" Grid.Row="5" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="15" Text="Confirmar contraseña:"/>
                     <TextBlock Grid.Column="1" Grid.Row="6" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="15" Text="Rol:"/>
 
-                    <TextBox Grid.Column="2" Grid.Row="0" FontSize="15" Margin="64,10,64,10" VerticalContentAlignment="Center" x:Name="txtBoxName"/>
-                    <TextBox Grid.Column="2" Grid.Row="1" FontSize="15" Margin="64,10,64,10" VerticalContentAlignment="Center" x:Name="txtBoxSurname"/>
-                    <TextBox Grid.Column="2" Grid.Row="2" FontSize="15" Margin="64,10,64,10" VerticalContentAlignment="Center" x:Name="txtBoxDni"/>
-                    <TextBox Grid.Column="2" Grid.Row="3" FontSize="15" Margin="64,10,64,10" VerticalContentAlignment="Center" x:Name="txtBoxUser"/>
-                    <PasswordBox Grid.Column="2" Grid.Row="4" FontSize="15" Margin="64,10,64,10" VerticalContentAlignment="Center" x:Name="passBoxPass"/>
-                    <TextBox Visibility="Collapsed" Grid.Column="2" Grid.Row="4" FontSize="15" Margin="64,10,64,10" VerticalContentAlignment="Center" x:Name="txtBoxPass"/>
-                    <Button Grid.Column="2" Grid.Row="4" Width="20" Margin="64,10,70,10" Height="20" HorizontalAlignment="Right" VerticalAlignment="Center" Background="Transparent" BorderThickness="0" x:Name="btnShowHidePassword" Click="btnShowHidePassword_Click">
-                        <Image x:Name="imageShowHidePassword" Source="/password_hide.png" />
-                    </Button>
-                    <PasswordBox Grid.Column="2" Grid.Row="5" FontSize="15" Margin="64,10,64,10" VerticalContentAlignment="Center" x:Name="passBoxConfPass"/>
-                    <TextBox Visibility="Collapsed" Grid.Column="2" Grid.Row="5" FontSize="15" Margin="64,10,64,10" VerticalContentAlignment="Center" x:Name="txtBoxConfPass"/>
+                    <uc:TextBoxHint Grid.Column="2" Grid.Row="0" Hint="Name" x:Name="txtBoxName"/>
+                    <uc:TextBoxHint Grid.Column="2" Grid.Row="1" Hint="Surname" x:Name="txtBoxSurname"/>
+                    <uc:TextBoxHint Grid.Column="2" Grid.Row="2" Hint="DNI" x:Name="txtBoxDni"/>
+                    <uc:TextBoxHint Grid.Column="2" Grid.Row="3" Hint="Username" x:Name="txtBoxUser"/>
 
+                    <uc:PasswordInput x:Name="passwdInput" Grid.Column="2" Grid.Row="4"/>
+                    <uc:PasswordInput x:Name="passwdInputConfirm" Grid.Column="2" Grid.Row="5"/>
                     <ComboBox Grid.Column="2" Grid.Row="6" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Margin="80,10,80,10" x:Name="cbRole">
                         <ComboBoxItem HorizontalAlignment="Center" VerticalAlignment="Center">Administrador</ComboBoxItem>
                         <ComboBoxItem HorizontalAlignment="Center" VerticalAlignment="Center" IsSelected="True">Empleado</ComboBoxItem>
                     </ComboBox>
-
                     <Button Grid.Column="2" Grid.Row="7" Width="60" Height="30" Content="Enviar" Click="BtnCrearEmpleado"/>
 
                 </Grid>

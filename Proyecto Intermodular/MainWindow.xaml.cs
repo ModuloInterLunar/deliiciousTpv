@@ -39,6 +39,7 @@ namespace Proyecto_Intermodular
                 GetCurrentUser();
             else
                 UpdateUI();
+
             GenerateCanvasTables();
         }
 
@@ -190,6 +191,7 @@ namespace Proyecto_Intermodular
 
         private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
         {
+            if (tables == null ) return;
             tables.ForEach(table =>
             {
                 table.UpdatePosition(cnvTables.ActualWidth, cnvTables.ActualHeight);
@@ -206,17 +208,17 @@ namespace Proyecto_Intermodular
 
         private void BtnAddTable_Click(object sender, RoutedEventArgs e)
         {
-            int availableId = 1;
-            bool isIdTaken = true;
+            //string availableId = "1";
+            //bool isIdTaken = true;
 
-            while (isIdTaken)
-                if (tables.Find(table => table.Id == availableId) == null) isIdTaken = false;
-                else availableId++;
+            //while (isIdTaken)
+            //    if (tables.Find(table => table.Id == availableId) == null) isIdTaken = false;
+            //    else availableId++;
 
-            Table table = new(availableId, 0.10, 0.10);
+            //Table table = new(availableId, 0.10, 0.10);
 
-            tables.Add(table);
-            CreateTable(table);
+            //tables.Add(table);
+            //CreateTable(table);
         }
 
         private void BntDeleteTable_Click(object sender, RoutedEventArgs e)
@@ -231,10 +233,6 @@ namespace Proyecto_Intermodular
         #region Cocina
         private async void GenerateCanvasTables()
         {
-
-            //tables.Add(new Table(1, 0.10, 0.10, 25, 25));
-            //tables.Add(new Table(3, 0.40, 0.40));
-
             tables = await DeliiApi.GetAllTables();
 
             tables.ForEach(table => CreateTable(table));
@@ -280,8 +278,8 @@ namespace Proyecto_Intermodular
             label6.Content = "Camarero:";
             Label label7 = new Label();
             label7.Content = order.Employee;
-            Button btnCookedDish = new Button();
 
+            Button btnCookedDish = new Button();
             btnCookedDish.Click += (Object sender, RoutedEventArgs e) => {
                 btnCookedDish.Content = "En espera";
                 myBorder1.Background = Brushes.Green;
@@ -309,8 +307,8 @@ namespace Proyecto_Intermodular
             string surname = txtBoxSurname.Text;
             string dni = txtBoxDni.Text;
             string user = txtBoxUser.Text;
-            string pass = showPassword ? txtBoxPass.Text : passBoxPass.Password;
-            string confPass = showPassword ? txtBoxConfPass.Text : passBoxConfPass.Password;
+            string password = passwdInput.Text;
+            string passwordConf = passwdInputConfirm.Text;
             string role = cbRole.Text;
             bool isAdmin = false;
             string confDni = @"\d{8}[A-Z]|[XYZ]\d{7}[A-Z]";
@@ -320,7 +318,7 @@ namespace Proyecto_Intermodular
                 isAdmin = true;
             }
 
-            if (name == "" || surname == "" || dni == "" || user == "" || pass == "" || confPass == "") {
+            if (name == "" || surname == "" || dni == "" || user == "" || password == "" || passwordConf == "") {
                 MessageBox.Show("Error, no pueden haber campos vacíos");
                 return;
             }
@@ -331,51 +329,22 @@ namespace Proyecto_Intermodular
                 return;
             }
 
-            if (pass.Length < 5) {
+            if (password.Length < 5) {
                 MessageBox.Show("La contraseña debe de tener al menos 5 caracteres");
                 return;
 
             }
 
-            if (pass != confPass) {
+            if (password != passwordConf) {
                 MessageBox.Show("Las contraseñas no coinciden, vuelva a introducir la contraseña");
                 return;
             }
 
 
-            Employee employee = new Employee(user, dni, name, surname, pass, isAdmin);
+            Employee employee = new Employee(user, dni, name, surname, password, isAdmin);
             
             Employee createdEmployee = await DeliiApi.CreateEmployee(employee);
             MessageBox.Show(createdEmployee.ToString());
-        }
-
-        private void btnShowHidePassword_Click(object sender, RoutedEventArgs e)
-        {
-            // Muestra u oculta los carácteres de la contraseña
-            // Si la contraseña estaba oculta, asignamos el valor del PasswordBox al TextBox y ponemos la propiedad
-            // visibility en visible para el TextBox y en collapsed para el PasswordBox (al revés si la contraseña estuviese mostrándose).
-            // Además cambiamos el icono.
-            if (showPassword)
-            {
-                passBoxPass.Password = txtBoxPass.Text;
-                passBoxConfPass.Password = txtBoxConfPass.Text;
-                passBoxPass.Visibility = Visibility.Visible;
-                txtBoxPass.Visibility = Visibility.Collapsed;
-                passBoxConfPass.Visibility = Visibility.Visible;
-                txtBoxConfPass.Visibility = Visibility.Collapsed;
-            }
-            else 
-            { 
-                txtBoxPass.Text = passBoxPass.Password;
-                txtBoxConfPass.Text = passBoxConfPass.Password;
-                passBoxPass.Visibility = Visibility.Collapsed;
-                passBoxConfPass.Visibility = Visibility.Collapsed;
-                txtBoxPass.Visibility = Visibility.Visible;
-                txtBoxConfPass.Visibility = Visibility.Visible;
-            }
-
-            imageShowHidePassword.Source = new BitmapImage(new Uri(showPassword ? "./password_hide.png" : "./password_show.png", UriKind.Relative));
-            showPassword = !showPassword;
         }
         #endregion
 
