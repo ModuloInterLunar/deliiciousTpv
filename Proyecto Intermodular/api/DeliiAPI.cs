@@ -61,6 +61,18 @@ namespace Proyecto_Intermodular.api
 
             return employees;
         }
+
+        public static async Task<List<Table>> GetAllTables()
+        {
+            string uri = API_URL + "tables";
+            string tablesJson = await DeliiApiClient.Get(uri);
+
+            List<Table> tables = JsonSerializer.Deserialize<List<Table>>(tablesJson, DeliiApiClient.GetJsonOptions());
+
+            return tables;
+        }
+
+
     }
 
     class Authentifier

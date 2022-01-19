@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Proyecto_Intermodular
 {
-    class Ticket
+    public class Ticket
     {
         string id;
         float total;

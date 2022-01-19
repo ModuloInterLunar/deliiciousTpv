@@ -3,7 +3,7 @@ using System.Windows.Controls;
 
 namespace Proyecto_Intermodular
 {
-    class Table
+    public class Table
     {
         private readonly static int DEFAULT_SIZE = 25;
         private int id;

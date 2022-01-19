@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Proyecto_Intermodular
 {
-    class Food : Dish
+    public class Food : Dish
     {
         Dictionary<string, float> ingredients;
         public Food(Dictionary<string, float> ingredients, string id, float price, string description) : base(id, price, description)

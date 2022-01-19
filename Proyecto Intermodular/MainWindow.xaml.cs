@@ -229,14 +229,21 @@ namespace Proyecto_Intermodular
 
 
         #region Cocina
-        private void GenerateCanvasTables()
+        private async void GenerateCanvasTables()
         {
-            tables = new();
-            tables.Add(new Table(1, 0.10, 0.10, 25, 25));
-            tables.Add(new Table(3, 0.40, 0.40));
+
+            //tables.Add(new Table(1, 0.10, 0.10, 25, 25));
+            //tables.Add(new Table(3, 0.40, 0.40));
+
+            tables = await DeliiApi.GetAllTables();
 
             tables.ForEach(table => CreateTable(table));
 
+            
+        }
+
+        private void GenerateOrders()
+        {
             orders = new();
             orders.Add(new Order("1", "1", "Fabada", false, false, "Djessy"));
             orders.Add(new Order("2", "2", "Spaghetti", false, false, "Alvaro"));
@@ -248,6 +255,7 @@ namespace Proyecto_Intermodular
 
         private void CreateOrder(Order order)
         {
+
             StackPanel stackPanel = new StackPanel();
             stackPanel.Orientation = Orientation.Horizontal;
 

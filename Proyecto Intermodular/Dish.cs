@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Proyecto_Intermodular
 {
-    abstract class Dish
+    public abstract class Dish
     {
         private string id;
         private float price;
