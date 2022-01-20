@@ -5,7 +5,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
+using Proyecto_Intermodular.models;
 using Proyecto_Intermodular.api;
 
 namespace Proyecto_Intermodular

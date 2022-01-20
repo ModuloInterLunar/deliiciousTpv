@@ -1,7 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 
-namespace Proyecto_Intermodular
+namespace Proyecto_Intermodular.models
 {
     public class Table
     {
