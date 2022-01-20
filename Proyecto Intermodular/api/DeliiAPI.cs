@@ -5,12 +5,13 @@ using System.Net;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
+using Proyecto_Intermodular.models;
 
 namespace Proyecto_Intermodular.api
 {
     public static class DeliiApi
     {
-        private static string URL = "http://localhost:8080/";
+        private static string URL = "http://Alvaro:8080/";
         private static string API_URL = URL + "api/";
 
         public static async Task<Employee> GetEmployeeFromToken()

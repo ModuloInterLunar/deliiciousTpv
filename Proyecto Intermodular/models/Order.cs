@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Proyecto_Intermodular.models
 {
-    class Order
+    public class Order
     {
         string id;
         string ticket;
