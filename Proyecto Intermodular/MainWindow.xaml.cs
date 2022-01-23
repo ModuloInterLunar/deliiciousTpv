@@ -21,12 +21,8 @@ namespace Proyecto_Intermodular
         bool isDroppingOverOtherTable;
         List<Table> tables;
         Table selectedTable;
-        bool showPassword = false;
 
         List<Order> orders;
-        Border myBorder1 = new Border();
-        
-        StackPanel stackPanel = new StackPanel();
 
 
         Employee currentUser;
@@ -41,6 +37,7 @@ namespace Proyecto_Intermodular
                 UpdateUI();
 
             GenerateCanvasTables();
+            GenerateOrders();
         }
 
 
@@ -48,18 +45,6 @@ namespace Proyecto_Intermodular
         {
             try
             {
-                //DeliiAPI.GetEmployeeFromToken().ContinueWith(task =>
-                //{
-                //    if (task.IsFaulted)
-                //        MessageBox.Show(task.Exception.Message);
-                //    currentUser = task.Result;
-                //    ApplicationState.SetValue("current_user", currentUser);
-                //    Application.Current.Dispatcher.Invoke(() =>
-                //    {
-                //        UpdateUI();
-                //    });
-                //}); 
-
                 currentUser = await DeliiApi.GetEmployeeFromToken();
                 ApplicationState.SetValue("current_user", currentUser);
                 Application.Current.Dispatcher.Invoke(() =>
@@ -242,13 +227,9 @@ namespace Proyecto_Intermodular
         #region Cocina
         
 
-        private void GenerateOrders()
+        private async void GenerateOrders()
         {
-            orders = new();
-            orders.Add(new Order("1", "1", "Fabada", false, false, "Djessy"));
-            orders.Add(new Order("2", "2", "Spaghetti", false, false, "Alvaro"));
-            orders.Add(new Order("3", "3", "Porritos", false, false, "Matías"));
-            orders.Add(new Order("4", "4", "Hamburguesa", false, false, "Saul"));
+            orders = await DeliiApi.GetAllOrders();
 
             orders.ForEach(order => CreateOrder(order));
         }

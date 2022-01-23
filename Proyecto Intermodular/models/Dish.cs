@@ -19,6 +19,11 @@ namespace Proyecto_Intermodular.models
             this.description = description;
         }
 
+        protected Dish()
+        {
+
+        }
+
         public string Id { get => id; set => id = value; }
         public float Price { get => price; set => price = value; }
         public string Description { get => description; set => description = value; }

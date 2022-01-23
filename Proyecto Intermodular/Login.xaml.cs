@@ -12,7 +12,6 @@ namespace Proyecto_Intermodular
     /// </summary>
     public partial class Login : Window
     {
-        bool showPassword = false;
 
         public Login()
         {

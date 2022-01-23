@@ -109,6 +109,16 @@ namespace Proyecto_Intermodular.api
             await DeliiApiClient.Delete(uri);
         }
 
+        public static async Task<List<Order>> GetAllOrders()
+        {
+            string uri = API_URL + "orders";
+            string ordersJson = await DeliiApiClient.Get(uri);
+
+            List<Order> orders = JsonSerializer.Deserialize<List<Order>>(ordersJson, DeliiApiClient.GetJsonOptions());
+
+            return orders;
+        }
+
 
     }
 
