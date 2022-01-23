@@ -73,6 +73,26 @@ namespace Proyecto_Intermodular.api
             return tables;
         }
 
+        public static async Task<Table> CreateTable(Table table)
+        {
+            string uri = API_URL + "tables";
+
+            try
+            {
+                string tablesJson = await DeliiApiClient.Post(uri, table);
+                Table createdTable = JsonSerializer.Deserialize<Table>(tablesJson, DeliiApiClient.GetJsonOptions());
+
+                return createdTable;
+            }
+            catch (DeliiApiException ex)
+            {
+                if (ex.Message.Contains("Can't create table!"))
+                    throw new UserNotFoundException(ex.Message);
+                throw new DeliiApiException(ex.Message);
+            }
+
+        }
+
 
     }
 

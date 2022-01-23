@@ -84,6 +84,13 @@ namespace Proyecto_Intermodular
 
         #region Tab 1
 
+        private async void GenerateCanvasTables()
+        {
+            tables = await DeliiApi.GetAllTables();
+
+            tables.ForEach(table => CreateTable(table));
+        }
+
         private void CreateTable(Table table)
         {
             Border border = new();
@@ -212,19 +219,13 @@ namespace Proyecto_Intermodular
 
         }
 
-        private void BtnAddTable_Click(object sender, RoutedEventArgs e)
+        private async void BtnAddTable_Click(object sender, RoutedEventArgs e)
         {
-            //string availableId = "1";
-            //bool isIdTaken = true;
-
-            //while (isIdTaken)
-            //    if (tables.Find(table => table.Id == availableId) == null) isIdTaken = false;
-            //    else availableId++;
-
-            //Table table = new(availableId, 0.10, 0.10);
-
-            //tables.Add(table);
-            //CreateTable(table);
+            Table table = await DeliiApi.CreateTable(new Table(0,0));
+            tables.Add(table);
+            Application.Current.Dispatcher.Invoke(() => {
+                CreateTable(table);
+            });
         }
 
         private void BntDeleteTable_Click(object sender, RoutedEventArgs e)
@@ -237,14 +238,7 @@ namespace Proyecto_Intermodular
 
 
         #region Cocina
-        private async void GenerateCanvasTables()
-        {
-            tables = await DeliiApi.GetAllTables();
-
-            tables.ForEach(table => CreateTable(table));
-
-            
-        }
+        
 
         private void GenerateOrders()
         {

@@ -5,7 +5,7 @@ namespace Proyecto_Intermodular.models
 {
     public class Table
     {
-        private readonly static int DEFAULT_SIZE = 25;
+        private readonly static int DEFAULT_SIZE = 30;
         private string id;
         private double posX;
         private double posY;
@@ -29,14 +29,14 @@ namespace Proyecto_Intermodular.models
 
         }
 
-        public Table(string id, double posX, double posY)
+        public Table(double posX, double posY)
         {
-            this.id = id;
             this.posX = posX;
             this.posY = posY;
             width = DEFAULT_SIZE;
             height = DEFAULT_SIZE;
         }
+
 
         public string Id { get => id; set => id = value; }
         public double PosX { get => posXRelative; set => posXRelative = value; }
