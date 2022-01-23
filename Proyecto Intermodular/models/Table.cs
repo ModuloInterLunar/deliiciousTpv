@@ -39,11 +39,11 @@ namespace Proyecto_Intermodular.models
 
 
         public string Id { get => id; set => id = value; }
-        public double PosX { get => posXRelative; set => posXRelative = value; }
-        public double PosY { get => posYRelative; set => posYRelative = value; }
+        public double PosXRelative { get => posXRelative; set => posXRelative = value; }
+        public double PosYRelative { get => posYRelative; set => posYRelative = value; }
         public Border Border { get => border; set => border = value; }
-        public double PosXPercent { get => posX; set => posX = value; }
-        public double PosYPercent { get => posY; set => posY = value; }
+        public double PosX { get => posX; set => posX = value; }
+        public double PosY { get => posY; set => posY = value; }
         public double Width { get => width; set => width = value; }
         public double Height { get => height; set => height = value; }
         public override string ToString() => $"ID: {id}, BORDER: ({Canvas.GetLeft(border)}, {Canvas.GetTop(border)}, {border.Name})";
@@ -56,8 +56,8 @@ namespace Proyecto_Intermodular.models
 
         public void UpdatePosition(double newCanvasWidth, double newCanvasHeight)
         {
-            posXRelative = PosXPercent * newCanvasWidth;
-            posYRelative = PosYPercent * newCanvasHeight;
+            posXRelative = PosX * newCanvasWidth;
+            posYRelative = PosY * newCanvasHeight;
             CorrectOutOfFrame(newCanvasWidth, newCanvasHeight);
         }
 

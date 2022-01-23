@@ -101,8 +101,10 @@ namespace Proyecto_Intermodular
             border.Width = table.Width;
             border.Height = table.Height;
             border.AllowDrop = true;
-            Canvas.SetLeft(border, table.PosX);
-            Canvas.SetTop(border, table.PosY);
+            table.Border = border;
+            table.UpdatePosition(cnvTables.ActualWidth, cnvTables.ActualHeight);
+            Canvas.SetLeft(border, table.PosXRelative);
+            Canvas.SetTop(border, table.PosYRelative);
 
             border.MouseMove += new MouseEventHandler((object sender, MouseEventArgs e) => {
                 if (e.LeftButton != MouseButtonState.Pressed) return;
@@ -133,7 +135,6 @@ namespace Proyecto_Intermodular
             border.Child = label;
 
             cnvTables.Children.Add(border);
-            table.Border = border;
         }
 
         private void SelectTable(Table table)
@@ -145,6 +146,7 @@ namespace Proyecto_Intermodular
         private void DeleteTable(Table table)
         {
             isDroppingOverOtherTable = true;
+            DeliiApi.RemoveTable(table);
             cnvTables.Children.Remove(table.Border);
             tables.Remove(table);
         }
@@ -209,14 +211,14 @@ namespace Proyecto_Intermodular
             {
                 table.UpdatePosition(cnvTables.ActualWidth, cnvTables.ActualHeight);
 
-                Canvas.SetLeft(table.Border, table.PosX);
-                Canvas.SetTop(table.Border, table.PosY);
+                Canvas.SetLeft(table.Border, table.PosXRelative);
+                Canvas.SetTop(table.Border, table.PosYRelative);
             });
         }
 
         private void BtnSaveDistribution_Click(object sender, RoutedEventArgs e)
         {
-
+            tables.ForEach(async table => await DeliiApi.UpdateTable(table));
         }
 
         private async void BtnAddTable_Click(object sender, RoutedEventArgs e)

@@ -79,8 +79,8 @@ namespace Proyecto_Intermodular.api
 
             try
             {
-                string tablesJson = await DeliiApiClient.Post(uri, table);
-                Table createdTable = JsonSerializer.Deserialize<Table>(tablesJson, DeliiApiClient.GetJsonOptions());
+                string createdTableJson = await DeliiApiClient.Post(uri, table);
+                Table createdTable = JsonSerializer.Deserialize<Table>(createdTableJson, DeliiApiClient.GetJsonOptions());
 
                 return createdTable;
             }
@@ -90,7 +90,23 @@ namespace Proyecto_Intermodular.api
                     throw new UserNotFoundException(ex.Message);
                 throw new DeliiApiException(ex.Message);
             }
+        }
 
+        public static async Task<Table> UpdateTable(Table table)
+        {
+            string uri = API_URL + "tables/" + table.Id;
+            Table simpleTable = new Table(table.Id, table.PosX, table.PosY, table.Width, table.Height);
+            string updatedTableJson = await DeliiApiClient.Patch(uri, simpleTable);
+            Table updatedTable = JsonSerializer.Deserialize<Table>(updatedTableJson, DeliiApiClient.GetJsonOptions());
+
+            return updatedTable;
+        }
+
+        public static async void RemoveTable(Table table)
+        {
+            string uri = API_URL + "tables/" + table.Id;
+
+            await DeliiApiClient.Delete(uri);
         }
 
 
