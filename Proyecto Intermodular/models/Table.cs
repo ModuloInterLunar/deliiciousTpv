@@ -54,27 +54,27 @@ namespace Proyecto_Intermodular.models
             posY = newPoint.Y / cnvHeight;
         }
 
-        public void UpdatePosition(double newWidth, double newHeight)
+        public void UpdatePosition(double newCanvasWidth, double newCanvasHeight)
         {
-            posXRelative = PosXPercent * newWidth;
-            posYRelative = PosYPercent * newHeight;
-            CorrectOutOfFrame(newWidth, newHeight);
+            posXRelative = PosXPercent * newCanvasWidth;
+            posYRelative = PosYPercent * newCanvasHeight;
+            CorrectOutOfFrame(newCanvasWidth, newCanvasHeight);
         }
 
-        public void ChangeTableSize(double widthIncrement = 0, double heightIncrement = 0)
+        public void ChangeTableSize(double newWidth = 0, double newHeight = 0)
         {
-            width += widthIncrement;
-            height += heightIncrement;
+            width += newWidth;
+            height += newHeight;
             border.Width = width;
             border.Height = height;
         }
 
         private void CorrectOutOfFrame(double frameWidth, double frameHeight)
         {
-            if (posXRelative + border.Width / 2 > frameWidth)
-                posXRelative = frameWidth - border.Width / 2;
-            if (posYRelative + border.Height / 2 > frameHeight)
-                posYRelative = frameHeight - border.Height / 2;
+            if (posXRelative + border.Width > frameWidth)
+                posXRelative = frameWidth - border.Width;
+            if (posYRelative + border.Height > frameHeight)
+                posYRelative = frameHeight - border.Height;
         }
     }
 }

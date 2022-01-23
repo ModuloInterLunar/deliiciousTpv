@@ -157,11 +157,17 @@ namespace Proyecto_Intermodular
 
             Table table = GetTable(border);
 
-            double left = (dropPos.X > cnvTables.ActualWidth - offset.Width * 2) ? cnvTables.ActualWidth - offset.Width * 2 :
-                            (dropPos.X < offset.Width) ? 0 : dropPos.X - offset.Width;
+            double left = (dropPos.X > cnvTables.ActualWidth - offset.Width)
+                            ? cnvTables.ActualWidth - offset.Width * 2
+                            : (dropPos.X < offset.Width)
+                                ? 0
+                                : dropPos.X - offset.Width;
 
-            double top = (dropPos.Y > cnvTables.ActualHeight - offset.Height * 2) ? cnvTables.ActualHeight - offset.Height * 2 :
-                            (dropPos.Y < offset.Height) ? 0 : dropPos.Y - offset.Height;
+            double top = (dropPos.Y > cnvTables.ActualHeight - offset.Height)
+                            ? cnvTables.ActualHeight - offset.Height * 2 
+                            : (dropPos.Y < offset.Height)
+                                ? 0
+                                : dropPos.Y - offset.Height;
 
             Point newPoint = new(left, top);
             table.SetPosition(newPoint, cnvTables.ActualWidth, cnvTables.ActualHeight);
