@@ -7,6 +7,8 @@ using System.Windows.Input;
 using System.Windows.Media;
 using Proyecto_Intermodular.models;
 using Proyecto_Intermodular.api;
+using System.Windows.Threading;
+using System.Windows.Media.Imaging;
 
 namespace Proyecto_Intermodular
 {
@@ -17,20 +19,62 @@ namespace Proyecto_Intermodular
 
     public partial class MainWindow : Window
     {
-        bool distribution;
         bool isDroppingOverOtherTable;
         List<Table> tables;
         Table selectedTable;
 
         List<Order> orders;
-
+        int timerStage;
+        List<Uri> timerImagesUris = new()
+        {
+            new Uri("/Proyecto Intermodular;component/images/timer/timer_2.png", UriKind.Relative),
+            new Uri("/Proyecto Intermodular;component/images/timer/timer_3.png", UriKind.Relative),
+            new Uri("/Proyecto Intermodular;component/images/timer/timer_4.png", UriKind.Relative),
+            new Uri("/Proyecto Intermodular;component/images/timer/timer_5.png", UriKind.Relative),
+            new Uri("/Proyecto Intermodular;component/images/timer/timer_6.png", UriKind.Relative),
+            new Uri("/Proyecto Intermodular;component/images/timer/timer_7.png", UriKind.Relative)
+        };
+        List<ImageSource> timerImages = new();
 
         Employee currentUser;
-
+        private bool isEditingTableLayout;
 
         public MainWindow()
         {
             InitializeComponent();
+            UpdateDataset();
+            StartTimer();
+        }
+
+        public void StartTimer()
+        {
+            LoadTimerImages();
+            timerStage = 0;
+            DispatcherTimer timer = new DispatcherTimer();
+            timer.Interval = TimeSpan.FromSeconds(2);
+            timer.Tick += TimerTick;
+            timer.Start();
+        }
+
+        private void LoadTimerImages()
+        {
+            timerImagesUris.ForEach(uri => timerImages.Add(new BitmapImage(uri)));
+        }
+
+        private void TimerTick(object sender, EventArgs e)
+        {
+            imgTimer.Source = timerImages[timerStage];
+            if (timerStage == 5)
+            {
+                UpdateDataset();
+                timerStage = 0;
+            }
+            else
+                timerStage++;
+        }
+
+        public void UpdateDataset()
+        {
             if (currentUser == null)
                 GetCurrentUser();
             else
@@ -71,6 +115,8 @@ namespace Proyecto_Intermodular
 
         private async void GenerateCanvasTables()
         {
+            if (isEditingTableLayout) return;
+            cnvTables.Children.Clear();
             tables = await DeliiApi.GetAllTables();
 
             tables.ForEach(table => CreateTable(table));
@@ -95,7 +141,7 @@ namespace Proyecto_Intermodular
                 if (e.LeftButton != MouseButtonState.Pressed) return;
 
                 SelectTable(table);
-                if (distribution) DragDrop.DoDragDrop(border, new DataObject(DataFormats.Serializable, border), DragDropEffects.Move);
+                if (isEditingTableLayout) DragDrop.DoDragDrop(border, new DataObject(DataFormats.Serializable, border), DragDropEffects.Move);
             });
 
             /*
@@ -187,7 +233,7 @@ namespace Proyecto_Intermodular
             if (data is Border border) MoveTable(e, border);
         }
 
-        private void BtnDistribution_Click(object sender, RoutedEventArgs e) => distribution = !distribution;
+        private void BtnDistribution_Click(object sender, RoutedEventArgs e) => isEditingTableLayout = !isEditingTableLayout;
 
         private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
         {
@@ -210,7 +256,8 @@ namespace Proyecto_Intermodular
         {
             Table table = await DeliiApi.CreateTable(new Table(0,0));
             tables.Add(table);
-            Application.Current.Dispatcher.Invoke(() => {
+            Application.Current.Dispatcher.Invoke(() =>
+            {
                 CreateTable(table);
             });
         }
@@ -229,6 +276,7 @@ namespace Proyecto_Intermodular
 
         private async void GenerateOrders()
         {
+            panelKitchen.Children.Clear();
             orders = await DeliiApi.GetAllOrders();
 
             orders.ForEach(order => CreateOrder(order));
