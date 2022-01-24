@@ -9,16 +9,16 @@ namespace Proyecto_Intermodular.models
     public class Order
     {
         private string id;
-        private string ticket;
+        private Ticket ticket;
         private string dish;
         private bool isServed;
         private bool isIncluded;
         private string description;
         private string createdAt;
         private string updatedAt;
-        private string employee;
+        private Employee employee;
 
-        public Order(string id, string ticket, string dish, string description, string employee)
+        public Order(string id, Ticket ticket, string dish, string description, Employee employee)
         {
             this.id = id;
             this.ticket = ticket;
@@ -29,7 +29,7 @@ namespace Proyecto_Intermodular.models
             this.employee = employee;
         }
 
-        public Order(string id, string ticket, string dish, bool isServed, bool isIncluded, string employee)
+        public Order(string id, Ticket ticket, string dish, bool isServed, bool isIncluded, Employee employee)
         {
             this.id = id;
             this.ticket = ticket;
@@ -39,7 +39,7 @@ namespace Proyecto_Intermodular.models
             this.employee = employee;
         }
 
-        public Order(string id, string ticket, string dish, bool isServed, bool isIncluded, string description, string employee)
+        public Order(string id, Ticket ticket, string dish, bool isServed, bool isIncluded, string description, Employee employee)
         {
             this.id = id;
             this.ticket = ticket;
@@ -50,17 +50,14 @@ namespace Proyecto_Intermodular.models
             this.employee = employee;
         }
 
-        public Order()
-        {
-
-        }
+        public Order() { }
 
         public string Id { get => id; set => id = value; }
-        public string Ticket { get => ticket; set => ticket = value; }
+        public Ticket Ticket { get => ticket; set => ticket = value; }
         public string Dish { get => dish; set => dish = value; }
         public bool IsServed { get => isServed; set => isServed = value; }
         public bool IsIncluded { get => isIncluded; set => isIncluded = value; }
-        public string Employee { get => employee; set => employee = value; }
+        public Employee Employee { get => employee; set => employee = value; }
         public string Description { get => description; set => description = value; }
         public string CreatedAt { get => createdAt; set => createdAt = value; }
         public string UpdatedAt { get => updatedAt; set => updatedAt = value; }

@@ -118,8 +118,6 @@ namespace Proyecto_Intermodular.api
 
             return orders;
         }
-
-
     }
 
     class Authentifier

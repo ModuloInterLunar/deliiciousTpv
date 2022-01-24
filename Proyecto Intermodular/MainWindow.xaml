@@ -39,36 +39,18 @@
                                 <Image Source="/Proyecto Intermodular;component/images/reload_icon.png"/>
                             </Button>
 
-                            <Button
-                                x:Name="btnDistribution"
-                                Click="BtnDistribution_Click"
-                                BorderThickness="0"
-                                Background="Transparent"
-                                Grid.Column="1">
+                            <ToggleButton x:Name="btnDistribution" Click="BtnDistribution_Click" BorderThickness="0" Background="Transparent" Grid.Column="1">
                                 <Image Source="/Proyecto Intermodular;component/images/move_icon.png"/>
-                            </Button>
+                            </ToggleButton>
 
-                            <Button
-                                Grid.Column="2"
-                                x:Name="btnSaveDistribution"
-                                Click="BtnSaveDistribution_Click"
-                                Background="Transparent"
-                                BorderThickness="0">
+                            <Button Grid.Column="2" x:Name="btnSaveDistribution" Click="BtnSaveDistribution_Click" Background="Transparent" BorderThickness="0">
                                 <Image Source="/Proyecto Intermodular;component/images/save_icon.png"/>
                             </Button>
 
-                            <Button Grid.Column="3"
-                                    Content="Añadir mesa"
-                                    x:Name="btnAddTable"
-                                    Click="BtnAddTable_Click"/>
+                            <Button Grid.Column="3" Content="Añadir mesa" x:Name="btnAddTable" Click="BtnAddTable_Click"/>
                         </Grid>
 
-                        <Canvas x:Name="cnvTables"
-                            Grid.Row="1"
-                            Background="BurlyWood"
-                            AllowDrop="True"
-                            Drop="CnvTables_Drop"
-                            DragOver="CnvTables_DragOver"/>
+                        <Canvas x:Name="cnvTables" Grid.Row="1" Background="BurlyWood" AllowDrop="True" Drop="CnvTables_Drop" DragOver="CnvTables_DragOver"/>
                     </Grid>
 
                     <Grid Grid.Column="3" Margin="10">
@@ -85,17 +67,11 @@
                             <RowDefinition Height="*"/>
                         </Grid.RowDefinitions>
 
-                        <Label Content="Table Selected:"
-                                x:Name="lblTableSelected"/>
+                        <Label Content="Table Selected:" x:Name="lblTableSelected"/>
 
-                        <Button x:Name="bntDeleteTable"
-                            Click="BntDeleteTable_Click"
-                            Content="Delete Table" 
-                            Grid.Column="2"/>
+                        <Button x:Name="bntDeleteTable" Click="BntDeleteTable_Click" Content="Delete Table" Grid.Column="2"/>
 
-                        <Grid Grid.Row="1" 
-                                Grid.ColumnSpan="2" 
-                                Grid.RowSpan="2">
+                        <Grid Grid.Row="1" Grid.ColumnSpan="2" Grid.RowSpan="2">
 
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="30"/>
@@ -104,39 +80,18 @@
 
                             <Label Content="Orders:"/>
 
-                            <ListBox Grid.Row="1"
-                                        x:Name="ordersList">
-                                <ListBoxItem>
-                                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                                        <Label>DISH NAME</Label>
-                                        <CheckBox VerticalContentAlignment="Center">Is served?</CheckBox>
-                                    </StackPanel>
-                                </ListBoxItem>
-
-                                <ListBoxItem>
-                                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                                        <Label>DISH NAME</Label>
-                                        <CheckBox VerticalContentAlignment="Center">Is served?</CheckBox>
-                                    </StackPanel>
-                                </ListBoxItem>
-
-                                <ListBoxItem>
-                                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                                        <Label>DISH NAME</Label>
-                                        <CheckBox VerticalContentAlignment="Center">Is served?</CheckBox>
-                                    </StackPanel>
-                                </ListBoxItem>
-                            </ListBox>
+                            <ListBox Grid.Row="1" x:Name="ordersList"/>
                         </Grid>
+
                         <Image x:Name="imgTimer" Grid.Column="2" Height="25" Margin="0,0,10,10" HorizontalAlignment="Right" VerticalAlignment="Bottom" Grid.Row="3" Width="20" Source="/Proyecto Intermodular;component/images/timer/timer_1.png"/>
                     </Grid>
                 </Grid>
             </TabItem>
 
             <TabItem Header="Option 2">
-                
+
             </TabItem>
-        
+
             <TabItem Header="Crear empleado" Height="20" VerticalAlignment="Top">
 
                 <Grid>
@@ -191,7 +146,5 @@
                 </ScrollViewer>
             </TabItem>
         </TabControl>
-
     </Grid>
-
 </Window>

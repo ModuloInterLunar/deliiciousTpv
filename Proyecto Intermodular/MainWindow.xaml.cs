@@ -19,22 +19,20 @@ namespace Proyecto_Intermodular
 
     public partial class MainWindow : Window
     {
-        bool distribution;
         bool isDroppingOverOtherTable;
         List<Table> tables;
         List<Order> orders;
         Table selectedTable;
-        bool showPassword = false;
         int timerStage;
 
         List<Uri> timerImagesUris = new()
         {
-            new Uri("/Proyecto Intermodular;component/images/timer/timer_2.png", UriKind.Relative),
             new Uri("/Proyecto Intermodular;component/images/timer/timer_3.png", UriKind.Relative),
             new Uri("/Proyecto Intermodular;component/images/timer/timer_4.png", UriKind.Relative),
             new Uri("/Proyecto Intermodular;component/images/timer/timer_5.png", UriKind.Relative),
             new Uri("/Proyecto Intermodular;component/images/timer/timer_6.png", UriKind.Relative),
-            new Uri("/Proyecto Intermodular;component/images/timer/timer_7.png", UriKind.Relative)
+            new Uri("/Proyecto Intermodular;component/images/timer/timer_7.png", UriKind.Relative),
+            new Uri("/Proyecto Intermodular;component/images/timer/timer_2.png", UriKind.Relative)
         };
         List<ImageSource> timerImages = new();
 
@@ -158,7 +156,6 @@ namespace Proyecto_Intermodular
                 SelectTable(table);
             });
             */
-
         }
 
         private void SelectTable(Table table)
