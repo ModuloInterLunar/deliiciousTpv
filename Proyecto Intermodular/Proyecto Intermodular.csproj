@@ -17,18 +17,26 @@
   <ItemGroup>
     <None Remove="images\app_icon.png" />
     <None Remove="images\keyboard_icon.png" />
+    <None Remove="images\move_icon.png" />
     <None Remove="images\password_hide.png" />
     <None Remove="images\password_icon.png" />
     <None Remove="images\password_show.png" />
+    <None Remove="images\reload_icon.png" />
+    <None Remove="images\save_icon.png" />
+    <None Remove="images\table_icon.png" />
     <None Remove="images\user_icon.png" />
   </ItemGroup>
 
   <ItemGroup>
     <Resource Include="images\app_icon.png" />
     <Resource Include="images\keyboard_icon.png" />
+    <Resource Include="images\move_icon.png" />
     <Resource Include="images\password_hide.png" />
     <Resource Include="images\password_icon.png" />
     <Resource Include="images\password_show.png" />
+    <Resource Include="images\reload_icon.png" />
+    <Resource Include="images\save_icon.png" />
+    <Resource Include="images\table_icon.png" />
     <Resource Include="images\user_icon.png" />
   </ItemGroup>
 

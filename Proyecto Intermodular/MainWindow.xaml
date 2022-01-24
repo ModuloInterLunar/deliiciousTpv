@@ -11,32 +11,54 @@
         Title="MainWindow" Height="450" Width="800" SizeChanged="Window_SizeChanged">
 
     <Grid>
-        <TabControl>
-            <TabItem Header="Option 1">
+        <TabControl TabStripPlacement="Left">
+            <TabItem>
+                <TabItem.Header>
+                    <Label Content="MESAS"/>
+                </TabItem.Header>
                 <Grid>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="151*"/>
-                        <ColumnDefinition Width="29*"/>
-                        <ColumnDefinition Width="85*"/>
-                        <ColumnDefinition Width="529*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="2*"/>
                     </Grid.ColumnDefinitions>
 
-                    <Grid x:Name="gridTables" Grid.ColumnSpan="3">
+                    <Grid x:Name="gridTables" Margin="10">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="*"/>
-                            <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
-
                         <Grid>
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="20"/>
+                                <ColumnDefinition Width="20"/>
+                                <ColumnDefinition Width="20"/>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
 
-                            <Label Content="Tables"/>
-                            <Button Grid.Column="1"
-                                    Content="Add Table"
+                            <Button Background="Transparent" BorderThickness="0" x:Name="btnReloadTables">
+                                <Image Source="/Proyecto Intermodular;component/images/reload_icon.png"/>
+                            </Button>
+
+                            <Button
+                                x:Name="btnDistribution"
+                                Click="BtnDistribution_Click"
+                                BorderThickness="0"
+                                Background="Transparent"
+                                Grid.Column="1">
+                                <Image Source="/Proyecto Intermodular;component/images/move_icon.png"/>
+                            </Button>
+
+                            <Button
+                                Grid.Column="2"
+                                x:Name="btnSaveDistribution"
+                                Click="BtnSaveDistribution_Click"
+                                Background="Transparent"
+                                BorderThickness="0">
+                                <Image Source="/Proyecto Intermodular;component/images/save_icon.png"/>
+                            </Button>
+
+                            <Button Grid.Column="3"
+                                    Content="Añadir mesa"
                                     x:Name="btnAddTable"
                                     Click="BtnAddTable_Click"/>
                         </Grid>
@@ -47,91 +69,64 @@
                             AllowDrop="True"
                             Drop="CnvTables_Drop"
                             DragOver="CnvTables_DragOver"/>
-
-                        <Grid Grid.Row="2">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-
-                            <ToggleButton Content="Change distribution"
-                                x:Name="btnDistribution"
-                                Checked="BtnDistribution_Click"
-                                Unchecked="BtnDistribution_Click">
-                            </ToggleButton>
-
-                            <Button Content="Save distribution"
-                                Grid.Column="1"
-                                x:Name="btnSaveDistribution"
-                                Click="BtnSaveDistribution_Click"/>
-                        </Grid>
                     </Grid>
 
-                    <Grid Grid.Column="3">
+                    <Grid Grid.Column="3" Margin="10">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="30"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
                             <RowDefinition Height="*"/>
                         </Grid.RowDefinitions>
 
-                        <Label Content="Actions"/>
+                        <Label Content="Table Selected:"
+                                x:Name="lblTableSelected"/>
 
-                        <Grid Grid.Row="1">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
+                        <Button x:Name="bntDeleteTable"
+                            Click="BntDeleteTable_Click"
+                            Content="Delete Table" 
+                            Grid.Column="2"/>
+
+                        <Grid Grid.Row="1" 
+                                Grid.ColumnSpan="2" 
+                                Grid.RowSpan="2">
 
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="30"/>
                                 <RowDefinition Height="*"/>
-                                <RowDefinition Height="*"/>
-                                <RowDefinition Height="*"/>
                             </Grid.RowDefinitions>
 
-                            <Label Content="Table Selected:"
-                                   x:Name="lblTableSelected"/>
+                            <Label Content="Orders:"/>
 
-                            <Button x:Name="bntDeleteTable"
-                                Click="BntDeleteTable_Click"
-                                Content="Delete Table" 
-                                Grid.Column="2"/>
+                            <ListBox Grid.Row="1"
+                                        x:Name="ordersList">
+                                <ListBoxItem>
+                                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                        <Label>DISH NAME</Label>
+                                        <CheckBox VerticalContentAlignment="Center">Is served?</CheckBox>
+                                    </StackPanel>
+                                </ListBoxItem>
 
-                            <Grid Grid.Row="1" 
-                                  Grid.ColumnSpan="2" 
-                                  Grid.RowSpan="2">
+                                <ListBoxItem>
+                                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                        <Label>DISH NAME</Label>
+                                        <CheckBox VerticalContentAlignment="Center">Is served?</CheckBox>
+                                    </StackPanel>
+                                </ListBoxItem>
 
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="30"/>
-                                    <RowDefinition Height="*"/>
-                                </Grid.RowDefinitions>
-
-                                <Label Content="Orders:"/>
-
-                                <ListBox Grid.Row="1"
-                                         x:Name="ordersList">
-                                    <ListBoxItem>
-                                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                                            <Label>DISH NAME</Label>
-                                            <CheckBox VerticalContentAlignment="Center">Is served?</CheckBox>
-                                        </StackPanel>
-                                    </ListBoxItem>
-
-                                    <ListBoxItem>
-                                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                                            <Label>DISH NAME</Label>
-                                            <CheckBox VerticalContentAlignment="Center">Is served?</CheckBox>
-                                        </StackPanel>
-                                    </ListBoxItem>
-
-                                    <ListBoxItem>
-                                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                                            <Label>DISH NAME</Label>
-                                            <CheckBox VerticalContentAlignment="Center">Is served?</CheckBox>
-                                        </StackPanel>
-                                    </ListBoxItem>
-                                </ListBox>
-                            </Grid>
+                                <ListBoxItem>
+                                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                        <Label>DISH NAME</Label>
+                                        <CheckBox VerticalContentAlignment="Center">Is served?</CheckBox>
+                                    </StackPanel>
+                                </ListBoxItem>
+                            </ListBox>
                         </Grid>
                     </Grid>
                 </Grid>

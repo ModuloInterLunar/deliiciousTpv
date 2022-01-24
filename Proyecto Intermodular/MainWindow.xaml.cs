@@ -17,20 +17,14 @@ namespace Proyecto_Intermodular
 
     public partial class MainWindow : Window
     {
-        bool distribution;
+        bool distribution = false;
         bool isDroppingOverOtherTable;
+
         List<Table> tables;
-        Table selectedTable;
-        bool showPassword = false;
-
         List<Order> orders;
-        Border myBorder1 = new Border();
-        
-        StackPanel stackPanel = new StackPanel();
 
-
+        Table selectedTable;
         Employee currentUser;
-
 
         public MainWindow()
         {
@@ -86,22 +80,23 @@ namespace Proyecto_Intermodular
 
         private void CreateTable(Table table)
         {
-            Border border = new();
-            border.Background = (SolidColorBrush)new BrushConverter().ConvertFromString("#FF7AA0CD");
-            border.CornerRadius = new(10);
-            border.Name = $"border{table.Id}";
-            border.MaxWidth = 100;
-            border.Width = table.Width;
-            border.Height = table.Height;
-            border.AllowDrop = true;
-            Canvas.SetLeft(border, table.PosX);
-            Canvas.SetTop(border, table.PosY);
+            Label label = new();
+            label.Background = (SolidColorBrush)new BrushConverter().ConvertFromString("#FF7AA0CD");
+            label.Content = table.Id;
+            label.VerticalContentAlignment = VerticalAlignment.Center;
+            label.HorizontalContentAlignment = HorizontalAlignment.Center;
+            label.MaxWidth = 100;
+            label.Width = table.Width;
+            label.Height = table.Height;
+            label.AllowDrop = true;
+            Canvas.SetLeft(label, table.PosX);
+            Canvas.SetTop(label, table.PosY);
 
-            border.MouseMove += new MouseEventHandler((object sender, MouseEventArgs e) => {
+            label.MouseMove += new MouseEventHandler((object sender, MouseEventArgs e) => {
                 if (e.LeftButton != MouseButtonState.Pressed) return;
 
                 SelectTable(table);
-                if (distribution) DragDrop.DoDragDrop(border, new DataObject(DataFormats.Serializable, border), DragDropEffects.Move);
+                if (distribution) DragDrop.DoDragDrop(label, new DataObject(DataFormats.Serializable, label), DragDropEffects.Move);
             });
 
             /*
@@ -118,15 +113,8 @@ namespace Proyecto_Intermodular
             });
             */
 
-            Label label = new();
-            label.Content = table.Id;
-            label.HorizontalAlignment = HorizontalAlignment.Center;
-            label.VerticalAlignment = VerticalAlignment.Center;
-
-            border.Child = label;
-
-            cnvTables.Children.Add(border);
-            table.Border = border;
+            cnvTables.Children.Add(label);
+            table.Label = label;
         }
 
         private void SelectTable(Table table)
@@ -138,24 +126,24 @@ namespace Proyecto_Intermodular
         private void DeleteTable(Table table)
         {
             isDroppingOverOtherTable = true;
-            cnvTables.Children.Remove(table.Border);
+            cnvTables.Children.Remove(table.Label);
             tables.Remove(table);
         }
 
         private Table GetTable(UIElement element)
         {
             foreach (Table table in tables)
-                if (table.Border == element) return table;
+                if (table.Label == element) return table;
 
             return null;
         }
 
-        private void MoveTable(DragEventArgs e, Border border)
+        private void MoveTable(DragEventArgs e, Label label)
         {
             Point dropPos = e.GetPosition(cnvTables);
-            Size offset = new(border.Width / 2, border.Height / 2);
+            Size offset = new(label.Width / 2, label.Height / 2);
 
-            Table table = GetTable(border);
+            Table table = GetTable(label);
 
             double left = (dropPos.X > cnvTables.ActualWidth - offset.Width * 2) ? cnvTables.ActualWidth - offset.Width * 2 :
                             (dropPos.X < offset.Width) ? 0 : dropPos.X - offset.Width;
@@ -165,8 +153,8 @@ namespace Proyecto_Intermodular
 
             Point newPoint = new(left, top);
             table.SetPosition(newPoint, cnvTables.ActualWidth, cnvTables.ActualHeight);
-            Canvas.SetLeft(border, left);
-            Canvas.SetTop(border, top);
+            Canvas.SetLeft(label, left);
+            Canvas.SetTop(label, top);
         }
 
         private void CnvTables_Drop(object sender, DragEventArgs e)
@@ -178,13 +166,13 @@ namespace Proyecto_Intermodular
             }
 
             object data = e.Data.GetData(DataFormats.Serializable);
-            if(data is Border border) MoveTable(e, border);
+            if(data is Label label) MoveTable(e, label);
         }
 
         private void CnvTables_DragOver(object sender, DragEventArgs e)
         {
             object data = e.Data.GetData(DataFormats.Serializable);
-            if (data is Border border) MoveTable(e, border);
+            if (data is Label label) MoveTable(e, label);
         }
 
         private void BtnDistribution_Click(object sender, RoutedEventArgs e) => distribution = !distribution;
@@ -196,8 +184,8 @@ namespace Proyecto_Intermodular
             {
                 table.UpdatePosition(cnvTables.ActualWidth, cnvTables.ActualHeight);
 
-                Canvas.SetLeft(table.Border, table.PosX);
-                Canvas.SetTop(table.Border, table.PosY);
+                Canvas.SetLeft(table.Label, table.PosX);
+                Canvas.SetTop(table.Label, table.PosY);
             });
         }
 
@@ -347,6 +335,5 @@ namespace Proyecto_Intermodular
             MessageBox.Show(createdEmployee.ToString());
         }
         #endregion
-
     }
 }
