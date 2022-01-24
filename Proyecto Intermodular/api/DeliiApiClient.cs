@@ -48,7 +48,9 @@ namespace Proyecto_Intermodular.api
         public static async Task<string> Patch(string uri, object data)
         {
             httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", GetToken());
+            httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             StringContent stringContent = new StringContent(JsonSerializer.Serialize(data, GetJsonOptions()));
+            stringContent.Headers.ContentType.MediaType = "application/json";
 
             HttpResponseMessage response = await httpClient.PatchAsync(uri, stringContent);
             if (response.IsSuccessStatusCode)

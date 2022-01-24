@@ -128,12 +128,15 @@
                                 </ListBoxItem>
                             </ListBox>
                         </Grid>
+                        <Image x:Name="imgTimer" Grid.Column="2" Height="25" Margin="0,0,10,10" HorizontalAlignment="Right" VerticalAlignment="Bottom" Grid.Row="3" Width="20" Source="/Proyecto Intermodular;component/images/timer/timer_1.png"/>
                     </Grid>
                 </Grid>
             </TabItem>
 
             <TabItem Header="Option 2">
+                
             </TabItem>
+        
             <TabItem Header="Crear empleado" Height="20" VerticalAlignment="Top">
 
                 <Grid>
@@ -181,9 +184,11 @@
                 </Grid>
 
             </TabItem>
-			      <TabItem Header="Cocina">
-                <StackPanel x:Name="panelKitchen" Orientation="Vertical">
-                </StackPanel>
+            <TabItem Header="Cocina">
+                <ScrollViewer>
+                    <StackPanel x:Name="panelKitchen" Orientation="Vertical">
+                    </StackPanel>
+                </ScrollViewer>
             </TabItem>
         </TabControl>
 

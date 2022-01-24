@@ -7,6 +7,8 @@ using System.Windows.Input;
 using System.Windows.Media;
 using Proyecto_Intermodular.models;
 using Proyecto_Intermodular.api;
+using System.Windows.Threading;
+using System.Windows.Media.Imaging;
 
 namespace Proyecto_Intermodular
 {
@@ -17,24 +19,72 @@ namespace Proyecto_Intermodular
 
     public partial class MainWindow : Window
     {
-        bool distribution = false;
+        bool distribution;
         bool isDroppingOverOtherTable;
-
         List<Table> tables;
         List<Order> orders;
-
         Table selectedTable;
+        bool showPassword = false;
+        int timerStage;
+
+        List<Uri> timerImagesUris = new()
+        {
+            new Uri("/Proyecto Intermodular;component/images/timer/timer_2.png", UriKind.Relative),
+            new Uri("/Proyecto Intermodular;component/images/timer/timer_3.png", UriKind.Relative),
+            new Uri("/Proyecto Intermodular;component/images/timer/timer_4.png", UriKind.Relative),
+            new Uri("/Proyecto Intermodular;component/images/timer/timer_5.png", UriKind.Relative),
+            new Uri("/Proyecto Intermodular;component/images/timer/timer_6.png", UriKind.Relative),
+            new Uri("/Proyecto Intermodular;component/images/timer/timer_7.png", UriKind.Relative)
+        };
+        List<ImageSource> timerImages = new();
+
         Employee currentUser;
+        private bool isEditingTableLayout;
 
         public MainWindow()
         {
             InitializeComponent();
+            UpdateDataset();
+            StartTimer();
+        }
+
+
+        public void StartTimer()
+        {
+            LoadTimerImages();
+            timerStage = 0;
+            DispatcherTimer timer = new DispatcherTimer();
+            timer.Interval = TimeSpan.FromSeconds(2);
+            timer.Tick += TimerTick;
+            timer.Start();
+        }
+
+        private void LoadTimerImages()
+        {
+            timerImagesUris.ForEach(uri => timerImages.Add(new BitmapImage(uri)));
+        }
+        private void TimerTick(object sender, EventArgs e)
+        {
+            imgTimer.Source = timerImages[timerStage];
+            if (timerStage == 5)
+            {
+                UpdateDataset();
+                timerStage = 0;
+            }
+            else
+                timerStage++;
+        }
+
+
+        public void UpdateDataset()
+        {
             if (currentUser == null)
                 GetCurrentUser();
             else
                 UpdateUI();
 
             GenerateCanvasTables();
+            GenerateOrders();
         }
 
 
@@ -42,18 +92,6 @@ namespace Proyecto_Intermodular
         {
             try
             {
-                //DeliiAPI.GetEmployeeFromToken().ContinueWith(task =>
-                //{
-                //    if (task.IsFaulted)
-                //        MessageBox.Show(task.Exception.Message);
-                //    currentUser = task.Result;
-                //    ApplicationState.SetValue("current_user", currentUser);
-                //    Application.Current.Dispatcher.Invoke(() =>
-                //    {
-                //        UpdateUI();
-                //    });
-                //}); 
-
                 currentUser = await DeliiApi.GetEmployeeFromToken();
                 ApplicationState.SetValue("current_user", currentUser);
                 Application.Current.Dispatcher.Invoke(() =>
@@ -78,8 +116,16 @@ namespace Proyecto_Intermodular
 
         #region Tab 1
 
-        private void CreateTable(Table table)
+        private async void GenerateCanvasTables()
         {
+            if (isEditingTableLayout) return;
+            cnvTables.Children.Clear();
+            tables = await DeliiApi.GetAllTables();
+
+            tables.ForEach(table => CreateTable(table));
+        }
+
+        private void CreateTable(Table table) { 
             Label label = new();
             label.Background = (SolidColorBrush)new BrushConverter().ConvertFromString("#FF7AA0CD");
             label.Content = table.Id;
@@ -89,14 +135,14 @@ namespace Proyecto_Intermodular
             label.Width = table.Width;
             label.Height = table.Height;
             label.AllowDrop = true;
-            Canvas.SetLeft(label, table.PosX);
-            Canvas.SetTop(label, table.PosY);
-
+            cnvTables.Children.Add(label);
+            table.Label = label;
+            table.UpdatePosition(cnvTables.ActualWidth, cnvTables.ActualHeight);
             label.MouseMove += new MouseEventHandler((object sender, MouseEventArgs e) => {
                 if (e.LeftButton != MouseButtonState.Pressed) return;
 
                 SelectTable(table);
-                if (distribution) DragDrop.DoDragDrop(label, new DataObject(DataFormats.Serializable, label), DragDropEffects.Move);
+                if (isEditingTableLayout) DragDrop.DoDragDrop(label, new DataObject(DataFormats.Serializable, label), DragDropEffects.Move);
             });
 
             /*
@@ -113,8 +159,6 @@ namespace Proyecto_Intermodular
             });
             */
 
-            cnvTables.Children.Add(label);
-            table.Label = label;
         }
 
         private void SelectTable(Table table)
@@ -126,6 +170,7 @@ namespace Proyecto_Intermodular
         private void DeleteTable(Table table)
         {
             isDroppingOverOtherTable = true;
+            DeliiApi.RemoveTable(table);
             cnvTables.Children.Remove(table.Label);
             tables.Remove(table);
         }
@@ -145,11 +190,17 @@ namespace Proyecto_Intermodular
 
             Table table = GetTable(label);
 
-            double left = (dropPos.X > cnvTables.ActualWidth - offset.Width * 2) ? cnvTables.ActualWidth - offset.Width * 2 :
-                            (dropPos.X < offset.Width) ? 0 : dropPos.X - offset.Width;
+            double left = (dropPos.X > cnvTables.ActualWidth - offset.Width)
+                            ? cnvTables.ActualWidth - offset.Width * 2
+                            : (dropPos.X < offset.Width)
+                                ? 0
+                                : dropPos.X - offset.Width;
 
-            double top = (dropPos.Y > cnvTables.ActualHeight - offset.Height * 2) ? cnvTables.ActualHeight - offset.Height * 2 :
-                            (dropPos.Y < offset.Height) ? 0 : dropPos.Y - offset.Height;
+            double top = (dropPos.Y > cnvTables.ActualHeight - offset.Height)
+                            ? cnvTables.ActualHeight - offset.Height * 2 
+                            : (dropPos.Y < offset.Height)
+                                ? 0
+                                : dropPos.Y - offset.Height;
 
             Point newPoint = new(left, top);
             table.SetPosition(newPoint, cnvTables.ActualWidth, cnvTables.ActualHeight);
@@ -175,7 +226,7 @@ namespace Proyecto_Intermodular
             if (data is Label label) MoveTable(e, label);
         }
 
-        private void BtnDistribution_Click(object sender, RoutedEventArgs e) => distribution = !distribution;
+        private void BtnDistribution_Click(object sender, RoutedEventArgs e) => isEditingTableLayout = !isEditingTableLayout;
 
         private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
         {
@@ -183,30 +234,24 @@ namespace Proyecto_Intermodular
             tables.ForEach(table =>
             {
                 table.UpdatePosition(cnvTables.ActualWidth, cnvTables.ActualHeight);
-
-                Canvas.SetLeft(table.Label, table.PosX);
-                Canvas.SetTop(table.Label, table.PosY);
+                Canvas.SetLeft(table.Label, table.PosXRelative);
+                Canvas.SetTop(table.Label, table.PosYRelative);
             });
         }
 
         private void BtnSaveDistribution_Click(object sender, RoutedEventArgs e)
         {
-
+            tables.ForEach(async table => await DeliiApi.UpdateTable(table));
         }
 
-        private void BtnAddTable_Click(object sender, RoutedEventArgs e)
+        private async void BtnAddTable_Click(object sender, RoutedEventArgs e)
         {
-            //string availableId = "1";
-            //bool isIdTaken = true;
-
-            //while (isIdTaken)
-            //    if (tables.Find(table => table.Id == availableId) == null) isIdTaken = false;
-            //    else availableId++;
-
-            //Table table = new(availableId, 0.10, 0.10);
-
-            //tables.Add(table);
-            //CreateTable(table);
+            Table table = await DeliiApi.CreateTable(new Table(0,0));
+            tables.Add(table);
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                CreateTable(table);
+            });
         }
 
         private void BntDeleteTable_Click(object sender, RoutedEventArgs e)
@@ -219,22 +264,12 @@ namespace Proyecto_Intermodular
 
 
         #region Cocina
-        private async void GenerateCanvasTables()
+        
+
+        private async void GenerateOrders()
         {
-            tables = await DeliiApi.GetAllTables();
-
-            tables.ForEach(table => CreateTable(table));
-
-            
-        }
-
-        private void GenerateOrders()
-        {
-            orders = new();
-            orders.Add(new Order("1", "1", "Fabada", false, false, "Djessy"));
-            orders.Add(new Order("2", "2", "Spaghetti", false, false, "Alvaro"));
-            orders.Add(new Order("3", "3", "Porritos", false, false, "Matías"));
-            orders.Add(new Order("4", "4", "Hamburguesa", false, false, "Saul"));
+            panelKitchen.Children.Clear();
+            orders = await DeliiApi.GetAllOrders();
 
             orders.ForEach(order => CreateOrder(order));
         }

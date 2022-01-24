@@ -8,10 +8,15 @@ namespace Proyecto_Intermodular.models
 {
     public class Drink : Dish
     {
-        float quantity;
-        public Drink(float quantity, string id, float price, string description) : base(id, price, description)
+        private float quantity;
+        public Drink(string id, float price, string description, float quantity) : base(id, price, description)
         {
             this.quantity = quantity;
+        }
+
+        public Drink() : base()
+        {
+
         }
 
         public float Quantity { get => quantity; set => quantity = value; }

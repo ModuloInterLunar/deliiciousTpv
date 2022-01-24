@@ -5,7 +5,7 @@ namespace Proyecto_Intermodular.models
 {
     public class Table
     {
-        private readonly static int DEFAULT_SIZE = 25;
+        private readonly static int DEFAULT_SIZE = 30;
         private string id;
         private double posX;
         private double posY;
@@ -29,24 +29,24 @@ namespace Proyecto_Intermodular.models
 
         }
 
-        public Table(string id, double posX, double posY)
+        public Table(double posX, double posY)
         {
-            this.id = id;
             this.posX = posX;
             this.posY = posY;
             width = DEFAULT_SIZE;
             height = DEFAULT_SIZE;
         }
 
+
         public string Id { get => id; set => id = value; }
-        public double PosX { get => posXRelative; set => posXRelative = value; }
-        public double PosY { get => posYRelative; set => posYRelative = value; }
+        public double PosXRelative { get => posXRelative; set => posXRelative = value; }
+        public double PosYRelative { get => posYRelative; set => posYRelative = value; }
         public Label Label { get => label; set => label = value; }
         public double PosXPercent { get => posX; set => posX = value; }
         public double PosYPercent { get => posY; set => posY = value; }
         public double Width { get => width; set => width = value; }
         public double Height { get => height; set => height = value; }
-        public override string ToString() => $"ID: {id}, BORDER: ({Canvas.GetLeft(label)}, {Canvas.GetTop(label)}, {label.Name})";
+        public override string ToString() => $"ID: {id}, LABEL: ({Canvas.GetLeft(label)}, {Canvas.GetTop(label)}, {label.Name})";
 
         public void SetPosition(Point newPoint, double cnvWidth, double cnvHeight)
         {
@@ -54,11 +54,11 @@ namespace Proyecto_Intermodular.models
             posY = newPoint.Y / cnvHeight;
         }
 
-        public void UpdatePosition(double newWidth, double newHeight)
+        public void UpdatePosition(double newCanvasWidth, double newCanvasHeight)
         {
-            posXRelative = PosXPercent * newWidth;
-            posYRelative = PosYPercent * newHeight;
-            CorrectOutOfFrame(newWidth, newHeight);
+            posXRelative = PosXRelative * newCanvasWidth;
+            posYRelative = PosYRelative * newCanvasHeight;
+            CorrectOutOfFrame(newCanvasWidth, newCanvasHeight);
         }
 
         public void ChangeTableSize(double widthIncrement = 0, double heightIncrement = 0)

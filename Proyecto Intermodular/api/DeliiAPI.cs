@@ -73,6 +73,52 @@ namespace Proyecto_Intermodular.api
             return tables;
         }
 
+        public static async Task<Table> CreateTable(Table table)
+        {
+            string uri = API_URL + "tables";
+
+            try
+            {
+                string createdTableJson = await DeliiApiClient.Post(uri, table);
+                Table createdTable = JsonSerializer.Deserialize<Table>(createdTableJson, DeliiApiClient.GetJsonOptions());
+
+                return createdTable;
+            }
+            catch (DeliiApiException ex)
+            {
+                if (ex.Message.Contains("Can't create table!"))
+                    throw new UserNotFoundException(ex.Message);
+                throw new DeliiApiException(ex.Message);
+            }
+        }
+
+        public static async Task<Table> UpdateTable(Table table)
+        {
+            string uri = API_URL + "tables/" + table.Id;
+            Table simpleTable = new Table(table.Id, table.PosXRelative, table.PosYRelative, table.Width, table.Height);
+            string updatedTableJson = await DeliiApiClient.Patch(uri, simpleTable);
+            Table updatedTable = JsonSerializer.Deserialize<Table>(updatedTableJson, DeliiApiClient.GetJsonOptions());
+
+            return updatedTable;
+        }
+
+        public static async void RemoveTable(Table table)
+        {
+            string uri = API_URL + "tables/" + table.Id;
+
+            await DeliiApiClient.Delete(uri);
+        }
+
+        public static async Task<List<Order>> GetAllOrders()
+        {
+            string uri = API_URL + "orders";
+            string ordersJson = await DeliiApiClient.Get(uri);
+
+            List<Order> orders = JsonSerializer.Deserialize<List<Order>>(ordersJson, DeliiApiClient.GetJsonOptions());
+
+            return orders;
+        }
+
 
     }
 
