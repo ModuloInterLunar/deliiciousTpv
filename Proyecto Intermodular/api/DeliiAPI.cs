@@ -39,6 +39,8 @@ namespace Proyecto_Intermodular.api
             {
                 if (ex.Message.Contains("Employee not found"))
                     throw new UserNotFoundException(ex.Message);
+                if (ex.Message.Contains("Invalid password"))
+                    throw new WrongCredentialsException(ex.Message);
                 throw new DeliiApiException(ex.Message);
             }
         }

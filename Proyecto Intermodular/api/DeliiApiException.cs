@@ -17,4 +17,12 @@ namespace Proyecto_Intermodular.api
         protected UserNotFoundException(System.Runtime.Serialization.SerializationInfo info,
             System.Runtime.Serialization.StreamingContext context) : base(info, context) { }
     }
+
+    public class WrongCredentialsException : DeliiApiException
+    {
+        public WrongCredentialsException() : base() { }
+        public WrongCredentialsException(string message) : base(message) { }
+        protected WrongCredentialsException(System.Runtime.Serialization.SerializationInfo info,
+            System.Runtime.Serialization.StreamingContext context) : base(info, context) { }
+    }
 }

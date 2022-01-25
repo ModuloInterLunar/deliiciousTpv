@@ -81,7 +81,7 @@ namespace Proyecto_Intermodular
             else
                 UpdateUI();
 
-            GenerateCanvasTables();
+            UpdateCanvasTables();
             GenerateOrders();
         }
 
@@ -114,13 +114,65 @@ namespace Proyecto_Intermodular
 
         #region Tab 1
 
-        private async void GenerateCanvasTables()
+        private async void UpdateCanvasTables()
         {
             if (isEditingTableLayout) return;
-            cnvTables.Children.Clear();
-            tables = await DeliiApi.GetAllTables();
 
-            tables.ForEach(table => CreateTable(table));
+            List<Table> updatedTables = await DeliiApi.GetAllTables();
+
+            if (tables == null)
+            {
+                tables = updatedTables;
+                tables.ForEach(table => CreateTable(table));
+                return;
+            }
+
+
+            updatedTables.ForEach(updatedTable =>
+            {
+                Table table = tables.Find(table => table.Id == updatedTable.Id);
+                if (table != null)
+                {
+                    table.UpdateData(updatedTable);
+                    UpdateLabel(table);
+                } 
+                else
+                {
+                    tables.Add(updatedTable);
+                    CreateTable(updatedTable);
+                }
+            });
+
+            RemoveOldTables(updatedTables);
+
+            if (!tables.Contains(selectedTable))
+                SelectTable(null);
+        }
+
+        private void RemoveOldTables(List<Table> updatedTables)
+        {
+            List<Table> tablesToRemove = new();
+            tables.ForEach(table =>
+            {
+                Table updatedTable = updatedTables.Find(updatedTable => updatedTable.Id == table.Id);
+                if (updatedTable == null)
+                {
+                    cnvTables.Children.Remove(table.Label);
+                    tablesToRemove.Add(table);
+                }
+            });
+
+            tablesToRemove.ForEach(tableToRemove => tables.Remove(tableToRemove));
+        }
+
+        private void UpdateLabel(Table table)
+        {
+            Label label = table.Label;
+            label.Width = table.Width;
+            label.Height = table.Height;
+            table.UpdateRelativePosition(cnvTables.ActualWidth, cnvTables.ActualHeight);
+            Canvas.SetLeft(label, table.PosXRelative);
+            Canvas.SetTop(label, table.PosYRelative);
         }
 
         private void CreateTable(Table table) { 
@@ -139,7 +191,12 @@ namespace Proyecto_Intermodular
             Canvas.SetLeft(label, table.PosXRelative);
             Canvas.SetTop(label, table.PosYRelative);
 
-            label.MouseMove += new MouseEventHandler((object sender, MouseEventArgs e) => {
+            label.MouseLeftButtonUp += new MouseButtonEventHandler((object sender, MouseButtonEventArgs e) =>
+            {
+                SelectTable(table);
+            });
+            label.MouseMove += new MouseEventHandler((object sender, MouseEventArgs e) => 
+            {
                 if (e.LeftButton != MouseButtonState.Pressed) return;
 
                 SelectTable(table);
@@ -164,6 +221,11 @@ namespace Proyecto_Intermodular
         private void SelectTable(Table table)
         {
             selectedTable = table;
+            if (selectedTable == null)
+            {
+                lblTableSelected.Content = $"Table Selected: ";
+                return;
+            }
             lblTableSelected.Content = $"Table Selected: {selectedTable.Id}";
         }
 

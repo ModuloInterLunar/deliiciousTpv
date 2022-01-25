@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using System.Windows.Controls;
 
 namespace Proyecto_Intermodular.models
@@ -11,8 +12,8 @@ namespace Proyecto_Intermodular.models
         private double posY;
         private double posXRelative;
         private double posYRelative;
-        private double width;
-        private double height;
+        private double width = DEFAULT_SIZE;
+        private double height = DEFAULT_SIZE;
         private Label label;
 
         public Table(string id, double posX, double posY, double width, double height)
@@ -33,8 +34,6 @@ namespace Proyecto_Intermodular.models
         {
             this.posX = posX;
             this.posY = posY;
-            width = DEFAULT_SIZE;
-            height = DEFAULT_SIZE;
         }
 
 
@@ -75,6 +74,14 @@ namespace Proyecto_Intermodular.models
                 posXRelative = frameWidth - label.Width / 2;
             if (posYRelative + label.Height / 2 > frameHeight)
                 posYRelative = frameHeight - label.Height / 2;
+        }
+
+        internal void UpdateData(Table updatedTable)
+        {
+            this.height = updatedTable.Height;
+            this.width = updatedTable.Width;
+            this.posX = updatedTable.PosX;
+            this.posY = updatedTable.PosY;
         }
     }
 }

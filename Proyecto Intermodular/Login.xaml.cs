@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net.Http;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
@@ -40,14 +41,28 @@ namespace Proyecto_Intermodular
                     }
                 );
             }
-            catch (UserNotFoundException ex)
+            catch (HttpRequestException)
             {
+                MessageBox.Show("Fallo de conexión.\nPor favor, compruebe la conexión con la API!", "Fallo de Conexión");
+            }
+            catch (UserNotFoundException)
+            {
+                string errorMessage = "El nombre de usuario es inválido.";
                 borderUserName.Background = new SolidColorBrush(Colors.Red);
-                txtBoxUserName.ToolTip = ex.Message;
+                txtBoxUserName.ToolTip = errorMessage;
+                MessageBox.Show(errorMessage);
+            }
+            catch (WrongCredentialsException)
+            {
+                string errorMessage = "Las credenciales introducidas son inválidas";
+                borderUserName.Background = new SolidColorBrush(Colors.Red);
+                passwdInput.border.Background = new SolidColorBrush(Colors.Red);
+                txtBoxUserName.ToolTip = errorMessage;
+                MessageBox.Show(errorMessage);
             }
             catch(DeliiApiException ex)
             {
-                MessageBox.Show($"Api error\nError message: {ex}");
+                MessageBox.Show($"Api error\nError message: {ex.Message}");
             }
         }
 
