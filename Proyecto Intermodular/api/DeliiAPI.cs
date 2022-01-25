@@ -95,7 +95,7 @@ namespace Proyecto_Intermodular.api
         public static async Task<Table> UpdateTable(Table table)
         {
             string uri = API_URL + "tables/" + table.Id;
-            Table simpleTable = new Table(table.Id, table.PosXRelative, table.PosYRelative, table.Width, table.Height);
+            Table simpleTable = new Table(table.Id, table.PosX, table.PosY, table.Width, table.Height);
             string updatedTableJson = await DeliiApiClient.Patch(uri, simpleTable);
             Table updatedTable = JsonSerializer.Deserialize<Table>(updatedTableJson, DeliiApiClient.GetJsonOptions());
 

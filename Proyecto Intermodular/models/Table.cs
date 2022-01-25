@@ -42,8 +42,8 @@ namespace Proyecto_Intermodular.models
         public double PosXRelative { get => posXRelative; set => posXRelative = value; }
         public double PosYRelative { get => posYRelative; set => posYRelative = value; }
         public Label Label { get => label; set => label = value; }
-        public double PosXPercent { get => posX; set => posX = value; }
-        public double PosYPercent { get => posY; set => posY = value; }
+        public double PosX { get => posX; set => posX = value; }
+        public double PosY { get => posY; set => posY = value; }
         public double Width { get => width; set => width = value; }
         public double Height { get => height; set => height = value; }
         public override string ToString() => $"ID: {id}, LABEL: ({Canvas.GetLeft(label)}, {Canvas.GetTop(label)}, {label.Name})";
@@ -54,10 +54,10 @@ namespace Proyecto_Intermodular.models
             posY = newPoint.Y / cnvHeight;
         }
 
-        public void UpdatePosition(double newCanvasWidth, double newCanvasHeight)
+        public void UpdateRelativePosition(double newCanvasWidth, double newCanvasHeight)
         {
-            posXRelative = PosXRelative * newCanvasWidth;
-            posYRelative = PosYRelative * newCanvasHeight;
+            posXRelative = posX * newCanvasWidth;
+            posYRelative = posY * newCanvasHeight;
             CorrectOutOfFrame(newCanvasWidth, newCanvasHeight);
         }
 
