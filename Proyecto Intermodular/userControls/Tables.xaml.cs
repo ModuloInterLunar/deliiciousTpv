@@ -35,7 +35,6 @@ namespace Proyecto_Intermodular.userControls
         public async void UpdateCanvasTables()
         {
             if (isEditingTableLayout) return;
-
             List<Table> updatedTables = await DeliiApi.GetAllTables();
 
             if (tables == null)
@@ -45,15 +44,11 @@ namespace Proyecto_Intermodular.userControls
                 return;
             }
 
-
             updatedTables.ForEach(updatedTable =>
             {
                 Table table = tables.Find(table => table.Id == updatedTable.Id);
                 if (table != null)
-                {
-                    table.UpdateData(updatedTable);
-                    UpdateLabel(table);
-                }
+                    table.UpdateData(updatedTable, cnvTables.ActualWidth, cnvTables.ActualHeight);
                 else
                 {
                     tables.Add(updatedTable);
@@ -82,15 +77,7 @@ namespace Proyecto_Intermodular.userControls
 
             tablesToRemove.ForEach(tableToRemove => tables.Remove(tableToRemove));
         }
-        private void UpdateLabel(Table table)
-        {
-            Label label = table.Label;
-            label.Width = table.Width;
-            label.Height = table.Height;
-            table.UpdateRelativePosition(cnvTables.ActualWidth, cnvTables.ActualHeight);
-            Canvas.SetLeft(label, table.PosXRelative);
-            Canvas.SetTop(label, table.PosYRelative);
-        }
+
         private void CreateTable(Table table)
         {
             Label label = new();
@@ -112,6 +99,7 @@ namespace Proyecto_Intermodular.userControls
             {
                 SelectTable(table);
             });
+
             label.MouseMove += new MouseEventHandler((object sender, MouseEventArgs e) =>
             {
                 if (e.LeftButton != MouseButtonState.Pressed) return;
@@ -126,62 +114,41 @@ namespace Proyecto_Intermodular.userControls
             selectedTable = table;
             if (selectedTable == null)
             {
-                // lblTableSelected.Content = $"Table Selected: ";
+                lblSelectedTable.Content = $"MESA SELECCIONADA: ";
                 return;
             }
-            // lblTableSelected.Content = $"Table Selected: {selectedTable.Id}";
+            lblSelectedTable.Content = $"Table Selected: {selectedTable.Id}";
         }
 
         private void DeleteTable(Table table)
         {
+            if (table == null) return;
             DeliiApi.RemoveTable(table);
             cnvTables.Children.Remove(table.Label);
             tables.Remove(table);
         }
+
         private void MoveTable(DragEventArgs e, Label label)
         {
             Point dropPos = e.GetPosition(cnvTables);
             Size offset = new(label.Width / 2, label.Height / 2);
-
+            Size cnvSize = new(cnvTables.ActualWidth, cnvTables.ActualHeight);
+            
             Table table = GetTable(label);
-
-            double left = (dropPos.X > cnvTables.ActualWidth - offset.Width)
-                            ? cnvTables.ActualWidth - offset.Width * 2
-                            : (dropPos.X < offset.Width)
-                                ? 0
-                                : dropPos.X - offset.Width;
-
-            double top = (dropPos.Y > cnvTables.ActualHeight - offset.Height)
-                            ? cnvTables.ActualHeight - offset.Height * 2
-                            : (dropPos.Y < offset.Height)
-                                ? 0
-                                : dropPos.Y - offset.Height;
-
-            Point newPoint = new(left, top);
-            table.SetPosition(newPoint, cnvTables.ActualWidth, cnvTables.ActualHeight);
-            Canvas.SetLeft(label, left);
-            Canvas.SetTop(label, top);
+            table.MoveLabel(dropPos, offset, cnvSize);
         }
 
         private Table GetTable(UIElement element) => tables.Find(table => table.Label == element);
+
         public void UpdateTablesPosition()
         {
             if (tables == null) return;
-            tables.ForEach(table =>
-            {
-                table.UpdateRelativePosition(cnvTables.ActualWidth, cnvTables.ActualHeight);
-                Canvas.SetLeft(table.Label, table.PosXRelative);
-                Canvas.SetTop(table.Label, table.PosYRelative);
-            });
+            tables.ForEach(table => table.UpdateRelativePosition(cnvTables.ActualWidth, cnvTables.ActualHeight));
         }
         #endregion
 
-
         #region Eventos
-        private void btnMove_Click(object sender, RoutedEventArgs e)
-        {
-            isEditingTableLayout = !isEditingTableLayout;
-        }
+        private void btnMove_Click(object sender, RoutedEventArgs e) => isEditingTableLayout = !isEditingTableLayout;
 
         private void cnvTables_DragOver(object sender, DragEventArgs e)
         {
@@ -195,7 +162,9 @@ namespace Proyecto_Intermodular.userControls
             tables.Add(table);
             Application.Current.Dispatcher.Invoke(() => CreateTable(table));
         }
-        #endregion
 
+        private void btnDelete_Click(object sender, RoutedEventArgs e) => DeleteTable(selectedTable);
+        private void btnSave_Click(object sender, RoutedEventArgs e) => tables.ForEach(async table => await DeliiApi.UpdateTable(table));
+        #endregion
     }
 }

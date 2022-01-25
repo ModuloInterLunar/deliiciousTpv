@@ -9,7 +9,7 @@
     <Grid Background="#FF2281D1">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="1.5*"/>
         </Grid.ColumnDefinitions>
 
         <Grid x:Name="grdTables">
@@ -22,7 +22,7 @@
                 <Button x:Name="btnReload" Background="Transparent" BorderThickness="0" Margin="5">
                     <Image Source="/Proyecto Intermodular;component/images/reload_icon.png"/>
                 </Button>
-                <Button x:Name="btnSave" Background="Transparent" BorderThickness="0" Margin="5">
+                <Button x:Name="btnSave" Background="Transparent" BorderThickness="0" Margin="5" Click="btnSave_Click">
                     <Image Source="/Proyecto Intermodular;component/images/save_icon.png"/>
                 </Button>
 
@@ -32,7 +32,7 @@
                 <Button x:Name="btnAdd" Background="Transparent" BorderThickness="0" Margin="5" Click="BtnAddTable_Click">
                     <Image Source="/Proyecto Intermodular;component/images/add_icon.png"/>
                 </Button>
-                <Button x:Name="btnDelete" Background="Transparent" BorderThickness="0" Margin="5">
+                <Button x:Name="btnDelete" Background="Transparent" BorderThickness="0" Margin="5" Click="btnDelete_Click">
                     <Image Source="/Proyecto Intermodular;component/images/bin_icon.png"/>
                 </Button>
             </StackPanel>
@@ -42,6 +42,28 @@
                     <ImageBrush ImageSource="/Proyecto Intermodular;component/images/restaurante.png"></ImageBrush>
                 </Canvas.Background>
             </Canvas>
+        </Grid>
+
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <Label Margin="0,10,0,0" x:Name="lblSelectedTable" Content="MESA SELECCIONADA: " HorizontalContentAlignment="Center"/>
+
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="145*"/>
+                    <ColumnDefinition Width="336*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="30"/>
+                </Grid.RowDefinitions>
+
+                <ListBox x:Name="lstBoxOrders" Margin="90,30,90,30" Width="300" Grid.ColumnSpan="2"/>
+            </Grid>
         </Grid>
     </Grid>
 </UserControl>

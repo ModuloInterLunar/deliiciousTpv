@@ -51,6 +51,7 @@ namespace Proyecto_Intermodular.models
         {
             posX = newPoint.X / cnvWidth;
             posY = newPoint.Y / cnvHeight;
+            UpdateLabelCoordenates(newPoint.X, newPoint.Y);
         }
 
         public void UpdateRelativePosition(double newCanvasWidth, double newCanvasHeight)
@@ -58,6 +59,7 @@ namespace Proyecto_Intermodular.models
             posXRelative = posX * newCanvasWidth;
             posYRelative = posY * newCanvasHeight;
             CorrectOutOfFrame(newCanvasWidth, newCanvasHeight);
+            UpdateLabelCoordenates();
         }
 
         public void ChangeTableSize(double widthIncrement = 0, double heightIncrement = 0)
@@ -76,12 +78,45 @@ namespace Proyecto_Intermodular.models
                 posYRelative = frameHeight - label.Height / 2;
         }
 
-        internal void UpdateData(Table updatedTable)
+        internal void UpdateData(Table updatedTable, double frameWidth, double frameHeight)
         {
-            this.height = updatedTable.Height;
-            this.width = updatedTable.Width;
-            this.posX = updatedTable.PosX;
-            this.posY = updatedTable.PosY;
+            height = updatedTable.Height;
+            width = updatedTable.Width;
+            posX = updatedTable.PosX;
+            posY = updatedTable.PosY;
+            label.Width = width;
+            label.Height = height;
+            UpdateRelativePosition(frameWidth, frameHeight);
+        }
+
+        public void UpdateLabelCoordenates()
+        {
+            Canvas.SetLeft(label, posXRelative);
+            Canvas.SetTop(label, posYRelative);
+        }
+
+        public void UpdateLabelCoordenates(double left, double top)
+        {
+            Canvas.SetLeft(label, left);
+            Canvas.SetTop(label, top);
+        }
+
+        public void MoveLabel(Point dropPos, Size offset, Size cnvSize)
+        {
+            double left = (dropPos.X > cnvSize.Width - offset.Width)
+                ? cnvSize.Width - offset.Width * 2
+                : (dropPos.X < offset.Width)
+                    ? 0
+                    : dropPos.X - offset.Width;
+
+            double top = (dropPos.Y > cnvSize.Height - offset.Height)
+                            ? cnvSize.Height - offset.Height * 2
+                            : (dropPos.Y < offset.Height)
+                                ? 0
+                                : dropPos.Y - offset.Height;
+
+            Point newPoint = new(left, top);
+            SetPosition(newPoint, cnvSize.Width, cnvSize.Height);
         }
     }
 }
