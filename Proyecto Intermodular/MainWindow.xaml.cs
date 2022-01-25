@@ -41,6 +41,7 @@ namespace Proyecto_Intermodular
                 UpdateUI();
 
             GenerateCanvasTables();
+            GenerateOrders();
         }
 
 
