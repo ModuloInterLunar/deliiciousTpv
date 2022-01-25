@@ -19,6 +19,7 @@ namespace Proyecto_Intermodular
 
     public partial class MainWindow : Window
     {
+        /*
         bool isDroppingOverOtherTable;
         List<Table> tables;
         List<Order> orders;
@@ -38,15 +39,28 @@ namespace Proyecto_Intermodular
 
         Employee currentUser;
         private bool isEditingTableLayout;
+        */
 
         public MainWindow()
         {
             InitializeComponent();
-            UpdateDataset();
-            StartTimer();
+            // UpdateDataset();
+            // StartTimer();
+        }
+        private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            /*
+            if (tables == null) return;
+            tables.ForEach(table =>
+            {
+                table.UpdateRelativePosition(cnvTables.ActualWidth, cnvTables.ActualHeight);
+                Canvas.SetLeft(table.Label, table.PosXRelative);
+                Canvas.SetTop(table.Label, table.PosYRelative);
+            });
+            */
         }
 
-
+        /*
         public void StartTimer()
         {
             LoadTimerImages();
@@ -203,7 +217,6 @@ namespace Proyecto_Intermodular
                 if (isEditingTableLayout) DragDrop.DoDragDrop(label, new DataObject(DataFormats.Serializable, label), DragDropEffects.Move);
             });
 
-            /*
             border.Drop += new DragEventHandler((object sender, DragEventArgs e) => {
                 Border borderForDelete = (Border)e.Data.GetData(DataFormats.Serializable);
                 MessageBox.Show(GetTable(borderForDelete).ToString());
@@ -215,9 +228,8 @@ namespace Proyecto_Intermodular
                 DeleteTable(tableForDelete);
                 SelectTable(table);
             });
-            */
         }
-
+        
         private void SelectTable(Table table)
         {
             selectedTable = table;
@@ -289,17 +301,6 @@ namespace Proyecto_Intermodular
         }
 
         private void BtnDistribution_Click(object sender, RoutedEventArgs e) => isEditingTableLayout = !isEditingTableLayout;
-
-        private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
-        {
-            if (tables == null ) return;
-            tables.ForEach(table =>
-            {
-                table.UpdateRelativePosition(cnvTables.ActualWidth, cnvTables.ActualHeight);
-                Canvas.SetLeft(table.Label, table.PosXRelative);
-                Canvas.SetTop(table.Label, table.PosYRelative);
-            });
-        }
 
         private void BtnSaveDistribution_Click(object sender, RoutedEventArgs e)
         {
@@ -425,5 +426,6 @@ namespace Proyecto_Intermodular
             MessageBox.Show(createdEmployee.ToString());
         }
         #endregion
+        */
     }
 }

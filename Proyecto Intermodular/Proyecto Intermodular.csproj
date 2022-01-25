@@ -15,12 +15,15 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="images\add_icon.png" />
     <None Remove="images\app_icon.png" />
+    <None Remove="images\bin_icon.png" />
     <None Remove="images\keyboard_icon.png" />
     <None Remove="images\move_icon.png" />
     <None Remove="images\password_hide.png" />
     <None Remove="images\password_icon.png" />
     <None Remove="images\password_show.png" />
+    <None Remove="images\restaurante.png" />
     <None Remove="images\timer\timer_1.png" />
     <None Remove="images\timer\timer_2.png" />
     <None Remove="images\timer\timer_3.png" />
@@ -35,12 +38,15 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="images\add_icon.png" />
     <Resource Include="images\app_icon.png" />
+    <Resource Include="images\bin_icon.png" />
     <Resource Include="images\keyboard_icon.png" />
     <Resource Include="images\move_icon.png" />
     <Resource Include="images\password_hide.png" />
     <Resource Include="images\password_icon.png" />
     <Resource Include="images\password_show.png" />
+    <Resource Include="images\restaurante.png" />
     <Resource Include="images\timer\timer_1.png" />
     <Resource Include="images\timer\timer_2.png" />
     <Resource Include="images\timer\timer_3.png" />

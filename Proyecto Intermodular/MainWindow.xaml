@@ -12,6 +12,10 @@
 
     <Grid>
         <TabControl TabStripPlacement="Left">
+            <TabItem Header="MESAS">
+                <uc:Tables x:Name="ucTables"/>
+            </TabItem>
+            <!--
             <TabItem>
                 <TabItem.Header>
                     <Label Content="MESAS"/>
@@ -145,6 +149,7 @@
                     </StackPanel>
                 </ScrollViewer>
             </TabItem>
+            -->
         </TabControl>
     </Grid>
 </Window>
