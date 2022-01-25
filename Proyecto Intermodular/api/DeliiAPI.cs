@@ -11,7 +11,7 @@ namespace Proyecto_Intermodular.api
 {
     public static class DeliiApi
     {
-        private static string URL = "http://localhost:8080/";
+        private static string URL = "http://Alvaro:8080/";
         private static string API_URL = URL + "api/";
 
         public static async Task<Employee> GetEmployeeFromToken()
