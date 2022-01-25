@@ -49,6 +49,7 @@ namespace Proyecto_Intermodular
         }
         private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
         {
+            ucTables.UpdateTablesPosition();
             /*
             if (tables == null) return;
             tables.ForEach(table =>
