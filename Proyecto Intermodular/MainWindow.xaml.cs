@@ -287,11 +287,11 @@ namespace Proyecto_Intermodular
             border.Child = stackPanel;
 
             Label lblTicket = new Label();
-            lblTicket.Content = $"Ticket: {order.Ticket}";
+            lblTicket.Content = $"Ticket: {order.Ticket.Id}";
             Label lblDish = new();
             lblDish.Content = $"Plato: {order.Dish}";
             Label lblTable = new();
-            lblTable.Content = $"Mesa:";
+            lblTable.Content = $"Mesa: {order.Table}";
             Label lblEmployee = new();
             lblEmployee.Content = $"Camarero: {order.Employee.FullName}";
 

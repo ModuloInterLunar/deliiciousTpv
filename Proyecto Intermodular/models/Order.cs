@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Proyecto_Intermodular.models
+﻿namespace Proyecto_Intermodular.models
 {
     public class Order
     {
@@ -17,6 +11,7 @@ namespace Proyecto_Intermodular.models
         private string createdAt;
         private string updatedAt;
         private Employee employee;
+        private string table;
 
         public Order(string id, Ticket ticket, string dish, string description, Employee employee)
         {
@@ -61,5 +56,6 @@ namespace Proyecto_Intermodular.models
         public string Description { get => description; set => description = value; }
         public string CreatedAt { get => createdAt; set => createdAt = value; }
         public string UpdatedAt { get => updatedAt; set => updatedAt = value; }
+        public string Table { get => table; set => table = value; }
     }
 }
