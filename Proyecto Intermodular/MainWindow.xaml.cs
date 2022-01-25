@@ -7,6 +7,8 @@ using System.Windows.Input;
 using System.Windows.Media;
 using Proyecto_Intermodular.models;
 using Proyecto_Intermodular.api;
+using System.Windows.Threading;
+using System.Windows.Media.Imaging;
 
 namespace Proyecto_Intermodular
 {
@@ -17,24 +19,63 @@ namespace Proyecto_Intermodular
 
     public partial class MainWindow : Window
     {
-        bool distribution;
         bool isDroppingOverOtherTable;
         List<Table> tables;
-        Table selectedTable;
-        bool showPassword = false;
-
         List<Order> orders;
-        Border myBorder1 = new Border();
-        
-        StackPanel stackPanel = new StackPanel();
+        Table selectedTable;
+        int timerStage;
 
+        List<Uri> timerImagesUris = new()
+        {
+            new Uri("/Proyecto Intermodular;component/images/timer/timer_3.png", UriKind.Relative),
+            new Uri("/Proyecto Intermodular;component/images/timer/timer_4.png", UriKind.Relative),
+            new Uri("/Proyecto Intermodular;component/images/timer/timer_5.png", UriKind.Relative),
+            new Uri("/Proyecto Intermodular;component/images/timer/timer_6.png", UriKind.Relative),
+            new Uri("/Proyecto Intermodular;component/images/timer/timer_7.png", UriKind.Relative),
+            new Uri("/Proyecto Intermodular;component/images/timer/timer_2.png", UriKind.Relative)
+        };
+        List<ImageSource> timerImages = new();
 
         Employee currentUser;
-
+        private bool isEditingTableLayout;
 
         public MainWindow()
         {
             InitializeComponent();
+            UpdateDataset();
+            StartTimer();
+        }
+
+
+        public void StartTimer()
+        {
+            LoadTimerImages();
+            timerStage = 0;
+            DispatcherTimer timer = new DispatcherTimer();
+            timer.Interval = TimeSpan.FromSeconds(2);
+            timer.Tick += TimerTick;
+            timer.Start();
+        }
+
+        private void LoadTimerImages()
+        {
+            timerImagesUris.ForEach(uri => timerImages.Add(new BitmapImage(uri)));
+        }
+        private void TimerTick(object sender, EventArgs e)
+        {
+            imgTimer.Source = timerImages[timerStage];
+            if (timerStage == 5)
+            {
+                UpdateDataset();
+                timerStage = 0;
+            }
+            else
+                timerStage++;
+        }
+
+
+        public void UpdateDataset()
+        {
             if (currentUser == null)
                 GetCurrentUser();
             else
@@ -49,18 +90,6 @@ namespace Proyecto_Intermodular
         {
             try
             {
-                //DeliiAPI.GetEmployeeFromToken().ContinueWith(task =>
-                //{
-                //    if (task.IsFaulted)
-                //        MessageBox.Show(task.Exception.Message);
-                //    currentUser = task.Result;
-                //    ApplicationState.SetValue("current_user", currentUser);
-                //    Application.Current.Dispatcher.Invoke(() =>
-                //    {
-                //        UpdateUI();
-                //    });
-                //}); 
-
                 currentUser = await DeliiApi.GetEmployeeFromToken();
                 ApplicationState.SetValue("current_user", currentUser);
                 Application.Current.Dispatcher.Invoke(() =>
@@ -85,24 +114,36 @@ namespace Proyecto_Intermodular
 
         #region Tab 1
 
-        private void CreateTable(Table table)
+        private async void GenerateCanvasTables()
         {
-            Border border = new();
-            border.Background = (SolidColorBrush)new BrushConverter().ConvertFromString("#FF7AA0CD");
-            border.CornerRadius = new(10);
-            border.Name = $"border{table.Id}";
-            border.MaxWidth = 100;
-            border.Width = table.Width;
-            border.Height = table.Height;
-            border.AllowDrop = true;
-            Canvas.SetLeft(border, table.PosX);
-            Canvas.SetTop(border, table.PosY);
+            if (isEditingTableLayout) return;
+            cnvTables.Children.Clear();
+            tables = await DeliiApi.GetAllTables();
 
-            border.MouseMove += new MouseEventHandler((object sender, MouseEventArgs e) => {
+            tables.ForEach(table => CreateTable(table));
+        }
+
+        private void CreateTable(Table table) { 
+            Label label = new();
+            label.Background = (SolidColorBrush)new BrushConverter().ConvertFromString("#FF7AA0CD");
+            label.Content = table.Id;
+            label.VerticalContentAlignment = VerticalAlignment.Center;
+            label.HorizontalContentAlignment = HorizontalAlignment.Center;
+            label.MaxWidth = 100;
+            label.Width = table.Width;
+            label.Height = table.Height;
+            label.AllowDrop = true;
+            cnvTables.Children.Add(label);
+            table.Label = label;
+            table.UpdateRelativePosition(cnvTables.ActualWidth, cnvTables.ActualHeight);
+            Canvas.SetLeft(label, table.PosXRelative);
+            Canvas.SetTop(label, table.PosYRelative);
+
+            label.MouseMove += new MouseEventHandler((object sender, MouseEventArgs e) => {
                 if (e.LeftButton != MouseButtonState.Pressed) return;
 
                 SelectTable(table);
-                if (distribution) DragDrop.DoDragDrop(border, new DataObject(DataFormats.Serializable, border), DragDropEffects.Move);
+                if (isEditingTableLayout) DragDrop.DoDragDrop(label, new DataObject(DataFormats.Serializable, label), DragDropEffects.Move);
             });
 
             /*
@@ -118,16 +159,6 @@ namespace Proyecto_Intermodular
                 SelectTable(table);
             });
             */
-
-            Label label = new();
-            label.Content = table.Id;
-            label.HorizontalAlignment = HorizontalAlignment.Center;
-            label.VerticalAlignment = VerticalAlignment.Center;
-
-            border.Child = label;
-
-            cnvTables.Children.Add(border);
-            table.Border = border;
         }
 
         private void SelectTable(Table table)
@@ -139,35 +170,42 @@ namespace Proyecto_Intermodular
         private void DeleteTable(Table table)
         {
             isDroppingOverOtherTable = true;
-            cnvTables.Children.Remove(table.Border);
+            DeliiApi.RemoveTable(table);
+            cnvTables.Children.Remove(table.Label);
             tables.Remove(table);
         }
 
         private Table GetTable(UIElement element)
         {
             foreach (Table table in tables)
-                if (table.Border == element) return table;
+                if (table.Label == element) return table;
 
             return null;
         }
 
-        private void MoveTable(DragEventArgs e, Border border)
+        private void MoveTable(DragEventArgs e, Label label)
         {
             Point dropPos = e.GetPosition(cnvTables);
-            Size offset = new(border.Width / 2, border.Height / 2);
+            Size offset = new(label.Width / 2, label.Height / 2);
 
-            Table table = GetTable(border);
+            Table table = GetTable(label);
 
-            double left = (dropPos.X > cnvTables.ActualWidth - offset.Width * 2) ? cnvTables.ActualWidth - offset.Width * 2 :
-                            (dropPos.X < offset.Width) ? 0 : dropPos.X - offset.Width;
+            double left = (dropPos.X > cnvTables.ActualWidth - offset.Width)
+                            ? cnvTables.ActualWidth - offset.Width * 2
+                            : (dropPos.X < offset.Width)
+                                ? 0
+                                : dropPos.X - offset.Width;
 
-            double top = (dropPos.Y > cnvTables.ActualHeight - offset.Height * 2) ? cnvTables.ActualHeight - offset.Height * 2 :
-                            (dropPos.Y < offset.Height) ? 0 : dropPos.Y - offset.Height;
+            double top = (dropPos.Y > cnvTables.ActualHeight - offset.Height)
+                            ? cnvTables.ActualHeight - offset.Height * 2 
+                            : (dropPos.Y < offset.Height)
+                                ? 0
+                                : dropPos.Y - offset.Height;
 
             Point newPoint = new(left, top);
             table.SetPosition(newPoint, cnvTables.ActualWidth, cnvTables.ActualHeight);
-            Canvas.SetLeft(border, left);
-            Canvas.SetTop(border, top);
+            Canvas.SetLeft(label, left);
+            Canvas.SetTop(label, top);
         }
 
         private void CnvTables_Drop(object sender, DragEventArgs e)
@@ -179,47 +217,41 @@ namespace Proyecto_Intermodular
             }
 
             object data = e.Data.GetData(DataFormats.Serializable);
-            if(data is Border border) MoveTable(e, border);
+            if(data is Label label) MoveTable(e, label);
         }
 
         private void CnvTables_DragOver(object sender, DragEventArgs e)
         {
             object data = e.Data.GetData(DataFormats.Serializable);
-            if (data is Border border) MoveTable(e, border);
+            if (data is Label label) MoveTable(e, label);
         }
 
-        private void BtnDistribution_Click(object sender, RoutedEventArgs e) => distribution = !distribution;
+        private void BtnDistribution_Click(object sender, RoutedEventArgs e) => isEditingTableLayout = !isEditingTableLayout;
 
         private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
         {
             if (tables == null ) return;
             tables.ForEach(table =>
             {
-                table.UpdatePosition(cnvTables.ActualWidth, cnvTables.ActualHeight);
-
-                Canvas.SetLeft(table.Border, table.PosX);
-                Canvas.SetTop(table.Border, table.PosY);
+                table.UpdateRelativePosition(cnvTables.ActualWidth, cnvTables.ActualHeight);
+                Canvas.SetLeft(table.Label, table.PosXRelative);
+                Canvas.SetTop(table.Label, table.PosYRelative);
             });
         }
 
         private void BtnSaveDistribution_Click(object sender, RoutedEventArgs e)
         {
-
+            tables.ForEach(async table => await DeliiApi.UpdateTable(table));
         }
 
-        private void BtnAddTable_Click(object sender, RoutedEventArgs e)
+        private async void BtnAddTable_Click(object sender, RoutedEventArgs e)
         {
-            //string availableId = "1";
-            //bool isIdTaken = true;
-
-            //while (isIdTaken)
-            //    if (tables.Find(table => table.Id == availableId) == null) isIdTaken = false;
-            //    else availableId++;
-
-            //Table table = new(availableId, 0.10, 0.10);
-
-            //tables.Add(table);
-            //CreateTable(table);
+            Table table = await DeliiApi.CreateTable(new Table(0,0));
+            tables.Add(table);
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                CreateTable(table);
+            });
         }
 
         private void BntDeleteTable_Click(object sender, RoutedEventArgs e)
@@ -232,70 +264,50 @@ namespace Proyecto_Intermodular
 
 
         #region Cocina
-        private async void GenerateCanvasTables()
+        
+
+        private async void GenerateOrders()
         {
-            tables = await DeliiApi.GetAllTables();
-
-            tables.ForEach(table => CreateTable(table));
-
-            
-        }
-
-        private void GenerateOrders()
-        {
-            orders = new();
-            orders.Add(new Order("1", "1", "Fabada", false, false, "Djessy"));
-            orders.Add(new Order("2", "2", "Spaghetti", false, false, "Alvaro"));
-            orders.Add(new Order("3", "3", "Porritos", false, false, "Matías"));
-            orders.Add(new Order("4", "4", "Hamburguesa", false, false, "Saul"));
+            panelKitchen.Children.Clear();
+            orders = await DeliiApi.GetAllOrders();
 
             orders.ForEach(order => CreateOrder(order));
         }
 
         private void CreateOrder(Order order)
         {
-
             StackPanel stackPanel = new StackPanel();
             stackPanel.Orientation = Orientation.Horizontal;
 
-            Border myBorder1 = new Border();
-            myBorder1.Background = Brushes.SkyBlue;
-            myBorder1.BorderBrush = Brushes.Black;
-            myBorder1.BorderThickness = new Thickness(1);
+            Border border = new Border();
+            border.Background = Brushes.SkyBlue;
+            border.BorderBrush = Brushes.Black;
+            border.BorderThickness = new(1);
 
-            myBorder1.Child = stackPanel;
+            border.Child = stackPanel;
 
-            Label label1 = new Label();
-            label1.Content = "Ticket:";
-            Label label2 = new Label();
-            label2.Content = order.Ticket;
-            Label label3 = new Label();
-            label3.Content = "Plato:";
-            Label label4 = new Label();
-            label4.Content = order.Dish;
-            Label label5 = new Label();
-            label5.Content = "Mesa:";
-            Label label6 = new Label();
-            label6.Content = "Camarero:";
-            Label label7 = new Label();
-            label7.Content = order.Employee;
+            Label lblTicket = new Label();
+            lblTicket.Content = $"Ticket: {order.Ticket}";
+            Label lblDish = new();
+            lblDish.Content = $"Plato: {order.Dish}";
+            Label lblTable = new();
+            lblTable.Content = $"Mesa:";
+            Label lblEmployee = new();
+            lblEmployee.Content = $"Camarero: {order.Employee.FullName}";
 
             Button btnCookedDish = new Button();
-            btnCookedDish.Click += (Object sender, RoutedEventArgs e) => {
+            btnCookedDish.Click += (object sender, RoutedEventArgs e) => {
                 btnCookedDish.Content = "En espera";
-                myBorder1.Background = Brushes.Green;
+                border.Background = Brushes.Green;
             };
 
             btnCookedDish.Content = "Cocinando";
-            stackPanel.Children.Add(label1);
-            stackPanel.Children.Add(label2);
-            stackPanel.Children.Add(label3);
-            stackPanel.Children.Add(label4);
-            stackPanel.Children.Add(label5);
-            stackPanel.Children.Add(label6);
-            stackPanel.Children.Add(label7);
+            stackPanel.Children.Add(lblTicket);
+            stackPanel.Children.Add(lblDish);
+            stackPanel.Children.Add(lblTable);
+            stackPanel.Children.Add(lblEmployee);
             stackPanel.Children.Add(btnCookedDish);
-            panelKitchen.Children.Add(myBorder1);
+            panelKitchen.Children.Add(border);
         }
         #endregion
 
@@ -312,14 +324,15 @@ namespace Proyecto_Intermodular
             string passwordConf = passwdInputConfirm.Text;
             string role = cbRole.Text;
             bool isAdmin = false;
-            string confDni = @"\d{8}[A-Z]|[XYZ]\d{7}[A-Z]";
+            string confDni = @"^\d{8}[A-Z]|[XYZ]\d{7}[A-Z]$";
 
             if (role == "Administrador")
             {
                 isAdmin = true;
             }
 
-            if (name == "" || surname == "" || dni == "" || user == "" || password == "" || passwordConf == "") {
+            if (name == "" || surname == "" || dni == "" || user == "" || password == "" || passwordConf == "") 
+            {
                 MessageBox.Show("Error, no pueden haber campos vacíos");
                 return;
             }
@@ -330,13 +343,15 @@ namespace Proyecto_Intermodular
                 return;
             }
 
-            if (password.Length < 5) {
+            if (password.Length < 5) 
+            {
                 MessageBox.Show("La contraseña debe de tener al menos 5 caracteres");
                 return;
 
             }
 
-            if (password != passwordConf) {
+            if (password != passwordConf) 
+            {
                 MessageBox.Show("Las contraseñas no coinciden, vuelva a introducir la contraseña");
                 return;
             }
@@ -348,6 +363,5 @@ namespace Proyecto_Intermodular
             MessageBox.Show(createdEmployee.ToString());
         }
         #endregion
-
     }
 }

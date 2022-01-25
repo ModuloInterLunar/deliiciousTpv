@@ -12,11 +12,13 @@ namespace Proyecto_Intermodular
     /// </summary>
     public partial class Login : Window
     {
-        bool showPassword = false;
 
         public Login()
         {
             InitializeComponent();
+            txtBoxUserName.Text = "alvaro";
+            passwdInput.Text = "12345";
+            btnLogin_Click(null, null);
         }
 
         // LOGIN

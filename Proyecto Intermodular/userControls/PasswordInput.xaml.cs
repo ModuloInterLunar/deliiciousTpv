@@ -46,6 +46,6 @@ namespace Proyecto_Intermodular.userControls
             showPassword = !showPassword;
         }
 
-        public string Text { get => showPassword ? txtInputShow.Text : txtInputHide.Password; }
+        public string Text { set => txtInputHide.Password = value; get => showPassword ? txtInputShow.Text : txtInputHide.Password; }
     }
 }

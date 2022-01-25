@@ -5,7 +5,7 @@ namespace Proyecto_Intermodular.models
 {
     public class Table
     {
-        private readonly static int DEFAULT_SIZE = 25;
+        private readonly static int DEFAULT_SIZE = 30;
         private string id;
         private double posX;
         private double posY;
@@ -13,7 +13,7 @@ namespace Proyecto_Intermodular.models
         private double posYRelative;
         private double width;
         private double height;
-        private Border border;
+        private Label label;
 
         public Table(string id, double posX, double posY, double width, double height)
         {
@@ -29,24 +29,24 @@ namespace Proyecto_Intermodular.models
 
         }
 
-        public Table(string id, double posX, double posY)
+        public Table(double posX, double posY)
         {
-            this.id = id;
             this.posX = posX;
             this.posY = posY;
             width = DEFAULT_SIZE;
             height = DEFAULT_SIZE;
         }
 
+
         public string Id { get => id; set => id = value; }
-        public double PosX { get => posXRelative; set => posXRelative = value; }
-        public double PosY { get => posYRelative; set => posYRelative = value; }
-        public Border Border { get => border; set => border = value; }
-        public double PosXPercent { get => posX; set => posX = value; }
-        public double PosYPercent { get => posY; set => posY = value; }
+        public double PosXRelative { get => posXRelative; set => posXRelative = value; }
+        public double PosYRelative { get => posYRelative; set => posYRelative = value; }
+        public Label Label { get => label; set => label = value; }
+        public double PosX { get => posX; set => posX = value; }
+        public double PosY { get => posY; set => posY = value; }
         public double Width { get => width; set => width = value; }
         public double Height { get => height; set => height = value; }
-        public override string ToString() => $"ID: {id}, BORDER: ({Canvas.GetLeft(border)}, {Canvas.GetTop(border)}, {border.Name})";
+        public override string ToString() => $"ID: {id}, LABEL: ({Canvas.GetLeft(label)}, {Canvas.GetTop(label)}, {label.Name})";
 
         public void SetPosition(Point newPoint, double cnvWidth, double cnvHeight)
         {
@@ -54,27 +54,27 @@ namespace Proyecto_Intermodular.models
             posY = newPoint.Y / cnvHeight;
         }
 
-        public void UpdatePosition(double newWidth, double newHeight)
+        public void UpdateRelativePosition(double newCanvasWidth, double newCanvasHeight)
         {
-            posXRelative = PosXPercent * newWidth;
-            posYRelative = PosYPercent * newHeight;
-            CorrectOutOfFrame(newWidth, newHeight);
+            posXRelative = posX * newCanvasWidth;
+            posYRelative = posY * newCanvasHeight;
+            CorrectOutOfFrame(newCanvasWidth, newCanvasHeight);
         }
 
         public void ChangeTableSize(double widthIncrement = 0, double heightIncrement = 0)
         {
             width += widthIncrement;
             height += heightIncrement;
-            border.Width = width;
-            border.Height = height;
+            label.Width = width;
+            label.Height = height;
         }
 
         private void CorrectOutOfFrame(double frameWidth, double frameHeight)
         {
-            if (posXRelative + border.Width / 2 > frameWidth)
-                posXRelative = frameWidth - border.Width / 2;
-            if (posYRelative + border.Height / 2 > frameHeight)
-                posYRelative = frameHeight - border.Height / 2;
+            if (posXRelative + label.Width / 2 > frameWidth)
+                posXRelative = frameWidth - label.Width / 2;
+            if (posYRelative + label.Height / 2 > frameHeight)
+                posYRelative = frameHeight - label.Height / 2;
         }
     }
 }
