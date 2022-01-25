@@ -135,7 +135,10 @@ namespace Proyecto_Intermodular
             label.AllowDrop = true;
             cnvTables.Children.Add(label);
             table.Label = label;
-            table.UpdatePosition(cnvTables.ActualWidth, cnvTables.ActualHeight);
+            table.UpdateRelativePosition(cnvTables.ActualWidth, cnvTables.ActualHeight);
+            Canvas.SetLeft(label, table.PosXRelative);
+            Canvas.SetTop(label, table.PosYRelative);
+
             label.MouseMove += new MouseEventHandler((object sender, MouseEventArgs e) => {
                 if (e.LeftButton != MouseButtonState.Pressed) return;
 
@@ -230,7 +233,7 @@ namespace Proyecto_Intermodular
             if (tables == null ) return;
             tables.ForEach(table =>
             {
-                table.UpdatePosition(cnvTables.ActualWidth, cnvTables.ActualHeight);
+                table.UpdateRelativePosition(cnvTables.ActualWidth, cnvTables.ActualHeight);
                 Canvas.SetLeft(table.Label, table.PosXRelative);
                 Canvas.SetTop(table.Label, table.PosYRelative);
             });
@@ -273,7 +276,6 @@ namespace Proyecto_Intermodular
 
         private void CreateOrder(Order order)
         {
-
             StackPanel stackPanel = new StackPanel();
             stackPanel.Orientation = Orientation.Horizontal;
 
