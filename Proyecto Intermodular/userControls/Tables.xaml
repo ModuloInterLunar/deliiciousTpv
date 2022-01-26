@@ -6,7 +6,9 @@
              xmlns:local="clr-namespace:Proyecto_Intermodular.userControls"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
+
     <Grid Background="#FF2281D1">
+        
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="1.5*"/>
@@ -19,20 +21,20 @@
             </Grid.RowDefinitions>
 
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                <Button x:Name="btnReload" Background="Transparent" BorderThickness="0" Margin="5">
+                <Button x:Name="btnReload" Background="Transparent" BorderThickness="0" Margin="5" Click="btnReload_Click" ToolTip="Recargar distribución">
                     <Image Source="/Proyecto Intermodular;component/images/reload_icon.png"/>
                 </Button>
-                <Button x:Name="btnSave" Background="Transparent" BorderThickness="0" Margin="5" Click="btnSave_Click">
+                <Button x:Name="btnSave" Background="Transparent" BorderThickness="0" Margin="6" Click="btnSave_Click" ToolTip="Guardar distribución">
                     <Image Source="/Proyecto Intermodular;component/images/save_icon.png"/>
                 </Button>
 
-                <Button x:Name="btnMove" Background="Transparent" BorderThickness="0" Margin="5" Click="btnMove_Click">
-                    <Image Source="/Proyecto Intermodular;component/images/move_icon.png"/>
+                <Button x:Name="btnMove" Background="Transparent" BorderThickness="0" Margin="5" Click="btnMove_Click" ToolTip="Cambiar distribución">
+                    <Image Source="/Proyecto Intermodular;component/images/move_icon.png" x:Name="imgMove"/>
                 </Button>
-                <Button x:Name="btnAdd" Background="Transparent" BorderThickness="0" Margin="5" Click="BtnAddTable_Click">
+                <Button x:Name="btnAdd" Background="Transparent" BorderThickness="0" Margin="5" Click="BtnAddTable_Click" ToolTip="Añadir mesa">
                     <Image Source="/Proyecto Intermodular;component/images/add_icon.png"/>
                 </Button>
-                <Button x:Name="btnDelete" Background="Transparent" BorderThickness="0" Margin="5" Click="btnDelete_Click">
+                <Button x:Name="btnDelete" Background="Transparent" BorderThickness="0" Margin="5" Click="btnDelete_Click" ToolTip="Eliminar mesa seleccionada">
                     <Image Source="/Proyecto Intermodular;component/images/bin_icon.png"/>
                 </Button>
             </StackPanel>
@@ -50,19 +52,39 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <Label Margin="0,10,0,0" x:Name="lblSelectedTable" Content="MESA SELECCIONADA: " HorizontalContentAlignment="Center"/>
+            <Label Margin="0,10,0,0" x:Name="lblSelectedTable" FontWeight="Bold" Content="MESA SELECCIONADA: " HorizontalContentAlignment="Center"/>
 
             <Grid Grid.Row="1">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="145*"/>
-                    <ColumnDefinition Width="336*"/>
-                </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*"/>
-                    <RowDefinition Height="30"/>
                 </Grid.RowDefinitions>
 
-                <ListBox x:Name="lstBoxOrders" Margin="90,30,90,30" Width="300" Grid.ColumnSpan="2"/>
+                <Border Grid.Column="1" Width="300" CornerRadius="4" Background="White">
+                    <StackPanel Orientation="Vertical">
+                        <Label Content="Lista de pedidos" FontWeight="Bold"/>
+                        <ListView x:Name="lstViewOrders" BorderThickness="0">
+                            <ListView.View>
+                                <GridView x:Name="grdViewOrders">
+                                    <GridView.ColumnHeaderContainerStyle>
+                                        <Style TargetType="GridViewColumnHeader">
+                                            <Setter Property="Template">
+                                                <Setter.Value>
+                                                    <ControlTemplate TargetType="GridViewColumnHeader">
+                                                        <Border BorderBrush="Black" BorderThickness="0 0 0 1" Padding="0 0 0 5"/>
+                                                    </ControlTemplate>
+                                                </Setter.Value>
+                                            </Setter>
+                                        </Style>
+                                    </GridView.ColumnHeaderContainerStyle>
+                                    
+                                    <GridViewColumn Header="producto" DisplayMemberBinding="{Binding Header}"/>
+                                    <GridViewColumn Header="cantidad" DisplayMemberBinding="{Binding Header}"/>
+                                    <GridViewColumn Header="estado" DisplayMemberBinding="{Binding Header}"/>
+                                </GridView>
+                            </ListView.View>
+                        </ListView>
+                    </StackPanel>
+                </Border>
             </Grid>
         </Grid>
     </Grid>

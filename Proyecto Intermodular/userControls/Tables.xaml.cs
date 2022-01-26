@@ -1,10 +1,12 @@
 ﻿using Proyecto_Intermodular.api;
 using Proyecto_Intermodular.models;
+using System;
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
 
 namespace Proyecto_Intermodular.userControls
 {
@@ -81,6 +83,7 @@ namespace Proyecto_Intermodular.userControls
             label.Width = table.Width;
             label.Height = table.Height;
             label.AllowDrop = true;
+            label.ToolTip = $"Mesa número {table.Id}";
             cnvTables.Children.Add(label);
             table.Label = label;
             table.UpdateRelativePosition(cnvTables.ActualWidth, cnvTables.ActualHeight);
@@ -104,7 +107,7 @@ namespace Proyecto_Intermodular.userControls
         private void SelectTable(Table table)
         {
             selectedTable = table;
-            lstBoxOrders.Items.Clear();
+            lstViewOrders.Items.Clear();
             if (selectedTable == null)
             {
                 lblSelectedTable.Content = $"MESA SELECCIONADA: ";
@@ -127,7 +130,7 @@ namespace Proyecto_Intermodular.userControls
             Point dropPos = e.GetPosition(cnvTables);
             Size offset = new(label.Width / 2, label.Height / 2);
             Size cnvSize = new(cnvTables.ActualWidth, cnvTables.ActualHeight);
-            
+
             Table table = GetTable(label);
             table.MoveLabel(dropPos, offset, cnvSize);
         }
@@ -146,7 +149,7 @@ namespace Proyecto_Intermodular.userControls
             selectedTable.ActualTicket.Orders.ForEach(order =>
             {
                 OrderModel orderModel = new() { IsServed = order.IsServed, DishName = order.Dish, EmployeeName = order.Employee.FullName };
-                lstBoxOrders.Items.Add(orderModel);
+                lstViewOrders.Items.Add(orderModel);
             });
         }
         #endregion
@@ -164,9 +167,17 @@ namespace Proyecto_Intermodular.userControls
             tables.Add(table);
             Application.Current.Dispatcher.Invoke(() => CreateTable(table));
         }
-        private void btnMove_Click(object sender, RoutedEventArgs e) => isEditingTableLayout = !isEditingTableLayout;
+
+        private void btnMove_Click(object sender, RoutedEventArgs e)
+        {
+            isEditingTableLayout = !isEditingTableLayout;
+            imgMove.Source = new BitmapImage(new Uri(isEditingTableLayout ? "/Proyecto Intermodular;component/images/move_enabled_icon.png" : "/Proyecto Intermodular;component/images/move_icon.png", UriKind.Relative));
+        }
         private void btnDelete_Click(object sender, RoutedEventArgs e) => DeleteTable(selectedTable);
         private void btnSave_Click(object sender, RoutedEventArgs e) => tables.ForEach(async table => await DeliiApi.UpdateTable(table));
+
         #endregion
+
+        private void btnReload_Click(object sender, RoutedEventArgs e) => UpdateCanvasTables();
     }
 }
