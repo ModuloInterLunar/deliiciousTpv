@@ -8,8 +8,8 @@ namespace Proyecto_Intermodular.models
 {
     public class Food : Dish
     {
-        private Dictionary<string, float> ingredients;
-        public Food(string id, float price, string description, Dictionary<string, float> ingredients) : base(id, price, description)
+        private IngredientQty ingredients;
+        public Food(string id, string name, float price, string description, IngredientQty ingredients) : base(id, name, price, description)
         {
             this.ingredients = ingredients;
         }
@@ -19,6 +19,6 @@ namespace Proyecto_Intermodular.models
 
         }
 
-        public Dictionary<string, float> Ingredients { get => ingredients; set => ingredients = value; }
+        public IngredientQty Ingredients { get => ingredients; set => ingredients = value; }
     }
 }

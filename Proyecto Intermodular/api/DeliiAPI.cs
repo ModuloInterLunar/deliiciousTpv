@@ -11,7 +11,7 @@ namespace Proyecto_Intermodular.api
 {
     public static class DeliiApi
     {
-        private static string URL = "http://localhost:8080/";
+        private static string URL = "http://Alvaro:8080/";
         private static string API_URL = URL + "api/";
 
         public static async Task<Employee> GetEmployeeFromToken()
@@ -97,8 +97,8 @@ namespace Proyecto_Intermodular.api
         public static async Task<Table> UpdateTable(Table table)
         {
             string uri = API_URL + "tables/" + table.Id;
-            Table simpleTable = new Table(table.Id, table.PosX, table.PosY, table.Width, table.Height);
-            string updatedTableJson = await DeliiApiClient.Patch(uri, simpleTable);
+            TableModel tableModel = new TableModel(table);
+            string updatedTableJson = await DeliiApiClient.Patch(uri, tableModel);
             Table updatedTable = JsonSerializer.Deserialize<Table>(updatedTableJson, DeliiApiClient.GetJsonOptions());
 
             return updatedTable;

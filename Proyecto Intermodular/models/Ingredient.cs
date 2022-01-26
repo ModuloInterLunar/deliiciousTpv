@@ -6,19 +6,18 @@ using System.Threading.Tasks;
 
 namespace Proyecto_Intermodular.models
 {
-    public class Drink : Dish
+    public class Ingredient
     {
+        private string id;
+        private string name;
         private float quantity;
-        public Drink(string id, string name, float price, string description, float quantity) : base(id, name, price, description)
-        {
-            this.quantity = quantity;
-        }
-
-        public Drink() : base()
+        public Ingredient()
         {
 
         }
 
+        public string Id { get => id; set => id = value; }
+        public string Name { get => name; set => name = value; }
         public float Quantity { get => quantity; set => quantity = value; }
     }
 }
