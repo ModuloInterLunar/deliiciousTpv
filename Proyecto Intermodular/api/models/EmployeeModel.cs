@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Proyecto_Intermodular.models;
 
-namespace Proyecto_Intermodular.models
+namespace Proyecto_Intermodular.api.models
 {
     public class EmployeeModel
     {

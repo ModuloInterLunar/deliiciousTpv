@@ -1,4 +1,6 @@
-﻿namespace Proyecto_Intermodular.models
+﻿using Proyecto_Intermodular.models;
+
+namespace Proyecto_Intermodular.api.models
 {
     public class IngredientQtyModel
     {

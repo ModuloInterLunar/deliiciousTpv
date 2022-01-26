@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Proyecto_Intermodular.models;
 
-namespace Proyecto_Intermodular.models
+namespace Proyecto_Intermodular.api.models
 {
     public abstract class DishModel
     {
@@ -40,9 +36,6 @@ namespace Proyecto_Intermodular.models
             ingredients = new IngredientQtyModel(food.Ingredients);
         }
 
-        protected DishModel()
-        {
-
-        }
+        protected DishModel() { }
     }
 }

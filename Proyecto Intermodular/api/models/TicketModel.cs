@@ -1,10 +1,8 @@
-﻿using System;
+﻿using Proyecto_Intermodular.models;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Proyecto_Intermodular.models
+namespace Proyecto_Intermodular.api.models
 {
     public class TicketModel
     {

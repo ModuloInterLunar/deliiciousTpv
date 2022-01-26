@@ -1,8 +1,7 @@
-﻿using System;
-using System.Windows;
-using System.Windows.Controls;
+﻿
+using System.Windows.Documents;
 
-namespace Proyecto_Intermodular.models
+namespace Proyecto_Intermodular.api.models
 {
     public class TableModel
     {
