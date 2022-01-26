@@ -75,10 +75,10 @@ namespace Proyecto_Intermodular.models
 
         private void CorrectOutOfFrame(double frameWidth, double frameHeight)
         {
-            if (posXRelative + label.Width / 2 > frameWidth)
-                posXRelative = frameWidth - label.Width / 2;
-            if (posYRelative + label.Height / 2 > frameHeight)
-                posYRelative = frameHeight - label.Height / 2;
+            if (posXRelative + label.Width > frameWidth)
+                posXRelative = frameWidth - label.Width;
+            if (posYRelative + label.Height > frameHeight)
+                posYRelative = frameHeight - label.Height;
         }
 
         internal void UpdateData(Table updatedTable, double frameWidth, double frameHeight)
