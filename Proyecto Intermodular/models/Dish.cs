@@ -37,9 +37,6 @@ namespace Proyecto_Intermodular.models
             this.description = description;
         }
 
-        protected Dish()
-        {
-
-        }
+        protected Dish() { }
     }
 }

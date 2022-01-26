@@ -1,5 +1,4 @@
-﻿
-using System.Windows.Documents;
+﻿using Proyecto_Intermodular.models;
 
 namespace Proyecto_Intermodular.api.models
 {
@@ -8,8 +7,6 @@ namespace Proyecto_Intermodular.api.models
         private string id;
         private double posX;
         private double posY;
-        private double posXRelative;
-        private double posYRelative;
         private double width;
         private double height;
         private string actualTicket;
@@ -28,8 +25,6 @@ namespace Proyecto_Intermodular.api.models
 
 
         public string Id { get => id; set => id = value; }
-        public double PosXRelative { get => posXRelative; set => posXRelative = value; }
-        public double PosYRelative { get => posYRelative; set => posYRelative = value; }
         public double PosX { get => posX; set => posX = value; }
         public double PosY { get => posY; set => posY = value; }
         public double Width { get => width; set => width = value; }

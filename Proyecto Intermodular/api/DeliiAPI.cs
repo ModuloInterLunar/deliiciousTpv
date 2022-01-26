@@ -6,12 +6,13 @@ using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 using Proyecto_Intermodular.models;
+using Proyecto_Intermodular.api.models;
 
 namespace Proyecto_Intermodular.api
 {
     public static class DeliiApi
     {
-        private static string URL = "http://Alvaro:8080/";
+        private static string URL = "http://localhost:8080/";
         private static string API_URL = URL + "api/";
 
         public static async Task<Employee> GetEmployeeFromToken()
@@ -34,7 +35,7 @@ namespace Proyecto_Intermodular.api
                 TokenResponse tokenResponse = JsonSerializer.Deserialize<TokenResponse>(tokenJson, DeliiApiClient.GetJsonOptions());
 
                 return tokenResponse.Token;
-            } 
+            }
             catch (DeliiApiException ex)
             {
                 if (ex.Message.Contains("Employee not found"))
