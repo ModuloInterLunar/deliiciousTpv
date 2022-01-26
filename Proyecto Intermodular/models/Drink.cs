@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Proyecto_Intermodular.api.models;
 
 namespace Proyecto_Intermodular.models
 {
@@ -14,9 +10,15 @@ namespace Proyecto_Intermodular.models
             this.quantity = quantity;
         }
 
-        public Drink() : base()
-        {
+        public Drink() : base() { }
 
+        public Drink(FoodOrDrink drink)
+        {
+            Id = drink.Id;
+            Name = drink.Name;
+            Price = drink.Price;
+            Description = drink.Description;
+            quantity = drink.Quantity;
         }
 
         public float Quantity { get => quantity; set => quantity = value; }

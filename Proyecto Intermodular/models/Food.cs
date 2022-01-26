@@ -15,7 +15,7 @@ namespace Proyecto_Intermodular.models
             this.ingredients = ingredients;
         }
 
-        public Food(DishModel food)
+        public Food(FoodOrDrink food)
         {
             Id = food.Id;
             Name = food.Name;
