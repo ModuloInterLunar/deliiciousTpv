@@ -24,6 +24,7 @@ namespace Proyecto_Intermodular.models
         public string Password { get => password; set => password = value; }
         public bool IsAdmin { get => isAdmin; set => isAdmin = value; }
         public string FullName => Capitalize(name) + " " + Capitalize(surname);
+        public string SortName => $"{Capitalize(name)}. {char.ToUpper(surname[0])}";
 
 
         public override string ToString() => $"id: {id}, username: {username}, dni: {dni}, name: {name}, surname: {surname}, password: {password}, isAdmin: {isAdmin}";

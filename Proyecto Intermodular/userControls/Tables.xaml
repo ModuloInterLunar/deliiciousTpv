@@ -39,7 +39,7 @@
                 </Button>
             </StackPanel>
 
-            <Canvas x:Name="cnvTables" Grid.Row="1" AllowDrop="True" DragOver="cnvTables_DragOver">
+            <Canvas x:Name="cnvTables" Grid.Row="1" AllowDrop="True" DragOver="cnvTables_DragOver" Margin="10 0 10 10">
                 <Canvas.Background>
                     <ImageBrush ImageSource="/Proyecto Intermodular;component/images/restaurante.png"></ImageBrush>
                 </Canvas.Background>
@@ -54,36 +54,28 @@
 
             <Label Margin="0,10,0,0" x:Name="lblSelectedTable" FontWeight="Bold" Content="MESA SELECCIONADA: " HorizontalContentAlignment="Center"/>
 
-            <Grid Grid.Row="1">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="*"/>
-                </Grid.RowDefinitions>
-
-                <Border Grid.Column="1" Width="300" CornerRadius="4" Background="White">
-                    <StackPanel Orientation="Vertical">
-                        <Label Content="Lista de pedidos" FontWeight="Bold"/>
-                        <ListView x:Name="lstViewOrders" BorderThickness="0">
-                            <ListView.View>
-                                <GridView x:Name="grdViewOrders">
-                                    <GridView.ColumnHeaderContainerStyle>
-                                        <Style TargetType="GridViewColumnHeader">
-                                            <Setter Property="Template">
-                                                <Setter.Value>
-                                                    <ControlTemplate TargetType="GridViewColumnHeader">
-                                                        <Border BorderBrush="Black" BorderThickness="0 0 0 1" Padding="0 0 0 5"/>
-                                                    </ControlTemplate>
-                                                </Setter.Value>
-                                            </Setter>
-                                        </Style>
-                                    </GridView.ColumnHeaderContainerStyle>
-                                    
-                                    <GridViewColumn Header="producto" DisplayMemberBinding="{Binding Header}"/>
-                                    <GridViewColumn Header="cantidad" DisplayMemberBinding="{Binding Header}"/>
-                                    <GridViewColumn Header="estado" DisplayMemberBinding="{Binding Header}"/>
-                                </GridView>
-                            </ListView.View>
-                        </ListView>
-                    </StackPanel>
+            <Grid Grid.Row="1" Margin="40">
+                <Border Grid.Column="1" CornerRadius="4" Background="White" Margin="0 0 0 10">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="30"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="30"/>
+                        </Grid.RowDefinitions>
+                        
+                        <Label Content="Lista de pedidos" FontWeight="Bold" />
+                        <ListBox x:Name="lstBoxOrders" Grid.Row="1" BorderThickness="0">
+                            <ListBox.ItemContainerStyle>
+                                <Style TargetType="ListBoxItem">
+                                    <Setter Property="HorizontalAlignment" Value="Stretch"/>
+                                </Style>
+                            </ListBox.ItemContainerStyle>
+                            <ListBoxItem>
+                                <local:OrderItem DishName="Albóndigas" DishPrice="20 €" HorizontalAlignment="Stretch"/>
+                            </ListBoxItem>
+                        </ListBox>
+                        <Button Grid.Row="2"/>
+                    </Grid>
                 </Border>
             </Grid>
         </Grid>

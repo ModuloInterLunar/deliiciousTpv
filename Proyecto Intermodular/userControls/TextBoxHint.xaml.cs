@@ -30,7 +30,7 @@ namespace Proyecto_Intermodular.userControls
             }
         }
 
-        public string Text { get => txtBox.Text; }
+        public string Text { set => txtBox.Text = value; get => txtBox.Text; }
         public string Hint { set; get; }
     }
 }

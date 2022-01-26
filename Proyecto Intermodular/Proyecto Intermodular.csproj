@@ -18,6 +18,7 @@
     <None Remove="images\add_icon.png" />
     <None Remove="images\app_icon.png" />
     <None Remove="images\bin_icon.png" />
+    <None Remove="images\dish_icon.png" />
     <None Remove="images\keyboard_icon.png" />
     <None Remove="images\move_enabled_icon.png" />
     <None Remove="images\move_icon.png" />
@@ -42,6 +43,7 @@
     <Resource Include="images\add_icon.png" />
     <Resource Include="images\app_icon.png" />
     <Resource Include="images\bin_icon.png" />
+    <Resource Include="images\dish_icon.png" />
     <Resource Include="images\keyboard_icon.png" />
     <Resource Include="images\move_enabled_icon.png" />
     <Resource Include="images\move_icon.png" />
