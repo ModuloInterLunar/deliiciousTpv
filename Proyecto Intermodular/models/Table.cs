@@ -14,6 +14,7 @@ namespace Proyecto_Intermodular.models
         private double posYRelative;
         private double width = DEFAULT_SIZE;
         private double height = DEFAULT_SIZE;
+        private Ticket actualTicket;
         private Label label;
 
         public Table(string id, double posX, double posY, double width, double height)
@@ -45,6 +46,8 @@ namespace Proyecto_Intermodular.models
         public double PosY { get => posY; set => posY = value; }
         public double Width { get => width; set => width = value; }
         public double Height { get => height; set => height = value; }
+        public Ticket ActualTicket { get => actualTicket; set => actualTicket = value; }
+
         public override string ToString() => $"ID: {id}, LABEL: ({Canvas.GetLeft(label)}, {Canvas.GetTop(label)}, {label.Name})";
 
         public void SetPosition(Point newPoint, double cnvWidth, double cnvHeight)

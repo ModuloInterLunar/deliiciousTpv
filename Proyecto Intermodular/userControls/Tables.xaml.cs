@@ -1,18 +1,10 @@
 ﻿using Proyecto_Intermodular.api;
 using Proyecto_Intermodular.models;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace Proyecto_Intermodular.userControls
 {
@@ -112,12 +104,14 @@ namespace Proyecto_Intermodular.userControls
         private void SelectTable(Table table)
         {
             selectedTable = table;
+            lstBoxOrders.Items.Clear();
             if (selectedTable == null)
             {
                 lblSelectedTable.Content = $"MESA SELECCIONADA: ";
                 return;
             }
             lblSelectedTable.Content = $"Table Selected: {selectedTable.Id}";
+            loadOrders();
         }
 
         private void DeleteTable(Table table)
@@ -145,11 +139,19 @@ namespace Proyecto_Intermodular.userControls
             if (tables == null) return;
             tables.ForEach(table => table.UpdateRelativePosition(cnvTables.ActualWidth, cnvTables.ActualHeight));
         }
+
+        public void loadOrders()
+        {
+            if (selectedTable.ActualTicket == null) return;
+            selectedTable.ActualTicket.Orders.ForEach(order =>
+            {
+                OrderModel orderModel = new() { IsServed = order.IsServed, DishName = order.Dish, EmployeeName = order.Employee.FullName };
+                lstBoxOrders.Items.Add(orderModel);
+            });
+        }
         #endregion
 
         #region Eventos
-        private void btnMove_Click(object sender, RoutedEventArgs e) => isEditingTableLayout = !isEditingTableLayout;
-
         private void cnvTables_DragOver(object sender, DragEventArgs e)
         {
             object data = e.Data.GetData(DataFormats.Serializable);
@@ -162,7 +164,7 @@ namespace Proyecto_Intermodular.userControls
             tables.Add(table);
             Application.Current.Dispatcher.Invoke(() => CreateTable(table));
         }
-
+        private void btnMove_Click(object sender, RoutedEventArgs e) => isEditingTableLayout = !isEditingTableLayout;
         private void btnDelete_Click(object sender, RoutedEventArgs e) => DeleteTable(selectedTable);
         private void btnSave_Click(object sender, RoutedEventArgs e) => tables.ForEach(async table => await DeliiApi.UpdateTable(table));
         #endregion

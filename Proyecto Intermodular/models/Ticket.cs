@@ -19,10 +19,10 @@ namespace Proyecto_Intermodular.models
         // Cosntructor por defecto, se llamará cuando creamos un ticket nuevo
         public Ticket()
         {
-            total = 0.0f;
+            /*total = 0.0f;
             text = "";
             isPaid = false;
-            orders = new();
+            orders = new();*/
         }
 
 
@@ -40,6 +40,7 @@ namespace Proyecto_Intermodular.models
         public bool IsPaid { get => isPaid; set => isPaid = value; }
         public string CreatedAt { get => createdAt; set => createdAt = value; }
         public string UpdatedAt { get => updatedAt; set => updatedAt = value; }
+        public List<Order> Orders { get => orders; set => orders = value; }
 
         public void AddOrder(Order order) => orders.Add(order);
         public void RemoveOrder(Order order) => orders.Remove(order);

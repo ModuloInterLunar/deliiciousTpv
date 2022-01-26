@@ -3,7 +3,7 @@
     public class Order
     {
         private string id;
-        private Ticket ticket;
+        private string ticket;
         private string dish;
         private bool isServed;
         private bool isIncluded;
@@ -13,7 +13,7 @@
         private Employee employee;
         private string table;
 
-        public Order(string id, Ticket ticket, string dish, string description, Employee employee)
+        public Order(string id, string ticket, string dish, string description, Employee employee)
         {
             this.id = id;
             this.ticket = ticket;
@@ -24,7 +24,7 @@
             this.employee = employee;
         }
 
-        public Order(string id, Ticket ticket, string dish, bool isServed, bool isIncluded, Employee employee)
+        public Order(string id, string ticket, string dish, bool isServed, bool isIncluded, Employee employee)
         {
             this.id = id;
             this.ticket = ticket;
@@ -34,7 +34,7 @@
             this.employee = employee;
         }
 
-        public Order(string id, Ticket ticket, string dish, bool isServed, bool isIncluded, string description, Employee employee)
+        public Order(string id, string ticket, string dish, bool isServed, bool isIncluded, string description, Employee employee)
         {
             this.id = id;
             this.ticket = ticket;
@@ -48,7 +48,7 @@
         public Order() { }
 
         public string Id { get => id; set => id = value; }
-        public Ticket Ticket { get => ticket; set => ticket = value; }
+        public string Ticket { get => ticket; set => ticket = value; }
         public string Dish { get => dish; set => dish = value; }
         public bool IsServed { get => isServed; set => isServed = value; }
         public bool IsIncluded { get => isIncluded; set => isIncluded = value; }
