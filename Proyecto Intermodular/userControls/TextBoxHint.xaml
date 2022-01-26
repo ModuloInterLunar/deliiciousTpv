@@ -4,8 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Proyecto_Intermodular.userControls"
-             mc:Ignorable="d" 
-             d:DesignHeight="23" d:DesignWidth="200">
+             mc:Ignorable="d">
 
     <StackPanel Orientation="Vertical" Height="23" HorizontalAlignment="Center">
         <TextBox x:Name="txtBox" Height="20" Width="200" Background="Transparent" BorderThickness="0" Foreground="#A5A5A5" Text="{Binding Hint}" VerticalContentAlignment="Center" GotFocus="txtBox_GotFocus" LostFocus="txtBox_LostFocus"/>

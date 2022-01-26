@@ -107,7 +107,7 @@ namespace Proyecto_Intermodular.userControls
         private void SelectTable(Table table)
         {
             selectedTable = table;
-            lstViewOrders.Items.Clear();
+            lstBoxOrders.Items.Clear();
             if (selectedTable == null)
             {
                 lblSelectedTable.Content = $"MESA SELECCIONADA: ";
@@ -148,8 +148,13 @@ namespace Proyecto_Intermodular.userControls
             if (selectedTable.ActualTicket == null) return;
             selectedTable.ActualTicket.Orders.ForEach(order =>
             {
-                OrderModel orderModel = new() { IsServed = order.IsServed, DishName = order.Dish, EmployeeName = order.Employee.FullName };
-                lstViewOrders.Items.Add(orderModel);
+                OrderItem orderModel = new() {
+                    DishName = order.Dish,
+                    DishPrice = "0.00 €",
+                    DescriptionInput = order.Description,
+                };
+
+                lstBoxOrders.Items.Add(orderModel);
             });
         }
         #endregion
