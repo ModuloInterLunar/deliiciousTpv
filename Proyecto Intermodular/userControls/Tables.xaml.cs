@@ -107,7 +107,7 @@ namespace Proyecto_Intermodular.userControls
         private void SelectTable(Table table)
         {
             selectedTable = table;
-            lstBoxOrders.Items.Clear();
+            stackOrders.Children.Clear();
             if (selectedTable == null)
             {
                 lblSelectedTable.Content = $"MESA SELECCIONADA:";
@@ -120,7 +120,7 @@ namespace Proyecto_Intermodular.userControls
         private void UnSelectTable(Table table)
         {
             selectedTable = null;
-            lstBoxOrders.Items.Clear();
+            stackOrders.Children.Clear();
             lblSelectedTable.Content = "MESA SELECCIONADA:";
         }
 
@@ -161,7 +161,7 @@ namespace Proyecto_Intermodular.userControls
                     DescriptionInput = order.Description,
                 };
 
-                lstBoxOrders.Items.Add(orderModel);
+                stackOrders.Children.Add(orderModel);
             });
         }
         #endregion
@@ -188,7 +188,6 @@ namespace Proyecto_Intermodular.userControls
         private void btnDelete_Click(object sender, RoutedEventArgs e)
         {
             DeleteTable(selectedTable);
-
             selectedTable = null;
         }
         private void btnSave_Click(object sender, RoutedEventArgs e) => tables.ForEach(async table => await DeliiApi.UpdateTable(table));

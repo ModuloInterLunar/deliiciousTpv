@@ -60,14 +60,16 @@
                         <Grid.RowDefinitions>
                             <RowDefinition Height="30"/>
                             <RowDefinition Height="*"/>
-                            <RowDefinition Height="100"/>
+                            <RowDefinition Height="30"/>
                         </Grid.RowDefinitions>
-                        
+
                         <Label Content="Lista de pedidos" FontWeight="Bold" />
 
-                        <ListBox x:Name="lstBoxOrders" Grid.Row="1" BorderThickness="0"/>
+                        <StackPanel Orientation="Vertical" Grid.Row="1" x:Name="stackOrders">
+                            <local:OrderItem DishName="Albondigas" DishPrice="5.00 €" Grid.Row="1"/>
+                        </StackPanel>
 
-                        <local:OrderItem DishName="Albondigas" DishPrice="5.00 €" Grid.Row="2"/>
+                        <Button Grid.Row="2" Content="Add order" HorizontalAlignment="Center"/>
                     </Grid>
                 </Border>
             </Grid>
