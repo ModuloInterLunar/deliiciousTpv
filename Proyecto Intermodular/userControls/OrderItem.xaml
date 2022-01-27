@@ -8,23 +8,25 @@
              HorizontalAlignment="Stretch"
              Height="65">
 
-    <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="1.5*"/>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="2*"/>
-            <ColumnDefinition Width="*"/>
-        </Grid.ColumnDefinitions>
+    <Border BorderBrush="Black" BorderThickness="0 2 0 2" CornerRadius="5">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1.5*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
 
-        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="5">
-            <Image Width="50" Source="/Proyecto Intermodular;component/images/dish_icon.png" VerticalAlignment="Center"/>
-            <Label x:Name="lblDishName" Content="{Binding DishName}" VerticalAlignment="Center" HorizontalAlignment="Center" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Margin="5 0 0 0" FontWeight="Bold"/>
-        </StackPanel>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="5">
+                <Image Width="50" Source="/Proyecto Intermodular;component/images/dish_icon.png" VerticalAlignment="Center"/>
+                <Label x:Name="lblDishName" Content="{Binding DishName}" VerticalAlignment="Center" HorizontalAlignment="Center" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Margin="5 0 0 0" FontWeight="Bold"/>
+            </StackPanel>
 
-        <Label x:Name="lblPrice" Content="{Binding DishPrice}" VerticalContentAlignment="Center" Grid.Column="1" HorizontalAlignment="Left" FontWeight="Bold"/>
+            <Label x:Name="lblPrice" Content="{Binding DishPrice}" VerticalContentAlignment="Center" Grid.Column="1" HorizontalAlignment="Left" FontWeight="Bold"/>
 
-        <local:TextBoxHint x:Name="txtBoxDescription" Hint="Descripción" VerticalAlignment="Center" Grid.Column="2" HorizontalContentAlignment="Left" Margin="5"/>
+            <local:TextBoxHint x:Name="txtBoxDescription" Hint="Descripción" VerticalAlignment="Center" Grid.Column="2" HorizontalContentAlignment="Left" Margin="5"/>
 
-        <Button BorderThickness="0" Background="Transparent" VerticalAlignment="Center" HorizontalAlignment="Center" Content="x" Foreground="Gray" FontWeight="Bold" Grid.Column="3" Margin="5" x:Name="btnDelete" Click="btnDelete_Click"/>
-    </Grid>
+            <Button BorderThickness="0" Background="Transparent" VerticalAlignment="Center" HorizontalAlignment="Center" Content="x" Foreground="Gray" FontWeight="Bold" Grid.Column="3" Margin="5" x:Name="btnDelete" Click="btnDelete_Click"/>
+        </Grid>
+    </Border>
 </UserControl>
