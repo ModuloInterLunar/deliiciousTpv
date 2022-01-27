@@ -7,6 +7,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Proyecto_Intermodular.models;
 using Proyecto_Intermodular.api.models;
+using System.Linq;
 
 namespace Proyecto_Intermodular.api
 {
@@ -121,6 +122,24 @@ namespace Proyecto_Intermodular.api
 
             return orders;
         }
+
+        public static async Task<List<Dish>> GetAllDishes()
+        {
+            string uri = API_URL + "dishes";
+            string dishesJson = await DeliiApiClient.Get(uri);
+
+            List<FoodOrDrink> foodOrDrinks = JsonSerializer.Deserialize<List<FoodOrDrink>>(dishesJson, DeliiApiClient.GetJsonOptions());
+
+            List<Dish> dishes = foodOrDrinks.ConvertAll<Dish>(dish => {
+                if (dish.Type == "Food")
+                    return new Food(dish);
+                else
+                    return new Drink(dish);
+            }).ToList();
+
+            return dishes;
+        }
+
     }
 
     class Authentifier

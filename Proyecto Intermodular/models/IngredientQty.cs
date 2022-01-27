@@ -1,4 +1,6 @@
-﻿namespace Proyecto_Intermodular.models
+﻿using Proyecto_Intermodular.api.models;
+
+namespace Proyecto_Intermodular.models
 {
     public class IngredientQty
     {
@@ -9,5 +11,6 @@
         public float Quantity { get => quantity; set => quantity = value; }
 
         public IngredientQty() { }
+
     }
 }
