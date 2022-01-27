@@ -110,11 +110,18 @@ namespace Proyecto_Intermodular.userControls
             lstBoxOrders.Items.Clear();
             if (selectedTable == null)
             {
-                lblSelectedTable.Content = $"MESA SELECCIONADA: ";
+                lblSelectedTable.Content = $"MESA SELECCIONADA:";
                 return;
             }
-            lblSelectedTable.Content = $"Table Selected: {selectedTable.Id}";
+            lblSelectedTable.Content = $"MESA SELECCIONADA: {selectedTable.Id}";
             loadOrders();
+        }
+
+        private void UnSelectTable(Table table)
+        {
+            selectedTable = null;
+            lstBoxOrders.Items.Clear();
+            lblSelectedTable.Content = "MESA SELECCIONADA:";
         }
 
         private void DeleteTable(Table table)
@@ -178,11 +185,15 @@ namespace Proyecto_Intermodular.userControls
             isEditingTableLayout = !isEditingTableLayout;
             imgMove.Source = new BitmapImage(new Uri(isEditingTableLayout ? "/Proyecto Intermodular;component/images/move_enabled_icon.png" : "/Proyecto Intermodular;component/images/move_icon.png", UriKind.Relative));
         }
-        private void btnDelete_Click(object sender, RoutedEventArgs e) => DeleteTable(selectedTable);
-        private void btnSave_Click(object sender, RoutedEventArgs e) => tables.ForEach(async table => await DeliiApi.UpdateTable(table));
+        private void btnDelete_Click(object sender, RoutedEventArgs e)
+        {
+            DeleteTable(selectedTable);
 
+            selectedTable = null;
+        }
+        private void btnSave_Click(object sender, RoutedEventArgs e) => tables.ForEach(async table => await DeliiApi.UpdateTable(table));
+        private void btnReload_Click(object sender, RoutedEventArgs e) => UpdateCanvasTables();
         #endregion
 
-        private void btnReload_Click(object sender, RoutedEventArgs e) => UpdateCanvasTables();
     }
 }

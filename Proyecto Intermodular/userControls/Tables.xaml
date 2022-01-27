@@ -60,21 +60,14 @@
                         <Grid.RowDefinitions>
                             <RowDefinition Height="30"/>
                             <RowDefinition Height="*"/>
-                            <RowDefinition Height="30"/>
+                            <RowDefinition Height="100"/>
                         </Grid.RowDefinitions>
                         
                         <Label Content="Lista de pedidos" FontWeight="Bold" />
-                        <ListBox x:Name="lstBoxOrders" Grid.Row="1" BorderThickness="0">
-                            <ListBox.ItemContainerStyle>
-                                <Style TargetType="ListBoxItem">
-                                    <Setter Property="HorizontalAlignment" Value="Stretch"/>
-                                </Style>
-                            </ListBox.ItemContainerStyle>
-                            <ListBoxItem>
-                                <local:OrderItem DishName="Albóndigas" DishPrice="20 €" HorizontalAlignment="Stretch"/>
-                            </ListBoxItem>
-                        </ListBox>
-                        <Button Grid.Row="2"/>
+
+                        <ListBox x:Name="lstBoxOrders" Grid.Row="1" BorderThickness="0"/>
+
+                        <local:OrderItem DishName="Albondigas" DishPrice="5.00 €" Grid.Row="2"/>
                     </Grid>
                 </Border>
             </Grid>
