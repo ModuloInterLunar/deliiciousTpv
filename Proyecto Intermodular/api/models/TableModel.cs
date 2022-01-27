@@ -9,7 +9,7 @@ namespace Proyecto_Intermodular.api.models
         private double posY;
         private double width;
         private double height;
-        private string actualTicket;
+        private string actualTicket = "";
 
         public TableModel(Table table)
         {
@@ -18,7 +18,9 @@ namespace Proyecto_Intermodular.api.models
             posY = table.PosY;
             width = table.Width;
             height = table.Height;
-            actualTicket = table.ActualTicket.Id;
+            if(table.ActualTicket != null)
+                actualTicket = table.ActualTicket.Id;
+
         }
 
         public TableModel() { }
