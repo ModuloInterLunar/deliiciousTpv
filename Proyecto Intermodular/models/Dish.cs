@@ -22,6 +22,11 @@ namespace Proyecto_Intermodular.models
         public string Description { get => description; set => description = value; }
         public string Image { get => image; set => image = value; }
 
+        public override string ToString()
+        {
+            return $"Id: {id}, Name: {name}, Type: {type}, Price: {price}, Description: {Description}, Image: {Image}";
+        }
+
         public Dish(string id, string name, float price)
         {
             this.id = id;

@@ -46,7 +46,17 @@ namespace Proyecto_Intermodular
             InitializeComponent();
             // UpdateDataset();
             // StartTimer();
+
         }
+
+        //private async void showDishes()
+        //{
+        //    List<Dish> dishes = await DeliiApi.GetAllDishes();
+
+        //    MessageBox.Show(dishes[0].ToString());
+        //    //MessageBox.Show((dishes[0] as Food).ToString());
+        //}
+
         private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
         {
             ucTables.UpdateTablesPosition();

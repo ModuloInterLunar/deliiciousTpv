@@ -9,10 +9,10 @@ namespace Proyecto_Intermodular.models
 {
     public class Food : Dish
     {
-        private IngredientQty ingredients;
-        public Food(string id, string name, float price, string description, IngredientQty ingredients) : base(id, name, price, description)
+        private List<IngredientQty> ingredientQties;
+        public Food(string id, string name, float price, string description, List<IngredientQty> ingredientQties) : base(id, name, price, description)
         {
-            this.ingredients = ingredients;
+            this.ingredientQties = ingredientQties;
         }
 
         public Food(FoodOrDrink food)
@@ -21,14 +21,18 @@ namespace Proyecto_Intermodular.models
             Name = food.Name;
             Price = food.Price;
             Description = food.Description;
-            ingredients = food.Ingredients;
+            ingredientQties = food.IngredientQties;
         }
 
-        public Food()
+        public Food() { }
+
+        public override string ToString()
         {
-
+            string ingredients = "";
+            ingredientQties.ForEach(ingredientQty => ingredients += ingredientQty.Ingredient.Name + ": " + ingredientQty.Quantity + ", " );
+            return $"Id: {Id}, Name: {Name}, Price: {Price}, Description: {Description}, IngredientQties: { ingredients }";
         }
 
-        public IngredientQty Ingredients { get => ingredients; set => ingredients = value; }
+        public List<IngredientQty> IngredientQties { get => ingredientQties; set => ingredientQties = value; }
     }
 }

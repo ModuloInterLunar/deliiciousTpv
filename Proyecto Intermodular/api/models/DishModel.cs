@@ -1,4 +1,5 @@
 ﻿using Proyecto_Intermodular.models;
+using System.Collections.Generic;
 
 namespace Proyecto_Intermodular.api.models
 {
@@ -8,7 +9,7 @@ namespace Proyecto_Intermodular.api.models
         private string name;
         private string type;
         private float quantity;
-        private IngredientQtyModel ingredients;
+        private List<IngredientQtyModel> ingredientQties;
         private float price;
         private string description;
         private string image;
@@ -17,7 +18,7 @@ namespace Proyecto_Intermodular.api.models
         public string Name { get => name; set => name = value; }
         public string Type { get => type; set => type = value; }
         public float Quantity { get => quantity; set => quantity = value; }
-        public IngredientQtyModel Ingredients { get => ingredients; set => ingredients = value; }
+        public List<IngredientQtyModel> IngredientsQties { get => ingredientQties; set => ingredientQties = value; }
         public float Price { get => price; set => price = value; }
         public string Description { get => description; set => description = value; }
         public string Image { get => image; set => image = value; }
@@ -33,7 +34,7 @@ namespace Proyecto_Intermodular.api.models
         {
             id = food.Id;
             name = food.Name;
-            ingredients = new IngredientQtyModel(food.Ingredients);
+            ingredientQties = food.IngredientQties.ConvertAll(ingredientQty => new IngredientQtyModel(ingredientQty));
         }
 
         protected DishModel() { }
