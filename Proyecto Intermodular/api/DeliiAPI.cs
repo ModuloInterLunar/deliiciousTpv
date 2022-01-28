@@ -57,6 +57,15 @@ namespace Proyecto_Intermodular.api
             return emp;
         }
 
+        public static async Task<Ticket> GetTicket(string ticketId)
+        {
+            string uri = $"{API_URL}tickets/{ticketId}";
+            string ticketJson = await DeliiApiClient.Get(uri);
+
+            Ticket ticket = JsonSerializer.Deserialize<Ticket>(ticketJson, DeliiApiClient.GetJsonOptions());
+            return ticket;
+        }
+
         public static async Task<List<Employee>> GetAllEmployees()
         {
             string uri = API_URL + "employees";
@@ -96,6 +105,27 @@ namespace Proyecto_Intermodular.api
             }
         }
 
+        public static async Task<Order> CreateOrder(Order order)
+        {
+            string uri = API_URL + "orders";
+
+            try
+            {
+                OrderModel orderModel = new(order);
+
+                string createdOrderJson = await DeliiApiClient.Post(uri, orderModel);
+                Order createdOrder = JsonSerializer.Deserialize<Order>(createdOrderJson, DeliiApiClient.GetJsonOptions());
+
+                return createdOrder;
+            }
+            catch (DeliiApiException ex)
+            {
+                if (ex.Message.Contains("Can't create table!"))
+                    throw new UserNotFoundException(ex.Message);
+                throw new DeliiApiException(ex.Message);
+            }
+        }
+
         public static async Task<Table> UpdateTable(Table table)
         {
             string uri = API_URL + "tables/" + table.Id;
@@ -104,6 +134,16 @@ namespace Proyecto_Intermodular.api
             Table updatedTable = JsonSerializer.Deserialize<Table>(updatedTableJson, DeliiApiClient.GetJsonOptions());
 
             return updatedTable;
+        }
+
+        public static async Task<Ticket> UpdateTicket(Ticket ticket)
+        {
+            string uri = $"{API_URL}tickets/{ticket.Id}";
+            TicketModel ticketModel = new TicketModel(ticket);
+            string updatedTicketJson = await DeliiApiClient.Patch(uri, ticketModel);
+            Ticket updatedTicket = JsonSerializer.Deserialize<Ticket>(updatedTicketJson, DeliiApiClient.GetJsonOptions());
+
+            return updatedTicket;
         }
 
         public static async void RemoveTable(Table table)

@@ -65,11 +65,11 @@
 
                         <Label Content="Lista de pedidos" FontWeight="Bold" />
 
-                        <StackPanel Orientation="Vertical" Grid.Row="1" x:Name="stackOrders">
-                            <local:OrderItem DishName="Albondigas" DishPrice="5.00 €" Grid.Row="1"/>
-                        </StackPanel>
-
-                        <Button Grid.Row="2" Content="Add order" HorizontalAlignment="Center"/>
+                        <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" Grid.Row="1">
+                            <StackPanel Orientation="Vertical" x:Name="stackOrders"/>
+                        </ScrollViewer>
+                            
+                        <Button Grid.Row="2" Content="Add order" HorizontalAlignment="Center" x:Name="btnAddOrder" Click="btnAddOrder_Click"/>
                     </Grid>
                 </Border>
             </Grid>

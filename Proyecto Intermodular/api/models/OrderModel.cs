@@ -7,12 +7,13 @@ namespace Proyecto_Intermodular.api.models
         private string id;
         private string ticket;
         private string dish;
-        private bool isServed;
+        private bool hasBeenServed;
+        private bool hasBeenCoocked;
         private bool isIncluded;
         private string description;
         private string createdAt;
         private string updatedAt;
-        private Employee employee;
+        private string employee;
         private string table;
 
         public OrderModel(Order order)
@@ -20,10 +21,12 @@ namespace Proyecto_Intermodular.api.models
             this.id = order.Id;
             this.ticket = order.Ticket;
             this.dish = order.Dish.Id;
-            isServed = order.IsServed;
-            isIncluded = order.IsIncluded;
+            this.hasBeenServed = order.HasBeenServed;
+            this.hasBeenCoocked = order.HasBeenCoocked;
+            this.isIncluded = order.IsIncluded;
+            this.table = order.Table;
             this.description = order.Description;
-            this.employee = order.Employee;
+            this.employee = order.Employee.Id;
         }
 
         public OrderModel() { }
@@ -31,12 +34,13 @@ namespace Proyecto_Intermodular.api.models
         public string Id { get => id; set => id = value; }
         public string Ticket { get => ticket; set => ticket = value; }
         public string Dish { get => dish; set => dish = value; }
-        public bool IsServed { get => isServed; set => isServed = value; }
+        public bool HasBeenServed { get => hasBeenServed; set => hasBeenServed = value; }
         public bool IsIncluded { get => isIncluded; set => isIncluded = value; }
-        public Employee Employee { get => employee; set => employee = value; }
+        public string Employee { get => employee; set => employee = value; }
         public string Description { get => description; set => description = value; }
         public string CreatedAt { get => createdAt; set => createdAt = value; }
         public string UpdatedAt { get => updatedAt; set => updatedAt = value; }
         public string Table { get => table; set => table = value; }
+        public bool HasBeenCoocked { get => hasBeenCoocked; set => hasBeenCoocked = value; }
     }
 }
