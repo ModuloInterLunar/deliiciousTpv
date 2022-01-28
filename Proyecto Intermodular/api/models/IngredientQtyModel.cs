@@ -5,10 +5,10 @@ namespace Proyecto_Intermodular.api.models
     public class IngredientQtyModel
     {
         private string ingredient;
-        private float quantity;
+        private double quantity;
 
         public string Ingredient { get => ingredient; set => ingredient = value; }
-        public float Quantity { get => quantity; set => quantity = value; }
+        public double Quantity { get => quantity; set => quantity = value; }
 
         public IngredientQtyModel() { }
 

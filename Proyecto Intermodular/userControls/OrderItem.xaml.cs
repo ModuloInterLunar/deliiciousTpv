@@ -14,7 +14,7 @@ namespace Proyecto_Intermodular.userControls
             DataContext = this;
         }
 
-        public string DishName { set => lblDishName.Content = value; get => lblDishName.Content.ToString(); }
+        public string DishName { set => lblDishName.Text = value; get => lblDishName.Text.ToString(); }
         public string DishPrice { set => lblPrice.Content = value; get => lblPrice.Content.ToString(); }
         public string DescriptionInput { set => txtBoxDescription.Text = value; get => txtBoxDescription.Text; }
 

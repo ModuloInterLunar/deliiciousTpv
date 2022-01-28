@@ -19,9 +19,7 @@
 
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="5">
                 <Image Width="50" Source="/Proyecto Intermodular;component/images/dish_icon.png" VerticalAlignment="Center"/>
-                <Viewbox Stretch="UniformToFill" StretchDirection="DownOnly">
-                    <Label x:Name="lblDishName" Content="{Binding DishName}" VerticalAlignment="Center" HorizontalAlignment="Center" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Margin="5 0 0 0" FontWeight="Bold"/>
-                </Viewbox>
+                <TextBlock x:Name="lblDishName" TextWrapping="WrapWithOverflow" Text="{Binding DishName}" Width="50" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="5 0 0 0" FontWeight="Bold"/>
             </StackPanel>
 
                 <Label x:Name="lblPrice" Content="{Binding DishPrice}" VerticalContentAlignment="Center" Grid.Column="1" HorizontalAlignment="Left" FontWeight="Bold"/>

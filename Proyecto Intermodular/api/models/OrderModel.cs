@@ -19,7 +19,7 @@ namespace Proyecto_Intermodular.api.models
         {
             this.id = order.Id;
             this.ticket = order.Ticket;
-            this.dish = order.Dish;
+            this.dish = order.Dish.Id;
             isServed = order.IsServed;
             isIncluded = order.IsIncluded;
             this.description = order.Description;
