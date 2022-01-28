@@ -188,7 +188,7 @@ namespace Proyecto_Intermodular.userControls
         private void btnDelete_Click(object sender, RoutedEventArgs e)
         {
             DeleteTable(selectedTable);
-            selectedTable = null;
+            UnSelectTable(selectedTable);
         }
         private void btnSave_Click(object sender, RoutedEventArgs e) => tables.ForEach(async table => await DeliiApi.UpdateTable(table));
         private void btnReload_Click(object sender, RoutedEventArgs e) => UpdateCanvasTables();
