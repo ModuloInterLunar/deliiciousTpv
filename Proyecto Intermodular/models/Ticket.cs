@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Proyecto_Intermodular.api;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -42,7 +43,11 @@ namespace Proyecto_Intermodular.models
         public string UpdatedAt { get => updatedAt; set => updatedAt = value; }
         public List<Order> Orders { get => orders; set => orders = value; }
 
-        public void AddOrder(Order order) => orders.Add(order);
+        public async Task AddOrder(Order order, Ticket actualTicket)
+        {
+            orders.Add(order);
+            actualTicket = await DeliiApi.UpdateTicket(actualTicket);
+        }
         public void RemoveOrder(Order order) => orders.Remove(order);
     }
 }

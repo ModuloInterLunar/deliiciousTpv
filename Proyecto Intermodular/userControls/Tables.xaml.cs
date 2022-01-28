@@ -18,6 +18,7 @@ namespace Proyecto_Intermodular.userControls
         private List<Table> tables;
         private Table selectedTable;
         private bool isEditingTableLayout;
+        private Employee currentUser = new() { Id = "1" };
 
         public Tables()
         {
@@ -102,7 +103,6 @@ namespace Proyecto_Intermodular.userControls
                 SelectTable(table);
                 if (isEditingTableLayout) DragDrop.DoDragDrop(label, new DataObject(DataFormats.Serializable, label), DragDropEffects.Move);
             });
-
         }
         private void SelectTable(Table table)
         {
@@ -155,13 +155,14 @@ namespace Proyecto_Intermodular.userControls
             if (selectedTable.ActualTicket == null) return;
             selectedTable.ActualTicket.Orders.ForEach(order =>
             {
-                OrderItem orderItem = new() {
+                order.OrderItem = new() {
                     DishName = order.Dish.Name,
-                    DishPrice = "0.00 €",
+                    DishPrice = $"{order.Dish.Price} €",
                     DescriptionInput = order.Description,
+                    Margin = new(5)
                 };
 
-                stackOrders.Children.Add(orderItem);
+                stackOrders.Children.Add(order.OrderItem);
             });
         }
         #endregion
@@ -192,7 +193,38 @@ namespace Proyecto_Intermodular.userControls
         }
         private void btnSave_Click(object sender, RoutedEventArgs e) => tables.ForEach(async table => await DeliiApi.UpdateTable(table));
         private void btnReload_Click(object sender, RoutedEventArgs e) => UpdateCanvasTables();
-        #endregion
+        private async void btnAddOrder_Click(object sender, RoutedEventArgs e)
+        {
+            if (selectedTable == null || selectedTable.ActualTicket == null) return;
 
+            List<Dish> dishes = await DeliiApi.GetAllDishes();
+            if (dishes == null || dishes.Count <= 0)
+                return;
+
+            Order order = await DeliiApi.CreateOrder(new()
+            {
+                Dish = dishes[0],
+                Ticket = selectedTable.ActualTicket.Id,
+                HasBeenCoocked = false,
+                HasBeenServed = false,
+                Description = "Esto es la descripción",
+                Employee = currentUser,
+                Table = selectedTable.Id,
+            }
+            );
+
+            order.OrderItem = new()
+            {
+                DishName = order.Dish.Name,
+                DishPrice = $"{order.Dish.Price} €",
+                DescriptionInput = order.Description,
+                Margin = new(5)
+            };
+
+            stackOrders.Children.Add(order.OrderItem);
+
+            await selectedTable.ActualTicket.AddOrder(order, selectedTable.ActualTicket);
+        }
+        #endregion
     }
 }

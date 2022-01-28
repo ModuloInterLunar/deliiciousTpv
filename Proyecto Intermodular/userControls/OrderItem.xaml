@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:Proyecto_Intermodular.userControls"
              mc:Ignorable="d"
              HorizontalAlignment="Stretch"
-             Height="65">
+             Height="70">
 
     <Border BorderBrush="Black" BorderThickness="0 2 0 2" CornerRadius="5">
         <Grid>
@@ -19,7 +19,7 @@
 
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="5">
                 <Image Width="50" Source="/Proyecto Intermodular;component/images/dish_icon.png" VerticalAlignment="Center"/>
-                <TextBlock x:Name="lblDishName" TextWrapping="WrapWithOverflow" Text="{Binding DishName}" Width="50" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="5 0 0 0" FontWeight="Bold"/>
+                <TextBlock x:Name="lblDishName" TextWrapping="WrapWithOverflow" Text="{Binding DishName}" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="5 0 0 0" FontWeight="Bold"/>
             </StackPanel>
 
                 <Label x:Name="lblPrice" Content="{Binding DishPrice}" VerticalContentAlignment="Center" Grid.Column="1" HorizontalAlignment="Left" FontWeight="Bold"/>
