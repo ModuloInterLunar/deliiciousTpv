@@ -19,7 +19,6 @@ namespace Proyecto_Intermodular
 
     public partial class MainWindow : Window
     {
-        /*
         bool isDroppingOverOtherTable;
         List<Table> tables;
         List<Order> orders;
@@ -39,14 +38,11 @@ namespace Proyecto_Intermodular
 
         Employee currentUser;
         private bool isEditingTableLayout;
-        */
 
         public MainWindow()
         {
             InitializeComponent();
-            // UpdateDataset();
-            // StartTimer();
-
+            StartTimer();
         }
 
         //private async void showDishes()
@@ -60,24 +56,14 @@ namespace Proyecto_Intermodular
         private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
         {
             ucTables.UpdateTablesPosition();
-            /*
-            if (tables == null) return;
-            tables.ForEach(table =>
-            {
-                table.UpdateRelativePosition(cnvTables.ActualWidth, cnvTables.ActualHeight);
-                Canvas.SetLeft(table.Label, table.PosXRelative);
-                Canvas.SetTop(table.Label, table.PosYRelative);
-            });
-            */
         }
 
-        /*
         public void StartTimer()
         {
             LoadTimerImages();
             timerStage = 0;
             DispatcherTimer timer = new DispatcherTimer();
-            timer.Interval = TimeSpan.FromSeconds(2);
+            timer.Interval = TimeSpan.FromMilliseconds(200);
             timer.Tick += TimerTick;
             timer.Start();
         }
@@ -106,8 +92,7 @@ namespace Proyecto_Intermodular
             else
                 UpdateUI();
 
-            UpdateCanvasTables();
-            GenerateOrders();
+            ucTables.UpdateCanvasTables();
         }
 
 
@@ -136,206 +121,8 @@ namespace Proyecto_Intermodular
                     ? "Empleado: default user"
                     : "Empleado: " + currentUser.FullName;
         }
-
-        #region Tab 1
-
-        private async void UpdateCanvasTables()
-        {
-            if (isEditingTableLayout) return;
-
-            List<Table> updatedTables = await DeliiApi.GetAllTables();
-
-            if (tables == null)
-            {
-                tables = updatedTables;
-                tables.ForEach(table => CreateTable(table));
-                return;
-            }
-
-
-            updatedTables.ForEach(updatedTable =>
-            {
-                Table table = tables.Find(table => table.Id == updatedTable.Id);
-                if (table != null)
-                {
-                    table.UpdateData(updatedTable);
-                    UpdateLabel(table);
-                } 
-                else
-                {
-                    tables.Add(updatedTable);
-                    CreateTable(updatedTable);
-                }
-            });
-
-            RemoveOldTables(updatedTables);
-
-            if (!tables.Contains(selectedTable))
-                SelectTable(null);
-        }
-
-        private void RemoveOldTables(List<Table> updatedTables)
-        {
-            List<Table> tablesToRemove = new();
-            tables.ForEach(table =>
-            {
-                Table updatedTable = updatedTables.Find(updatedTable => updatedTable.Id == table.Id);
-                if (updatedTable == null)
-                {
-                    cnvTables.Children.Remove(table.Label);
-                    tablesToRemove.Add(table);
-                }
-            });
-
-            tablesToRemove.ForEach(tableToRemove => tables.Remove(tableToRemove));
-        }
-
-        private void UpdateLabel(Table table)
-        {
-            Label label = table.Label;
-            label.Width = table.Width;
-            label.Height = table.Height;
-            table.UpdateRelativePosition(cnvTables.ActualWidth, cnvTables.ActualHeight);
-            Canvas.SetLeft(label, table.PosXRelative);
-            Canvas.SetTop(label, table.PosYRelative);
-        }
-
-        private void CreateTable(Table table) { 
-            Label label = new();
-            label.Background = (SolidColorBrush)new BrushConverter().ConvertFromString("#FF7AA0CD");
-            label.Content = table.Id;
-            label.VerticalContentAlignment = VerticalAlignment.Center;
-            label.HorizontalContentAlignment = HorizontalAlignment.Center;
-            label.MaxWidth = 100;
-            label.Width = table.Width;
-            label.Height = table.Height;
-            label.AllowDrop = true;
-            cnvTables.Children.Add(label);
-            table.Label = label;
-            table.UpdateRelativePosition(cnvTables.ActualWidth, cnvTables.ActualHeight);
-            Canvas.SetLeft(label, table.PosXRelative);
-            Canvas.SetTop(label, table.PosYRelative);
-
-            label.MouseLeftButtonUp += new MouseButtonEventHandler((object sender, MouseButtonEventArgs e) =>
-            {
-                SelectTable(table);
-            });
-            label.MouseMove += new MouseEventHandler((object sender, MouseEventArgs e) => 
-            {
-                if (e.LeftButton != MouseButtonState.Pressed) return;
-
-                SelectTable(table);
-                if (isEditingTableLayout) DragDrop.DoDragDrop(label, new DataObject(DataFormats.Serializable, label), DragDropEffects.Move);
-            });
-
-            border.Drop += new DragEventHandler((object sender, DragEventArgs e) => {
-                Border borderForDelete = (Border)e.Data.GetData(DataFormats.Serializable);
-                MessageBox.Show(GetTable(borderForDelete).ToString());
-                if (border == borderForDelete) return;
-
-                table.ChangeTableSize(borderForDelete.Width, 0);
-
-                Table tableForDelete = GetTable(borderForDelete);
-                DeleteTable(tableForDelete);
-                SelectTable(table);
-            });
-        }
         
-        private void SelectTable(Table table)
-        {
-            selectedTable = table;
-            if (selectedTable == null)
-            {
-                lblTableSelected.Content = $"Table Selected: ";
-                return;
-            }
-            lblTableSelected.Content = $"Table Selected: {selectedTable.Id}";
-        }
-
-        private void DeleteTable(Table table)
-        {
-            isDroppingOverOtherTable = true;
-            DeliiApi.RemoveTable(table);
-            cnvTables.Children.Remove(table.Label);
-            tables.Remove(table);
-        }
-
-        private Table GetTable(UIElement element)
-        {
-            foreach (Table table in tables)
-                if (table.Label == element) return table;
-
-            return null;
-        }
-
-        private void MoveTable(DragEventArgs e, Label label)
-        {
-            Point dropPos = e.GetPosition(cnvTables);
-            Size offset = new(label.Width / 2, label.Height / 2);
-
-            Table table = GetTable(label);
-
-            double left = (dropPos.X > cnvTables.ActualWidth - offset.Width)
-                            ? cnvTables.ActualWidth - offset.Width * 2
-                            : (dropPos.X < offset.Width)
-                                ? 0
-                                : dropPos.X - offset.Width;
-
-            double top = (dropPos.Y > cnvTables.ActualHeight - offset.Height)
-                            ? cnvTables.ActualHeight - offset.Height * 2 
-                            : (dropPos.Y < offset.Height)
-                                ? 0
-                                : dropPos.Y - offset.Height;
-
-            Point newPoint = new(left, top);
-            table.SetPosition(newPoint, cnvTables.ActualWidth, cnvTables.ActualHeight);
-            Canvas.SetLeft(label, left);
-            Canvas.SetTop(label, top);
-        }
-
-        private void CnvTables_Drop(object sender, DragEventArgs e)
-        {
-            if (isDroppingOverOtherTable)
-            {
-                isDroppingOverOtherTable = false;
-                return;
-            }
-
-            object data = e.Data.GetData(DataFormats.Serializable);
-            if(data is Label label) MoveTable(e, label);
-        }
-
-        private void CnvTables_DragOver(object sender, DragEventArgs e)
-        {
-            object data = e.Data.GetData(DataFormats.Serializable);
-            if (data is Label label) MoveTable(e, label);
-        }
-
-        private void BtnDistribution_Click(object sender, RoutedEventArgs e) => isEditingTableLayout = !isEditingTableLayout;
-
-        private void BtnSaveDistribution_Click(object sender, RoutedEventArgs e)
-        {
-            tables.ForEach(async table => await DeliiApi.UpdateTable(table));
-        }
-
-        private async void BtnAddTable_Click(object sender, RoutedEventArgs e)
-        {
-            Table table = await DeliiApi.CreateTable(new Table(0,0));
-            tables.Add(table);
-            Application.Current.Dispatcher.Invoke(() =>
-            {
-                CreateTable(table);
-            });
-        }
-
-        private void BntDeleteTable_Click(object sender, RoutedEventArgs e)
-        {
-            if (selectedTable == null) return;
-            DeleteTable(selectedTable);
-            lblTableSelected.Content = "Table Selected:";
-        }
-        #endregion
-
+        /*
 
         #region Cocina
         
