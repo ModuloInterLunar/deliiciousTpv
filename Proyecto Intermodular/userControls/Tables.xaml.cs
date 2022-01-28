@@ -155,13 +155,13 @@ namespace Proyecto_Intermodular.userControls
             if (selectedTable.ActualTicket == null) return;
             selectedTable.ActualTicket.Orders.ForEach(order =>
             {
-                OrderItem orderModel = new() {
-                    DishName = order.Dish,
+                OrderItem orderItem = new() {
+                    DishName = order.Dish.Name,
                     DishPrice = "0.00 €",
                     DescriptionInput = order.Description,
                 };
 
-                stackOrders.Children.Add(orderModel);
+                stackOrders.Children.Add(orderItem);
             });
         }
         #endregion

@@ -4,7 +4,7 @@
     {
         private string id;
         private string ticket;
-        private string dish;
+        private Dish dish;
         private bool isServed;
         private bool isIncluded;
         private string description;
@@ -13,7 +13,7 @@
         private Employee employee;
         private string table;
 
-        public Order(string id, string ticket, string dish, string description, Employee employee)
+        public Order(string id, string ticket, Dish dish, string description, Employee employee)
         {
             this.id = id;
             this.ticket = ticket;
@@ -24,7 +24,7 @@
             this.employee = employee;
         }
 
-        public Order(string id, string ticket, string dish, bool isServed, bool isIncluded, Employee employee)
+        public Order(string id, string ticket, Dish dish, bool isServed, bool isIncluded, Employee employee)
         {
             this.id = id;
             this.ticket = ticket;
@@ -34,7 +34,7 @@
             this.employee = employee;
         }
 
-        public Order(string id, string ticket, string dish, bool isServed, bool isIncluded, string description, Employee employee)
+        public Order(string id, string ticket, Dish dish, bool isServed, bool isIncluded, string description, Employee employee)
         {
             this.id = id;
             this.ticket = ticket;
@@ -49,7 +49,7 @@
 
         public string Id { get => id; set => id = value; }
         public string Ticket { get => ticket; set => ticket = value; }
-        public string Dish { get => dish; set => dish = value; }
+        public Dish Dish { get => dish; set => dish = value; }
         public bool IsServed { get => isServed; set => isServed = value; }
         public bool IsIncluded { get => isIncluded; set => isIncluded = value; }
         public Employee Employee { get => employee; set => employee = value; }

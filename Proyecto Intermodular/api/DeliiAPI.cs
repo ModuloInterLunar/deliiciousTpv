@@ -128,14 +128,7 @@ namespace Proyecto_Intermodular.api
             string uri = API_URL + "dishes";
             string dishesJson = await DeliiApiClient.Get(uri);
 
-            List<FoodOrDrink> foodOrDrinks = JsonSerializer.Deserialize<List<FoodOrDrink>>(dishesJson, DeliiApiClient.GetJsonOptions());
-
-            List<Dish> dishes = foodOrDrinks.ConvertAll<Dish>(dish => {
-                if (dish.Type == "Food")
-                    return new Food(dish);
-                else
-                    return new Drink(dish);
-            }).ToList();
+            List<Dish> dishes = JsonSerializer.Deserialize<List<Dish>>(dishesJson, DeliiApiClient.GetJsonOptions());
 
             return dishes;
         }
