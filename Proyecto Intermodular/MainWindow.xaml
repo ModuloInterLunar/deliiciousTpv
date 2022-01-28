@@ -11,87 +11,13 @@
         Title="MainWindow" Height="450" Width="800" SizeChanged="Window_SizeChanged">
 
     <Grid>
+        <Image x:Name="imgTimer" Source="/Proyecto Intermodular;component/images/timer/timer_1.png" Width="30" HorizontalAlignment="Left" Height="41" VerticalAlignment="Bottom" Margin="10,0,0,10" />
         <TabControl TabStripPlacement="Left">
             <TabItem Header="MESAS">
                 <uc:Tables x:Name="ucTables"/>
             </TabItem>
             
             <!--
-            <TabItem>
-                <TabItem.Header>
-                    <Label Content="MESAS"/>
-                </TabItem.Header>
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="2*"/>
-                    </Grid.ColumnDefinitions>
-
-                    <Grid x:Name="gridTables" Margin="10">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="*"/>
-                        </Grid.RowDefinitions>
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="20"/>
-                                <ColumnDefinition Width="20"/>
-                                <ColumnDefinition Width="20"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-
-                            <Button Background="Transparent" BorderThickness="0" x:Name="btnReloadTables">
-                                <Image Source="/Proyecto Intermodular;component/images/reload_icon.png"/>
-                            </Button>
-
-                            <ToggleButton x:Name="btnDistribution" Click="BtnDistribution_Click" BorderThickness="0" Background="Transparent" Grid.Column="1">
-                                <Image Source="/Proyecto Intermodular;component/images/move_icon.png"/>
-                            </ToggleButton>
-
-                            <Button Grid.Column="2" x:Name="btnSaveDistribution" Click="BtnSaveDistribution_Click" Background="Transparent" BorderThickness="0">
-                                <Image Source="/Proyecto Intermodular;component/images/save_icon.png"/>
-                            </Button>
-
-                            <Button Grid.Column="3" Content="Añadir mesa" x:Name="btnAddTable" Click="BtnAddTable_Click"/>
-                        </Grid>
-
-                        <Canvas x:Name="cnvTables" Grid.Row="1" Background="BurlyWood" AllowDrop="True" Drop="CnvTables_Drop" DragOver="CnvTables_DragOver"/>
-                    </Grid>
-
-                    <Grid Grid.Column="3" Margin="10">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
-
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="30"/>
-                            <RowDefinition Height="*"/>
-                            <RowDefinition Height="*"/>
-                            <RowDefinition Height="*"/>
-                        </Grid.RowDefinitions>
-
-                        <Label Content="Table Selected:" x:Name="lblTableSelected"/>
-
-                        <Button x:Name="bntDeleteTable" Click="BntDeleteTable_Click" Content="Delete Table" Grid.Column="2"/>
-
-                        <Grid Grid.Row="1" Grid.ColumnSpan="2" Grid.RowSpan="2">
-
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="30"/>
-                                <RowDefinition Height="*"/>
-                            </Grid.RowDefinitions>
-
-                            <Label Content="Orders:"/>
-
-                            <ListBox Grid.Row="1" x:Name="ordersList"/>
-                        </Grid>
-
-                        <Image x:Name="imgTimer" Grid.Column="2" Height="25" Margin="0,0,10,10" HorizontalAlignment="Right" VerticalAlignment="Bottom" Grid.Row="3" Width="20" Source="/Proyecto Intermodular;component/images/timer/timer_1.png"/>
-                    </Grid>
-                </Grid>
-            </TabItem>
 
             <TabItem Header="Option 2">
 
@@ -144,13 +70,14 @@
                 </Grid>
 
             </TabItem>
+            -->
+
             <TabItem Header="Cocina">
                 <ScrollViewer>
                     <StackPanel x:Name="panelKitchen" Orientation="Vertical">
                     </StackPanel>
                 </ScrollViewer>
             </TabItem>
-            -->
         </TabControl>
     </Grid>
 </Window>
