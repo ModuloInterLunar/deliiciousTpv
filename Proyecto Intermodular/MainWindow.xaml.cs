@@ -19,10 +19,7 @@ namespace Proyecto_Intermodular
 
     public partial class MainWindow : Window
     {
-        bool isDroppingOverOtherTable;
-        List<Table> tables;
         List<Order> orders;
-        Table selectedTable;
         int timerStage;
 
         List<Uri> timerImagesUris = new()
@@ -37,7 +34,6 @@ namespace Proyecto_Intermodular
         List<ImageSource> timerImages = new();
 
         Employee currentUser;
-        private bool isEditingTableLayout;
 
         public MainWindow()
         {
@@ -93,6 +89,7 @@ namespace Proyecto_Intermodular
                 UpdateUI();
 
             ucTables.UpdateCanvasTables();
+            GenerateOrders();
         }
 
 
@@ -122,17 +119,36 @@ namespace Proyecto_Intermodular
                     : "Empleado: " + currentUser.FullName;
         }
         
-        /*
 
         #region Cocina
-        
 
         private async void GenerateOrders()
         {
-            panelKitchen.Children.Clear();
-            orders = await DeliiApi.GetAllOrders();
 
-            orders.ForEach(order => CreateOrder(order));
+            List<Order> updatedOrders= await DeliiApi.GetAllOrders();
+
+            if (orders == null)
+            {
+                orders = updatedOrders;
+                orders.ForEach(order => CreateOrder(order));
+                return;
+            }
+
+            updatedOrders.ForEach(updatedOrder =>
+            {
+                Order order = orders.Find(order => order.Id == updatedOrder.Id);
+                if (order != null)
+                { 
+                    // TODO
+                    // order.UpdateData(updatedOrder);
+                }
+                else
+                {
+                    orders.Add(updatedOrder);
+                    CreateOrder(updatedOrder);
+                }
+            });
+
         }
 
         private void CreateOrder(Order order)
@@ -148,7 +164,7 @@ namespace Proyecto_Intermodular
             border.Child = stackPanel;
 
             Label lblTicket = new Label();
-            lblTicket.Content = $"Ticket: {order.Ticket.Id}";
+            lblTicket.Content = $"Ticket: {order.Ticket}";
             Label lblDish = new();
             lblDish.Content = $"Plato: {order.Dish}";
             Label lblTable = new();
@@ -171,7 +187,7 @@ namespace Proyecto_Intermodular
             panelKitchen.Children.Add(border);
         }
         #endregion
-
+        /*
 
         #region Crear Empleado
 

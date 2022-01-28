@@ -1,4 +1,6 @@
-﻿namespace Proyecto_Intermodular.models
+﻿using System;
+
+namespace Proyecto_Intermodular.models
 {
     public class Order
     {
@@ -57,5 +59,10 @@
         public string CreatedAt { get => createdAt; set => createdAt = value; }
         public string UpdatedAt { get => updatedAt; set => updatedAt = value; }
         public string Table { get => table; set => table = value; }
+
+        public void UpdateData(Order updatedOrder)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
