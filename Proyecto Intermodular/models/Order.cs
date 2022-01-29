@@ -64,7 +64,7 @@ namespace Proyecto_Intermodular.models
 
         public void UpdateData(Order updatedOrder)
         {
-            
+            throw new NotImplementedException();
         }
 
         public OrderItem OrderItem { get => orderItem; set => orderItem = value; }
