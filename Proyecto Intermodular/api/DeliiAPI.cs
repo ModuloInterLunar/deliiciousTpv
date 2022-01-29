@@ -92,7 +92,8 @@ namespace Proyecto_Intermodular.api
 
             try
             {
-                string createdTableJson = await DeliiApiClient.Post(uri, table);
+                TableModel tableModel = new TableModel(table);
+                string createdTableJson = await DeliiApiClient.Post(uri, tableModel);
                 Table createdTable = JsonSerializer.Deserialize<Table>(createdTableJson, DeliiApiClient.GetJsonOptions());
 
                 return createdTable;

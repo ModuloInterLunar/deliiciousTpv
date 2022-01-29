@@ -15,14 +15,11 @@
 
         <Border BorderBrush="Black" BorderThickness="0" CornerRadius="10" Grid.RowSpan="2">
             <Border.Effect>
-                <DropShadowEffect ShadowDepth="1"/>
+                <DropShadowEffect ShadowDepth="3" BlurRadius="7"/>
             </Border.Effect>
 
             <Border.Background>
-                <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
-                    <GradientStop Color="#9AD0EC" Offset="0.3"/>
-                    <GradientStop Color="#99FEFF" Offset="1"/>
-                </LinearGradientBrush>
+                <SolidColorBrush Color="white"/>
             </Border.Background>
         </Border>
 
