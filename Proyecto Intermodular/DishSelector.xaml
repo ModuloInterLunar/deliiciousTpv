@@ -5,15 +5,42 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Proyecto_Intermodular"
         mc:Ignorable="d"
-        Title="DishSelector" Height="400" Width="600">
+        Title="DishSelector" Height="600" Width="900" WindowState="Maximized" MinWidth="1000" MinHeight="600">
 
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="2.5*"/>
+            <ColumnDefinition Width="2*"/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
 
-        <WrapPanel x:Name="dishesContainer" Margin="10"/>
-        
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <ComboBox HorizontalAlignment="Center" Width="200" Margin="5" x:Name="cmbBoxDishType" SelectionChanged="cmbBoxDishType_SelectionChanged">
+                <ComboBoxItem Content="Todos" IsSelected="True"/>
+                <ComboBoxItem Content="Bebidas" />
+                <ComboBoxItem Content="Comidas" />
+            </ComboBox>
+            
+            <ScrollViewer VerticalScrollBarVisibility="Auto" Grid.Row="1">
+                <WrapPanel x:Name="dishesContainer" Margin="10"/>
+            </ScrollViewer>
+        </Grid>
+
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="50"/>
+            </Grid.RowDefinitions>
+            
+            <ScrollViewer Grid.Column="1" VerticalScrollBarVisibility="Auto" Margin="0,10">
+                <StackPanel Orientation="Vertical" x:Name="selectedDishesContainer"/>
+            </ScrollViewer>
+
+            <Button Grid.Row="1" Content="Aceptar y enviar" HorizontalAlignment="Center" Margin="5" x:Name="btnSendOrders"/>
+        </Grid>
     </Grid>
 </Window>

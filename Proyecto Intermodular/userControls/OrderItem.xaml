@@ -18,7 +18,7 @@
             </Grid.ColumnDefinitions>
 
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="5">
-                <Image Width="50" Source="/Proyecto Intermodular;component/images/dish_icon.png" VerticalAlignment="Center"/>
+                <Image Width="50" Source="{Binding DishImage}" x:Name="imgDish" VerticalAlignment="Center"/>
                 <TextBlock x:Name="lblDishName" TextWrapping="WrapWithOverflow" Text="{Binding DishName}" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="5 0 0 0" FontWeight="Bold"/>
             </StackPanel>
 

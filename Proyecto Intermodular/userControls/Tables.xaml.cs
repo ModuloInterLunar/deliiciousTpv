@@ -183,11 +183,40 @@ namespace Proyecto_Intermodular.userControls
         }
         private void btnSave_Click(object sender, RoutedEventArgs e) => tables.ForEach(async table => await DeliiApi.UpdateTable(table));
         private void btnReload_Click(object sender, RoutedEventArgs e) => UpdateCanvasTables();
-        private async void btnAddOrder_Click(object sender, RoutedEventArgs e)
+        private void btnAddOrder_Click(object sender, RoutedEventArgs e)
         {
             if (selectedTable == null || selectedTable.ActualTicket == null) return;
+            DishSelector dishSelector = new();
+
+            dishSelector.Show();
+
+            dishSelector.btnSendOrders.Click += (object sender, RoutedEventArgs e) =>
+            {
+                if (dishSelector.SelectedDishes == null) return;
+
+                dishSelector.SelectedDishes.ForEach(async dish =>
+                {
+                    Order order = await DeliiApi.CreateOrder(new()
+                    {
+                        Dish = dish,
+                        Ticket = selectedTable.ActualTicket.Id,
+                        HasBeenCoocked = false,
+                        HasBeenServed = false,
+                        Description = "",
+                        Employee = currentUser,
+                        Table = selectedTable.Id
+                    });
+
+                    CreateOrderItem(order);
+                    await selectedTable.ActualTicket.AddOrder(order, selectedTable.ActualTicket);
+
+                    dishSelector.Close();
+                });
+            };
+            /*
             List<Dish> dishes = await DeliiApi.GetAllDishes();
             if (dishes == null || dishes.Count <= 0) return;
+           
 
             Order order = await DeliiApi.CreateOrder(new()
             {
@@ -200,10 +229,13 @@ namespace Proyecto_Intermodular.userControls
                 Table = selectedTable.Id,
             }
             );
+            
 
             CreateOrderItem(order);
+            
 
             await selectedTable.ActualTicket.AddOrder(order, selectedTable.ActualTicket);
+             */
         }
 
         private void CreateOrderItem(Order order)
@@ -213,6 +245,7 @@ namespace Proyecto_Intermodular.userControls
                 DishName = order.Dish.Name,
                 DishPrice = $"{order.Dish.Price} €",
                 DescriptionInput = order.Description,
+                DishImage = new BitmapImage(new Uri(order.Dish.Image)),
                 Margin = new(5)
             };
 

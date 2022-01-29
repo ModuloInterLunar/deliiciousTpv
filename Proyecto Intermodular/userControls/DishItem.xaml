@@ -6,13 +6,25 @@
              xmlns:local="clr-namespace:Proyecto_Intermodular.userControls"
              mc:Ignorable="d"
              d:DesignHeight="200" d:DesignWidth="200">
+
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="2.5*"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
-        
-        <Border Background="GhostWhite" BorderBrush="Black" BorderThickness="1" CornerRadius="10" Grid.RowSpan="2"/>
+
+        <Border BorderBrush="Black" BorderThickness="0" CornerRadius="10" Grid.RowSpan="2">
+            <Border.Effect>
+                <DropShadowEffect ShadowDepth="1"/>
+            </Border.Effect>
+
+            <Border.Background>
+                <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                    <GradientStop Color="#9AD0EC" Offset="0.3"/>
+                    <GradientStop Color="#99FEFF" Offset="1"/>
+                </LinearGradientBrush>
+            </Border.Background>
+        </Border>
 
         <WrapPanel HorizontalAlignment="Center" VerticalAlignment="Top" Margin="10">
             <Border Name="Image_Game" Width="170" Height="120" BorderBrush="Black" BorderThickness="1" CornerRadius="10,10,0,0" >

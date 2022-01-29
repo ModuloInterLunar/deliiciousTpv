@@ -1,5 +1,5 @@
-﻿using System.Windows;
-using System.Windows.Controls;
+﻿using System.Windows.Controls;
+using System.Windows.Media;
 
 namespace Proyecto_Intermodular.userControls
 {
@@ -15,6 +15,7 @@ namespace Proyecto_Intermodular.userControls
         }
 
         public string DishName { set => lblDishName.Text = value; get => lblDishName.Text.ToString(); }
+        public ImageSource DishImage { set => imgDish.Source = value; get => imgDish.Source; }
         public string DishPrice { set => lblPrice.Content = value; get => lblPrice.Content.ToString(); }
         public string DescriptionInput { set => txtBoxDescription.Text = value; get => txtBoxDescription.Text; }
     }
