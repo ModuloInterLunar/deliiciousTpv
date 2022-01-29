@@ -43,16 +43,17 @@ namespace Proyecto_Intermodular.models
         public string UpdatedAt { get => updatedAt; set => updatedAt = value; }
         public List<Order> Orders { get => orders; set => orders = value; }
 
-        public async Task AddOrder(Order order, Ticket actualTicket)
+        public async Task AddOrder(Order order)
         {
+            if (orders == null) orders = new();
             orders.Add(order);
-            actualTicket = await DeliiApi.UpdateTicket(actualTicket);
+            await DeliiApi.UpdateTicket(this);
         }
-        public async Task RemoveOrder(Order order, Ticket actualTicket)
+        public async Task RemoveOrder(Order order)
         {
             DeliiApi.RemoveOrder(order);
             orders.Remove(order);
-            actualTicket = await DeliiApi.UpdateTicket(actualTicket);
+            await DeliiApi.UpdateTicket(this);
         }
     }
 }

@@ -181,6 +181,24 @@ namespace Proyecto_Intermodular.api
             return dishes;
         }
 
+        internal static async Task<Ticket> CreateTicket()
+        {
+            string uri = API_URL + "tickets";
+            TicketModel ticketModel = new();
+            try
+            {
+                string createdTicketJson = await DeliiApiClient.Post(uri, ticketModel);
+                Ticket createdTicket = JsonSerializer.Deserialize<Ticket>(createdTicketJson, DeliiApiClient.GetJsonOptions());
+
+                return createdTicket;
+            }
+            catch (DeliiApiException ex)
+            {
+                if (ex.Message.Contains("Can't create table!"))
+                    throw new UserNotFoundException(ex.Message);
+                throw new DeliiApiException(ex.Message);
+            }
+        }
     }
 
     class Authentifier

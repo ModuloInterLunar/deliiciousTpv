@@ -152,7 +152,7 @@ namespace Proyecto_Intermodular.userControls
 
         public void loadOrders()
         {
-            if (selectedTable.ActualTicket == null) return;
+            if (selectedTable.ActualTicket == null || selectedTable.ActualTicket.Orders == null) return;
             selectedTable.ActualTicket.Orders.ForEach(order => CreateOrderItem(order));
         }
         #endregion
@@ -183,12 +183,19 @@ namespace Proyecto_Intermodular.userControls
         }
         private void btnSave_Click(object sender, RoutedEventArgs e) => tables.ForEach(async table => await DeliiApi.UpdateTable(table));
         private void btnReload_Click(object sender, RoutedEventArgs e) => UpdateCanvasTables();
-        private void btnAddOrder_Click(object sender, RoutedEventArgs e)
+        private async void btnAddOrder_Click(object sender, RoutedEventArgs e)
         {
-            if (selectedTable == null || selectedTable.ActualTicket == null) return;
+            if (selectedTable == null) return;
+
+            if (selectedTable.ActualTicket == null)
+            {
+                Ticket ticket = await DeliiApi.CreateTicket();
+                selectedTable.ActualTicket = ticket;
+                await DeliiApi.UpdateTable(selectedTable);
+            }
+
             DishSelector dishSelector = new();
 
-            dishSelector.Show();
 
             dishSelector.btnSendOrders.Click += (object sender, RoutedEventArgs e) =>
             {
@@ -208,11 +215,15 @@ namespace Proyecto_Intermodular.userControls
                     });
 
                     CreateOrderItem(order);
-                    await selectedTable.ActualTicket.AddOrder(order, selectedTable.ActualTicket);
+                    await selectedTable.ActualTicket.AddOrder(order);
 
                     dishSelector.Close();
                 });
+
+
             };
+            dishSelector.ShowDialog();
+
             /*
             List<Dish> dishes = await DeliiApi.GetAllDishes();
             if (dishes == null || dishes.Count <= 0) return;
@@ -253,7 +264,7 @@ namespace Proyecto_Intermodular.userControls
             order.OrderItem.btnDelete.Click += async (object sender, RoutedEventArgs e) =>
             {
                 stackOrders.Children.Remove(order.OrderItem);
-                await selectedTable.ActualTicket.RemoveOrder(order, selectedTable.ActualTicket);
+                await selectedTable.ActualTicket.RemoveOrder(order);
             };
 
             stackOrders.Children.Add(order.OrderItem);
