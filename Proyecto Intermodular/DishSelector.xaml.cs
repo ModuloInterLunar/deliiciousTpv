@@ -40,6 +40,7 @@ namespace Proyecto_Intermodular
                     DishImage = new BitmapImage(new Uri("https://upload.wikimedia.org/wikipedia/commons/6/62/NCI_Visuals_Food_Hamburger.jpg")),
                     DishName = dish.Name,
                     DishPrice = $"{dish.Price} €",
+                    ToolTip = dish.GetIngredients(),
                 };
 
                 dishesContainer.Children.Add(dishItem);

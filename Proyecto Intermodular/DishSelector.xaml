@@ -13,8 +13,7 @@
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
 
-        <ScrollViewer HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Auto">
-            <WrapPanel x:Name="dishesContainer" Margin="10"/>
-        </ScrollViewer>
+        <WrapPanel x:Name="dishesContainer" Margin="10"/>
+        
     </Grid>
 </Window>

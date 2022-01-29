@@ -10,7 +10,8 @@ namespace Proyecto_Intermodular.models
         public Ingredient Ingredient { get => ingredient; set => ingredient = value; }
         public double Quantity { get => quantity; set => quantity = value; }
 
-        public IngredientQty() { }
+        public override string ToString() => $"{ingredient.Name}, {quantity}";
 
+        public IngredientQty() { }
     }
 }

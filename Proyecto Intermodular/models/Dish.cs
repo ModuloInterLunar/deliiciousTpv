@@ -25,12 +25,8 @@ namespace Proyecto_Intermodular.models
         public string Image { get => image; set => image = value; }
         public List<IngredientQty> IngredientQties { get => ingredientQties; set => ingredientQties = value; }
 
-        public override string ToString()
-        {
-            string ingredients = "";
-            ingredientQties.ForEach(ingredientQty => ingredients += ingredientQty.Ingredient.Name + ": " + ingredientQty.Quantity + ", ");
-            return $"Id: { id }, Name: { name }, Type: { type }, Price: { price }, Description: { description }, IngredientQties: { ingredients }, Image: { image }";
-        }
+        public override string ToString() => $"Id: { id }, Name: { name }, Type: { type }, Price: { price }, Description: { description }, IngredientQties: { GetIngredients() }, Image: { image }";
+        public string GetIngredients() => ingredientQties.Aggregate("", (acc, cur) => acc += $"{cur}\n");
 
         public Dish() { }
 
@@ -49,6 +45,5 @@ namespace Proyecto_Intermodular.models
             this.description = description;
             this.ingredientQties = ingredientQties;
         }
-
     }
 }
