@@ -48,6 +48,11 @@ namespace Proyecto_Intermodular.models
             orders.Add(order);
             actualTicket = await DeliiApi.UpdateTicket(actualTicket);
         }
-        public void RemoveOrder(Order order) => orders.Remove(order);
+        public async Task RemoveOrder(Order order, Ticket actualTicket)
+        {
+            DeliiApi.RemoveOrder(order);
+            orders.Remove(order);
+            actualTicket = await DeliiApi.UpdateTicket(actualTicket);
+        }
     }
 }

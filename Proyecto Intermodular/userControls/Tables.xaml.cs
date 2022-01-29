@@ -153,17 +153,7 @@ namespace Proyecto_Intermodular.userControls
         public void loadOrders()
         {
             if (selectedTable.ActualTicket == null) return;
-            selectedTable.ActualTicket.Orders.ForEach(order =>
-            {
-                order.OrderItem = new() {
-                    DishName = order.Dish.Name,
-                    DishPrice = $"{order.Dish.Price} €",
-                    DescriptionInput = order.Description,
-                    Margin = new(5)
-                };
-
-                stackOrders.Children.Add(order.OrderItem);
-            });
+            selectedTable.ActualTicket.Orders.ForEach(order => CreateOrderItem(order));
         }
         #endregion
 
@@ -196,10 +186,8 @@ namespace Proyecto_Intermodular.userControls
         private async void btnAddOrder_Click(object sender, RoutedEventArgs e)
         {
             if (selectedTable == null || selectedTable.ActualTicket == null) return;
-
             List<Dish> dishes = await DeliiApi.GetAllDishes();
-            if (dishes == null || dishes.Count <= 0)
-                return;
+            if (dishes == null || dishes.Count <= 0) return;
 
             Order order = await DeliiApi.CreateOrder(new()
             {
@@ -213,6 +201,13 @@ namespace Proyecto_Intermodular.userControls
             }
             );
 
+            CreateOrderItem(order);
+
+            await selectedTable.ActualTicket.AddOrder(order, selectedTable.ActualTicket);
+        }
+
+        private void CreateOrderItem(Order order)
+        {
             order.OrderItem = new()
             {
                 DishName = order.Dish.Name,
@@ -221,9 +216,13 @@ namespace Proyecto_Intermodular.userControls
                 Margin = new(5)
             };
 
-            stackOrders.Children.Add(order.OrderItem);
+            order.OrderItem.btnDelete.Click += async (object sender, RoutedEventArgs e) =>
+            {
+                stackOrders.Children.Remove(order.OrderItem);
+                await selectedTable.ActualTicket.RemoveOrder(order, selectedTable.ActualTicket);
+            };
 
-            await selectedTable.ActualTicket.AddOrder(order, selectedTable.ActualTicket);
+            stackOrders.Children.Add(order.OrderItem);
         }
         #endregion
     }
