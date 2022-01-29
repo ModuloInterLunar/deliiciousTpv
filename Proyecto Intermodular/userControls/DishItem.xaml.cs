@@ -18,6 +18,6 @@ namespace Proyecto_Intermodular.userControls
 
         public ImageSource DishImage { set => imgDish.ImageSource = value; get => imgDish.ImageSource; }
         public string DishName { set => txtBlockDishName.Text = value; get => txtBlockDishName.Text; }
-        public string PriceValue { set => txtBlockPrice.Text = value; get => txtBlockPrice.Text; }
+        public string DishPrice { set => txtBlockPrice.Text = value; get => txtBlockPrice.Text; }
     }
 }

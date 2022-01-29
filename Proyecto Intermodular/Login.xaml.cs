@@ -35,8 +35,12 @@ namespace Proyecto_Intermodular
                 Application.Current.Dispatcher.Invoke(
                     () =>
                     {
+                        /*
                         MainWindow mainWindow = new();
                         mainWindow.Show();
+                        */
+                        DishSelector dishSelector = new();
+                        dishSelector.Show();
                         Close();
                     }
                 );
