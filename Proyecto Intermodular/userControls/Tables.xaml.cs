@@ -240,12 +240,13 @@ namespace Proyecto_Intermodular.userControls
 
         private void CreateOrderItem(Order order)
         {
+            string dishImageUrl = (order.Dish.Image == "" || order.Dish.Image == null) ? "https://barradeideas.com/wp-content/uploads/2019/09/fast-food.jpg" : order.Dish.Image;
             order.OrderItem = new()
             {
                 DishName = order.Dish.Name,
                 DishPrice = $"{order.Dish.Price} €",
                 DescriptionInput = order.Description,
-                DishImage = new BitmapImage(new Uri(order.Dish.Image)),
+                DishImage = new BitmapImage(new Uri(dishImageUrl)),
                 Margin = new(5)
             };
 
