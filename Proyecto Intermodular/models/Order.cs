@@ -66,6 +66,7 @@ namespace Proyecto_Intermodular.models
         {
             
         }
+
         public OrderItem OrderItem { get => orderItem; set => orderItem = value; }
         public bool HasBeenCoocked { get => hasBeenCoocked; set => hasBeenCoocked = value; }
     }
