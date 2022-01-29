@@ -153,6 +153,13 @@ namespace Proyecto_Intermodular.api
             await DeliiApiClient.Delete(uri);
         }
 
+        public static async void RemoveOrder(Order order)
+        {
+            string uri = $"{API_URL}orders/{order.Id}";
+
+            await DeliiApiClient.Delete(uri);
+        }
+
         public static async Task<List<Order>> GetAllOrders()
         {
             string uri = API_URL + "orders";

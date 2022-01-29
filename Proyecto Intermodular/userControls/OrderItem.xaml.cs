@@ -17,10 +17,5 @@ namespace Proyecto_Intermodular.userControls
         public string DishName { set => lblDishName.Text = value; get => lblDishName.Text.ToString(); }
         public string DishPrice { set => lblPrice.Content = value; get => lblPrice.Content.ToString(); }
         public string DescriptionInput { set => txtBoxDescription.Text = value; get => txtBoxDescription.Text; }
-
-        private void btnDelete_Click(object sender, RoutedEventArgs e)
-        {
-            return;
-        }
     }
 }

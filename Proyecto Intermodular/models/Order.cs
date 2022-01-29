@@ -62,10 +62,13 @@ namespace Proyecto_Intermodular.models
         public string UpdatedAt { get => updatedAt; set => updatedAt = value; }
         public string Table { get => table; set => table = value; }
 
+        /*
         public void UpdateData(Order updatedOrder)
         {
             throw new NotImplementedException();
         }
+        */
+
         public OrderItem OrderItem { get => orderItem; set => orderItem = value; }
         public bool HasBeenCoocked { get => hasBeenCoocked; set => hasBeenCoocked = value; }
     }

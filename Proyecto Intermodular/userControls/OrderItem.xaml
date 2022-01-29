@@ -26,7 +26,7 @@
 
             <local:TextBoxHint x:Name="txtBoxDescription" Hint="Descripción" VerticalAlignment="Center" Grid.Column="2" HorizontalContentAlignment="Left" Margin="5"/>
 
-            <Button BorderThickness="0" Background="Transparent" VerticalAlignment="Center" HorizontalAlignment="Center" Content="x" Foreground="Gray" FontWeight="Bold" Grid.Column="3" Margin="5" x:Name="btnDelete" Click="btnDelete_Click"/>
+            <Button BorderThickness="0" Background="Transparent" VerticalAlignment="Center" HorizontalAlignment="Center" Content="x" Foreground="Gray" FontWeight="Bold" Grid.Column="3" Margin="5" x:Name="btnDelete"/>
         </Grid>
     </Border>
 </UserControl>
