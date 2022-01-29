@@ -35,9 +35,10 @@ namespace Proyecto_Intermodular
             dishes = await DeliiApi.GetAllDishes();
             dishes.ForEach(dish =>
             {
+                string dishImageUrl = (dish.Image == "" || dish.Image == null) ? "https://upload.wikimedia.org/wikipedia/commons/6/62/NCI_Visuals_Food_Hamburger.jpg" : dish.Image;
                 DishItem dishItem = new()
                 {
-                    DishImage = new BitmapImage(new Uri("https://upload.wikimedia.org/wikipedia/commons/6/62/NCI_Visuals_Food_Hamburger.jpg")),
+                    DishImage = new BitmapImage(new Uri(dishImageUrl)),
                     DishName = dish.Name,
                     DishPrice = $"{dish.Price} €",
                     ToolTip = dish.GetIngredients(),
