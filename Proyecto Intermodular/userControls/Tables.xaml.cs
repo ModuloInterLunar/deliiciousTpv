@@ -185,8 +185,11 @@ namespace Proyecto_Intermodular.userControls
         private void btnReload_Click(object sender, RoutedEventArgs e) => UpdateCanvasTables();
         private async void btnAddOrder_Click(object sender, RoutedEventArgs e)
         {
-            if (selectedTable == null) return;
-
+            if (selectedTable == null)
+            {
+                MessageBox.Show("Selecciona una mesa primero!");
+                return;
+            }
             if (selectedTable.ActualTicket == null)
             {
                 Ticket ticket = await DeliiApi.CreateTicket();
