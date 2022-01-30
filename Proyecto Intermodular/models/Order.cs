@@ -28,22 +28,22 @@ namespace Proyecto_Intermodular.models
             this.employee = employee;
         }
 
-        public Order(string id, string ticket, Dish dish, bool isServed, bool isIncluded, Employee employee)
+        public Order(string id, string ticket, Dish dish, bool hasBeenServed, bool isIncluded, Employee employee)
         {
             this.id = id;
             this.ticket = ticket;
             this.dish = dish;
-            this.hasBeenServed = isServed;
+            this.hasBeenServed = hasBeenServed;
             this.isIncluded = isIncluded;
             this.employee = employee;
         }
 
-        public Order(string id, string ticket, Dish dish, bool isServed, bool isIncluded, string description, Employee employee)
+        public Order(string id, string ticket, Dish dish, bool hasBeenServed, bool isIncluded, string description, Employee employee)
         {
             this.id = id;
             this.ticket = ticket;
             this.dish = dish;
-            this.hasBeenServed = isServed;
+            this.hasBeenServed = hasBeenServed;
             this.isIncluded = isIncluded;
             this.description = description;
             this.employee = employee;
