@@ -16,5 +16,11 @@ namespace Proyecto_Intermodular.models
         public string Id { get => id; set => id = value; }
         public string Name { get => name; set => name = value; }
         public float Quantity { get => quantity; set => quantity = value; }
+
+        internal void UpdateData(Ingredient updatedIngredient)
+        {
+            name = updatedIngredient.id;
+            quantity = updatedIngredient.quantity;
+        }
     }
 }

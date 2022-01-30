@@ -60,5 +60,16 @@ namespace Proyecto_Intermodular.models
         }
 
         private string Capitalize(string str) => char.ToUpper(str[0]) + str.Substring(1);
+
+        internal void UpdateData(Employee updatedEmployee)
+        {
+            username = updatedEmployee.username;
+            dni = updatedEmployee.dni;
+            name = updatedEmployee.name;
+            surname = updatedEmployee.surname;
+            isAdmin = updatedEmployee.isAdmin;
+            createdAt = updatedEmployee.createdAt;
+            updatedAt = updatedEmployee.updatedAt;
+        }
     }
 }

@@ -55,6 +55,8 @@ namespace Proyecto_Intermodular.userControls
 
             if (!tables.Contains(selectedTable))
                 SelectTable(null);
+            if (selectedTable != null)
+                loadOrders();
         }
 
         private void RemoveOldTables(List<Table> updatedTables)
@@ -106,8 +108,14 @@ namespace Proyecto_Intermodular.userControls
         }
         private void SelectTable(Table table)
         {
+            if (selectedTable != null && selectedTable.ActualTicket != null && selectedTable.ActualTicket.Orders != null)
+            {
+                selectedTable.ActualTicket.Orders.ForEach(order => {
+                    stackOrders.Children.Remove(order.OrderItem);
+                    order.OrderItem = null;
+                });
+            }
             selectedTable = table;
-            stackOrders.Children.Clear();
             if (selectedTable == null)
             {
                 lblSelectedTable.Content = $"MESA SELECCIONADA:";
@@ -182,7 +190,14 @@ namespace Proyecto_Intermodular.userControls
             UnSelectTable(selectedTable);
         }
         private void btnSave_Click(object sender, RoutedEventArgs e) => tables.ForEach(async table => await DeliiApi.UpdateTable(table));
-        private void btnReload_Click(object sender, RoutedEventArgs e) => UpdateCanvasTables();
+        private void btnReload_Click(object sender, RoutedEventArgs e) 
+        {
+            UpdateCanvasTables();
+            Table selectedTable = this.selectedTable;
+            SelectTable(null);
+            SelectTable(selectedTable);
+
+        }
         private async void btnAddOrder_Click(object sender, RoutedEventArgs e)
         {
             if (selectedTable == null)
@@ -255,11 +270,14 @@ namespace Proyecto_Intermodular.userControls
         private void CreateOrderItem(Order order)
         {
             string dishImageUrl = (order.Dish.Image == "" || order.Dish.Image == null) ? "https://barradeideas.com/wp-content/uploads/2019/09/fast-food.jpg" : order.Dish.Image;
+            if (order.OrderItem != null)
+                return;
+            
             order.OrderItem = new()
             {
                 DishName = order.Dish.Name,
                 DishPrice = $"{order.Dish.Price} €",
-                DescriptionInput = order.Description,
+                Description = order.Description,
                 DishImage = new BitmapImage(new Uri(dishImageUrl)),
                 Margin = new(5)
             };

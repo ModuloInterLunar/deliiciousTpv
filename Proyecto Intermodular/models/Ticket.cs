@@ -55,5 +55,27 @@ namespace Proyecto_Intermodular.models
             orders.Remove(order);
             await DeliiApi.UpdateTicket(this);
         }
+
+        public void UpdateData(Ticket updatedTicket)
+        {
+            total = updatedTicket.total;
+            text = updatedTicket.text;
+            isPaid = updatedTicket.isPaid;
+            createdAt = updatedTicket.createdAt;
+            updatedAt = updatedTicket.updatedAt;
+            if (orders == null)
+            {
+                orders = updatedTicket.orders;
+                return;
+            }
+            updatedTicket.orders.ForEach(updatedOrder =>
+            {
+                Order order = orders.Find(order => order.Id == updatedOrder.Id);
+                if (order != null)
+                    order.UpdateData(updatedOrder);
+                else
+                    orders.Add(updatedOrder);
+            });
+        }
     }
 }

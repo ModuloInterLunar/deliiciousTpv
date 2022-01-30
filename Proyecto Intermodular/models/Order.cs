@@ -64,6 +64,25 @@ namespace Proyecto_Intermodular.models
 
         public void UpdateData(Order updatedOrder)
         {
+            ticket = updatedOrder.ticket;
+            if (updatedOrder.dish == null)
+                dish = null;
+            else if (dish == null)
+                dish = updatedOrder.dish;
+            else
+                dish.UpdateData(updatedOrder.dish);
+            hasBeenServed = updatedOrder.hasBeenServed;
+            isIncluded = updatedOrder.isIncluded;
+            if (updatedOrder.employee == null)
+                employee = null;
+            else if (employee == null)
+                employee = updatedOrder.employee;
+            else
+                employee.UpdateData(updatedOrder.employee);
+            description = updatedOrder.description;
+            createdAt = updatedOrder.createdAt;
+            updatedAt = updatedOrder.updatedAt;
+            table = updatedOrder.table;
 
         }
 

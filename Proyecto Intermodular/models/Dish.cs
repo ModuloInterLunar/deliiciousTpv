@@ -45,5 +45,27 @@ namespace Proyecto_Intermodular.models
             this.description = description;
             this.ingredientQties = ingredientQties;
         }
+
+        public void UpdateData(Dish updatedDish)
+        {
+            name = updatedDish.name;
+            type = updatedDish.type;
+            price = updatedDish.price;
+            description = updatedDish.description;
+            image = updatedDish.image;
+            if (ingredientQties == null)
+            {
+                ingredientQties = updatedDish.ingredientQties;
+                return;
+            }
+            updatedDish.ingredientQties.ForEach(updatedIngredientQty =>
+            {
+                IngredientQty ingredientQty = ingredientQties.Find(ingredientQty => ingredientQty.Ingredient == updatedIngredientQty.Ingredient);
+                if (ingredientQty != null)
+                    ingredientQty.UpdateData(updatedIngredientQty);
+                else
+                    ingredientQties.Add(updatedIngredientQty);
+            });
+        }
     }
 }
