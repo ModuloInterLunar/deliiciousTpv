@@ -1,4 +1,6 @@
 ﻿using Proyecto_Intermodular.userControls;
+using System.Windows;
+using System.Windows.Controls;
 
 namespace Proyecto_Intermodular.models
 {
@@ -15,6 +17,7 @@ namespace Proyecto_Intermodular.models
         private string updatedAt;
         private Employee employee;
         private string table;
+        private Border border;
         private OrderItem orderItem;
 
         public Order(string id, string ticket, Dish dish, string description, Employee employee)
@@ -88,5 +91,6 @@ namespace Proyecto_Intermodular.models
 
         public OrderItem OrderItem { get => orderItem; set => orderItem = value; }
         public bool HasBeenCoocked { get => hasBeenCoocked; set => hasBeenCoocked = value; }
+        public Border Border { get => border; set => border = value; }
     }
 }

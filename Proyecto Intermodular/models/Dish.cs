@@ -60,12 +60,30 @@ namespace Proyecto_Intermodular.models
             }
             updatedDish.ingredientQties.ForEach(updatedIngredientQty =>
             {
-                IngredientQty ingredientQty = ingredientQties.Find(ingredientQty => ingredientQty.Ingredient == updatedIngredientQty.Ingredient);
+                IngredientQty ingredientQty = ingredientQties.Find(ingredientQty => ingredientQty.Ingredient.Name == updatedIngredientQty.Ingredient.Name);
                 if (ingredientQty != null)
                     ingredientQty.UpdateData(updatedIngredientQty);
                 else
                     ingredientQties.Add(updatedIngredientQty);
             });
+
+            // Returns the ingredientQties from this list if they are in the updated list
+            ingredientQties = ingredientQties.FindAll(ingredientQty =>
+                updatedDish.ingredientQties.Find(updatedIngredientQty =>
+                    ingredientQty.Ingredient.Name == updatedIngredientQty.Ingredient.Name
+                ) != null
+            );
+
+
+            //List<IngredientQty> ingredientsQtiesToRemove = new();
+            //ingredientQties.ForEach(ingredientQty =>
+            //{
+            //    IngredientQty updatedIngredientQty = updatedDish.IngredientQties.Find(updatedIngredientQty => updatedIngredientQty.Ingredient == ingredientQty.Ingredient);
+            //    if (updatedIngredientQty == null)
+            //        ingredientsQtiesToRemove.Add(ingredientQty);
+            //});
+
+            //ingredientsQtiesToRemove.ForEach(ingredientQty => ingredientQties.Remove(ingredientQty));
         }
     }
 }

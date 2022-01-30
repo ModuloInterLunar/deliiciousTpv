@@ -76,6 +76,13 @@ namespace Proyecto_Intermodular.models
                 else
                     orders.Add(updatedOrder);
             });
+
+            // Returns the orders from this list if they are in the updated list
+            orders = orders.FindAll(order =>
+                updatedTicket.orders.Find(updatedOrders =>
+                    order.Id == updatedOrders.Id
+                ) != null
+            );
         }
     }
 }

@@ -47,10 +47,60 @@ namespace Proyecto_Intermodular.api
             }
         }
 
+        public static async Task<List<Ingredient>> GetAllIngredients()
+        {
+            string uri = API_URL + "ingredients";
+            string ingredientsJson = await DeliiApiClient.Get(uri);
+
+            List<Ingredient> ingredients = JsonSerializer.Deserialize<List<Ingredient>>(ingredientsJson, DeliiApiClient.GetJsonOptions());
+
+            return ingredients;
+        }
+
+        public static async Task<Ingredient> CreateIngredient(Ingredient ingredient)
+        {
+            try
+            {
+                string uri = API_URL + "ingredients";
+                IngredientModel ingredientModel = new(ingredient);
+                string ingredientJson = await DeliiApiClient.Post(uri, ingredientModel);
+
+                Ingredient createdIngredient = JsonSerializer.Deserialize<Ingredient>(ingredientJson, DeliiApiClient.GetJsonOptions());
+
+                return createdIngredient;
+            }
+            catch (DeliiApiException ex)
+            {
+                if (ex.Message.Contains("E11000 duplicate key error"))
+                    throw new AlreadyInUseException(ex.Message);
+                throw new DeliiApiException(ex.Message);
+            }
+        }
+
+        public static async Task<Ingredient> UpdateIngredient(Ingredient ingredient)
+        {
+            try { 
+                string uri = API_URL + "ingredients/" + ingredient.Id;
+                IngredientModel ingredientModel = new IngredientModel(ingredient);
+                string updatedIngredientJson = await DeliiApiClient.Patch(uri, ingredientModel);
+                Ingredient updatedIngredient = JsonSerializer.Deserialize<Ingredient>(updatedIngredientJson, DeliiApiClient.GetJsonOptions());
+
+                return updatedIngredient;
+            }
+            catch (DeliiApiException ex)
+            {
+                if (ex.Message.Contains("E11000 duplicate key error"))
+                    throw new AlreadyInUseException(ex.Message);
+                throw new DeliiApiException(ex.Message);
+
+            }
+        }
+
         public static async Task<Employee> CreateEmployee(Employee employee)
         {
             string uri = API_URL + "employees";
-            string employeeJson = await DeliiApiClient.Post(uri, employee);
+            EmployeeModel employeeModel = new(employee);
+            string employeeJson = await DeliiApiClient.Post(uri, employeeModel);
 
             Employee emp = JsonSerializer.Deserialize<Employee>(employeeJson, DeliiApiClient.GetJsonOptions());
 

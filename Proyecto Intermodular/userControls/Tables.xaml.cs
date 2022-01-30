@@ -18,7 +18,9 @@ namespace Proyecto_Intermodular.userControls
         private List<Table> tables;
         private Table selectedTable;
         private bool isEditingTableLayout;
-        private Employee currentUser = new() { Id = "1" };
+        private Employee currentUser;
+
+        public Employee CurrentUser { get => currentUser; set => currentUser = value; }
 
         public Tables()
         {
@@ -51,7 +53,7 @@ namespace Proyecto_Intermodular.userControls
                 }
             });
 
-            RemoveOldTables(updatedTables);
+            RemoveDeletedTables(updatedTables);
 
             if (!tables.Contains(selectedTable))
                 SelectTable(null);
@@ -59,20 +61,17 @@ namespace Proyecto_Intermodular.userControls
                 loadOrders();
         }
 
-        private void RemoveOldTables(List<Table> updatedTables)
+        private void RemoveDeletedTables(List<Table> updatedTables)
         {
-            List<Table> tablesToRemove = new();
-            tables.ForEach(table =>
-            {
-                Table updatedTable = updatedTables.Find(updatedTable => updatedTable.Id == table.Id);
+            tables = tables.FindAll(table => {
+                Table updatedTable = updatedTables.Find(updatedTable => table.Id == updatedTable.Id);
                 if (updatedTable == null)
                 {
                     cnvTables.Children.Remove(table.Label);
-                    tablesToRemove.Add(table);
+                    return false;
                 }
+                return true;
             });
-
-            tablesToRemove.ForEach(tableToRemove => tables.Remove(tableToRemove));
         }
 
         private void CreateTable(Table table)
@@ -228,7 +227,7 @@ namespace Proyecto_Intermodular.userControls
                         HasBeenCoocked = false,
                         HasBeenServed = false,
                         Description = "",
-                        Employee = currentUser,
+                        Employee = CurrentUser,
                         Table = selectedTable.Id
                     });
 
@@ -241,30 +240,6 @@ namespace Proyecto_Intermodular.userControls
 
             };
             dishSelector.ShowDialog();
-
-            /*
-            List<Dish> dishes = await DeliiApi.GetAllDishes();
-            if (dishes == null || dishes.Count <= 0) return;
-           
-
-            Order order = await DeliiApi.CreateOrder(new()
-            {
-                Dish = dishes[0],
-                Ticket = selectedTable.ActualTicket.Id,
-                HasBeenCoocked = false,
-                HasBeenServed = false,
-                Description = "Esto es la descripción",
-                Employee = currentUser,
-                Table = selectedTable.Id,
-            }
-            );
-            
-
-            CreateOrderItem(order);
-            
-
-            await selectedTable.ActualTicket.AddOrder(order, selectedTable.ActualTicket);
-             */
         }
 
         private void CreateOrderItem(Order order)
