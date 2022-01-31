@@ -34,7 +34,7 @@
         <Grid Grid.Row="1" Margin="8,0,8,10">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="2*"></ColumnDefinition>
-                <ColumnDefinition Width="40"></ColumnDefinition>
+                <ColumnDefinition Width="45"></ColumnDefinition>
                 <ColumnDefinition Width="40"></ColumnDefinition>
             </Grid.ColumnDefinitions>
             
@@ -44,7 +44,7 @@
 
             <TextBlock Margin="4" Text="{Binding DishName}" FontSize="12" VerticalAlignment="Center" Width="auto" MaxWidth="85" Height="auto" HorizontalAlignment="Center" x:Name="txtBlockDishName" FontWeight="Bold" TextWrapping="Wrap"/>
 
-            <TextBlock Margin="2" Grid.Column="1" Text="{Binding DishPrice}" FontSize="15" VerticalAlignment="Center" HorizontalAlignment="Center" x:Name="txtBlockPrice" FontWeight="Bold"/>
+            <TextBlock Margin="2" Grid.Column="1" Text="{Binding DishPrice}" FontSize="12" VerticalAlignment="Center" HorizontalAlignment="Center" x:Name="txtBlockPrice" FontWeight="Bold"/>
 
 
             <Button Name="btnAddDish" Grid.Column="2" Margin="5"  Grid.RowSpan="2" BorderBrush="Gray" Background="#E0E0E0" BorderThickness="0.5" Content="+" FontSize="12" VerticalContentAlignment="Center" HorizontalContentAlignment="Center">

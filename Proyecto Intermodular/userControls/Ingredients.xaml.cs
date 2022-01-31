@@ -70,9 +70,7 @@ namespace Proyecto_Intermodular.userControls
                     return false;
                 }
                 return true;
-
-            }
-            );
+            });
         }
 
         private void UpdateIngredientItem(Ingredient ingredient)

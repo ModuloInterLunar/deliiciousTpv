@@ -220,6 +220,17 @@ namespace Proyecto_Intermodular.userControls
 
                 dishSelector.SelectedDishes.ForEach(async dish =>
                 {
+                    // En principio, no tendría que entrar nunca en el catch
+                    try
+                    {
+                        await DeliiApi.ReduceIngredientQuantity(dish);
+                    }
+                    catch (NotEnoughStockException e)
+                    {
+                        MessageBox.Show(e.Message);
+                        return;
+                    }
+
                     Order order = await DeliiApi.CreateOrder(new()
                     {
                         Dish = dish,
@@ -231,30 +242,29 @@ namespace Proyecto_Intermodular.userControls
                         Table = selectedTable.Id
                     });
 
+                    
+
                     CreateOrderItem(order);
                     await selectedTable.ActualTicket.AddOrder(order);
 
                     dishSelector.Close();
                 });
-
-
             };
             dishSelector.ShowDialog();
         }
 
         private void CreateOrderItem(Order order)
         {
-            string dishImageUrl = (order.Dish.Image == "" || order.Dish.Image == null) ? "https://barradeideas.com/wp-content/uploads/2019/09/fast-food.jpg" : order.Dish.Image;
             if (order.OrderItem != null)
                 return;
             
+            string dishImageUrl = (order.Dish.Image == "" || order.Dish.Image == null) ? "https://barradeideas.com/wp-content/uploads/2019/09/fast-food.jpg" : order.Dish.Image;
             order.OrderItem = new()
             {
                 DishName = order.Dish.Name,
-                DishPrice = $"{order.Dish.Price} €",
+                DishPrice = order.Dish.formattedPrice,
                 Description = order.Description,
-                DishImage = new BitmapImage(new Uri(dishImageUrl)),
-                Margin = new(5)
+                DishImage = new BitmapImage(new Uri(dishImageUrl))
             };
 
             order.OrderItem.btnDelete.Click += async (object sender, RoutedEventArgs e) =>

@@ -89,6 +89,7 @@ namespace Proyecto_Intermodular
                 UpdateUI();
 
             ucTables.UpdateCanvasTables();
+            ucIngredients.UpdateStackIngredients();
             GenerateOrders();
         }
 

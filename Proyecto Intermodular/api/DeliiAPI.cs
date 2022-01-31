@@ -47,6 +47,29 @@ namespace Proyecto_Intermodular.api
             }
         }
 
+        public static async Task ReduceIngredientQuantity(Dish dish)
+        {
+            try
+            {
+                List<Task> reduceTasks = dish.IngredientQties.ConvertAll<Task>(async ingredientQty =>
+                {
+                    string uri = API_URL + "ingredients/reduce/" + ingredientQty.Ingredient.Id;
+                    IngredientModel ingredientModel = new()
+                    {
+                        Quantity = ingredientQty.Quantity
+                    };
+                    await DeliiApiClient.Patch(uri, ingredientModel);
+                });
+                await Task.WhenAll(reduceTasks);
+            }
+            catch (DeliiApiException ex)
+            {
+                if (ex.Message.Contains("not enough"))
+                    throw new NotEnoughStockException(ex.Message);
+                throw new DeliiApiException(ex.Message);
+            }
+        }
+
         public static async Task<List<Ingredient>> GetAllIngredients()
         {
             string uri = API_URL + "ingredients";
@@ -196,6 +219,7 @@ namespace Proyecto_Intermodular.api
 
             return updatedTicket;
         }
+        
 
         public static async void RemoveTable(Table table)
         {
@@ -230,6 +254,7 @@ namespace Proyecto_Intermodular.api
 
             return dishes;
         }
+
 
         internal static async Task<Ticket> CreateTicket()
         {

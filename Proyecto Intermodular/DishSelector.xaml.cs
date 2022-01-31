@@ -51,7 +51,7 @@ namespace Proyecto_Intermodular
             {
                 DishImage = new BitmapImage(new Uri(dishImageUrl)),
                 DishName = dish.Name,
-                DishPrice = $"{dish.Price} €",
+                DishPrice = dish.formattedPrice,
                 ToolTip = dish.GetIngredients(),
                 Margin = new(10),
             };

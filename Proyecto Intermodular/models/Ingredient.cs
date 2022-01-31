@@ -20,7 +20,7 @@ namespace Proyecto_Intermodular.models
         public string Name { get => name; set => name = value; }
         public float Quantity { get => quantity; set => quantity = value; }
         public string Measure { get => measure; set => measure = value; }
-        public string FormattedQuantity => quantity.ToString("#.##") + " " + Measure;
+        public string FormattedQuantity => quantity.ToString("0.##") + " " + Measure;
         public IngredientItem IngredientItem { get => ingredientItem; set => ingredientItem = value; }
 
         internal void UpdateData(Ingredient updatedIngredient)

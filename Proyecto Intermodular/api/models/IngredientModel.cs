@@ -6,7 +6,7 @@ namespace Proyecto_Intermodular.api.models
     {
         private string id;
         private string name;
-        private float quantity;
+        private double quantity;
         private string measure;
 
         public IngredientModel(Ingredient ingredient)
@@ -21,7 +21,7 @@ namespace Proyecto_Intermodular.api.models
 
         public string Id { get => id; set => id = value; }
         public string Name { get => name; set => name = value; }
-        public float Quantity { get => quantity; set => quantity = value; }
+        public double Quantity { get => quantity; set => quantity = value; }
         public string Measure { get => measure; set => measure = value; }
     }
 }

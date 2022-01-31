@@ -25,6 +25,7 @@ namespace Proyecto_Intermodular.models
         public string Image { get => image; set => image = value; }
         public List<IngredientQty> IngredientQties { get => ingredientQties; set => ingredientQties = value; }
 
+        public string formattedPrice => price.ToString("0.00") + "€";
         public override string ToString() => $"Id: { id }, Name: { name }, Type: { type }, Price: { price }, Description: { description }, IngredientQties: { GetIngredients() }, Image: { image }";
         public string GetIngredients() => ingredientQties.Aggregate("", (acc, cur) => acc += $"{cur}\n");
 
