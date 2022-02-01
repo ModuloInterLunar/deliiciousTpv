@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Proyecto_Intermodular.api.models
 {
-    public abstract class DishModel
+    public class DishModel
     {
         private string id;
         private string name;

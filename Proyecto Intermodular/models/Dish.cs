@@ -16,7 +16,6 @@ namespace Proyecto_Intermodular.models
         private string image;
         private List<IngredientQty> ingredientQties;
 
-
         public string Id { get => id; set => id = value; }
         public string Name { get => name; set => name = value; }
         public string Type { get => type; set => type = value; }

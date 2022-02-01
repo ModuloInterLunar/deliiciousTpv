@@ -100,6 +100,27 @@ namespace Proyecto_Intermodular.api
             }
         }
 
+        public static async Task<Dish> CreateDish(Dish dish)
+        {
+            try
+            {
+                string uri = $"{API_URL}dishes";
+                DishModel dishModel = new(dish);
+                string dishJson = await DeliiApiClient.Post(uri, dishModel);
+
+                Dish createdDish = JsonSerializer.Deserialize<Dish>(dishJson, DeliiApiClient.GetJsonOptions());
+
+                return createdDish;
+            }
+            catch (DeliiApiException ex)
+            {
+                if (ex.Message.Contains("E11000 duplicate key error"))
+                    throw new AlreadyInUseException(ex.Message);
+                throw new DeliiApiException(ex.Message);
+            }
+
+        }
+
         public static async Task<Ingredient> UpdateIngredient(Ingredient ingredient)
         {
             try { 
@@ -253,6 +274,14 @@ namespace Proyecto_Intermodular.api
             List<Dish> dishes = JsonSerializer.Deserialize<List<Dish>>(dishesJson, DeliiApiClient.GetJsonOptions());
 
             return dishes;
+        }
+
+        public static async Task<Dish> UpdateDish(Dish dish)
+        {
+            string uri = $"{API_URL}dishes/{dish.Id}";
+            string updatedDishJson = await DeliiApiClient.Patch(uri, dish);
+            Dish updatedDish = JsonSerializer.Deserialize<Dish>(updatedDishJson, DeliiApiClient.GetJsonOptions());
+            return updatedDish;
         }
 
 
