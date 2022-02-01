@@ -258,7 +258,7 @@ namespace Proyecto_Intermodular.userControls
             if (order.OrderItem != null)
                 return;
             
-            string dishImageUrl = (order.Dish.Image == "" || order.Dish.Image == null) ? "https://barradeideas.com/wp-content/uploads/2019/09/fast-food.jpg" : order.Dish.Image;
+            string dishImageUrl = (order.Dish.Image == null || order.Dish.Image == "") ? "https://barradeideas.com/wp-content/uploads/2019/09/fast-food.jpg" : order.Dish.Image;
             order.OrderItem = new()
             {
                 DishName = order.Dish.Name,

@@ -31,7 +31,7 @@ namespace Proyecto_Intermodular.models
         public string CreatedAt { get => createdAt; set => createdAt = value; }
         public string UpdatedAt { get => updatedAt; set => updatedAt = value; }
 
-        public override string ToString() => $"id: {id}, username: {username}, dni: {dni}, name: {name}, surname: {surname}, password: {password}, isAdmin: {isAdmin}";
+        public override string ToString() => $"id: {id}, username: {username}, dni: {dni}, name: {name}, surname: {surname}, isAdmin: {isAdmin}";
 
         public Employee(string id, string username, string dni, string name, string surname, string password, bool isAdmin)
         {

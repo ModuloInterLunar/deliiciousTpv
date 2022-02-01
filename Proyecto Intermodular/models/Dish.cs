@@ -13,7 +13,7 @@ namespace Proyecto_Intermodular.models
         private string type;
         private double price;
         private string description;
-        private string image;
+        private string image = "";
         private List<IngredientQty> ingredientQties;
 
 

@@ -4,6 +4,6 @@
              xmlns:local="clr-namespace:Proyecto_Intermodular"
              StartupUri="Login.xaml">
     <Application.Resources>
-         
+        
     </Application.Resources>
 </Application>

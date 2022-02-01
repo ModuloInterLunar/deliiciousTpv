@@ -3,11 +3,16 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+            xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:local="clr-namespace:Proyecto_Intermodular.userControls"
              mc:Ignorable="d">
 
-    <StackPanel Orientation="Vertical" Height="23" HorizontalAlignment="Center">
-        <TextBox x:Name="txtBox" Height="20" Width="200" Background="Transparent" BorderThickness="0" Foreground="#A5A5A5" Text="{Binding Hint}" VerticalContentAlignment="Center" GotFocus="txtBox_GotFocus" LostFocus="txtBox_LostFocus"/>
+    <UserControl.Resources>
+        <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />
+    </UserControl.Resources>
+    
+    <StackPanel Orientation="Vertical" Height="25" HorizontalAlignment="Center">
+        <TextBox x:Name="txtBox" Height="22" Width="200" materialDesign:HintAssist.Hint="{Binding Hint}" Background="Transparent" BorderThickness="0" VerticalContentAlignment="Center" GotFocus="txtBox_GotFocus" LostFocus="txtBox_LostFocus"/>
         <Border BorderThickness="1" Height="3" Background="Black" Width="200"/>
     </StackPanel>
 
