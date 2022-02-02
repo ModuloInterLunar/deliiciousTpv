@@ -86,6 +86,10 @@
             <TabItem Header="Crear empleado">
                 <uc:Employees/>
             </TabItem>
+
+            <TabItem Header="Platos">
+                <uc:Dishes/>
+            </TabItem>
         </TabControl>
     </Grid>
 </Window>
