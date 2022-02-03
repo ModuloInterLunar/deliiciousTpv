@@ -24,7 +24,7 @@ namespace Proyecto_Intermodular.userControls
             UpdateStackDishes();
         }
 
-        private async void UpdateStackDishes()
+        public async void UpdateStackDishes()
         {
             List<Dish> updatedDishes = await DeliiApi.GetAllDishes();
 
@@ -32,7 +32,46 @@ namespace Proyecto_Intermodular.userControls
             {
                 dishes = updatedDishes;
                 dishes.ForEach(dish => GenerateDishItem(dish));
+                return;
             }
+
+            updatedDishes.ForEach(updatedDish =>
+            {
+                Dish dish = dishes.Find(dish => dish.Id == updatedDish.Id);
+                if (dish != null)
+                {
+                    dish.UpdateData(updatedDish);
+                    UpdateDishItem(dish);
+                }
+                else
+                {
+                    dishes.Add(updatedDish);
+                    GenerateDishItem(updatedDish);
+                }
+            });
+
+            RemoveOldDishes(updatedDishes);
+        }
+
+        private void RemoveOldDishes(List<Dish> updatedDishes)
+        {
+            dishes = dishes.FindAll(dish =>
+            {
+                Dish updatedDish = updatedDishes.Find(updatedDish => dish.Id == updatedDish.Id);
+                if (updatedDish == null)
+                {
+                    stackDishes.Children.Remove(dish.DishItem);
+                    return false;
+                }
+                return true;
+            });
+        }
+
+        private void UpdateDishItem(Dish dish)
+        {
+            dish.DishItem.DishName = dish.Name;
+            dish.DishItem.DishPrice = $"{dish.Price} €";
+            dish.DishItem.DishImage = new BitmapImage(new Uri(dish.Image));
         }
 
         private void GenerateDishItem(Dish dish)
@@ -48,12 +87,29 @@ namespace Proyecto_Intermodular.userControls
             };
             dishItem.btnAddDish.Visibility = Visibility.Collapsed;
 
+            dish.DishItem = dishItem;
             stackDishes.Children.Add(dishItem);
         }
 
         private void btnAdd_Click(object sender, RoutedEventArgs e)
         {
             AddDishWindow addDishWindow = new();
+            addDishWindow.btnSave.Click += (object sender, RoutedEventArgs e) =>
+            {
+                for(int i = 0; i < addDishWindow.gridInputs.Children.Count; i++)
+                {
+                    bool IsEmpty(string str) => str is null or "";
+
+                    if (addDishWindow.gridInputs.Children[i] is TextBox textBox && IsEmpty(textBox.Text))
+                    {
+                        MessageBox.Show("Error, no puede haber campos vacios");
+                        return;
+                    }
+                }
+                
+
+
+            };
             addDishWindow.ShowDialog();
             UpdateStackDishes();
         }

@@ -88,7 +88,7 @@
             </TabItem>
 
             <TabItem Header="Platos">
-                <uc:Dishes/>
+                <uc:Dishes x:Name="ucDishes"/>
             </TabItem>
         </TabControl>
     </Grid>

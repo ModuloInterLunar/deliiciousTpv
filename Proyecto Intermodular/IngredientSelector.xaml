@@ -5,8 +5,33 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Proyecto_Intermodular"
         mc:Ignorable="d"
-        Title="IngredientSelector" Height="450" Width="800">
+        Title="IngredientSelector" Height="450" Width="800" MinWidth="500" MinHeight="250">
     <Grid>
-        
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+
+        <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+            <StackPanel Margin="5,5,20,5" x:Name="ingredientsPanel" />
+        </ScrollViewer>
+
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="auto"/>
+            </Grid.RowDefinitions>
+
+            <Border BorderBrush="Black" BorderThickness="0,0,0,2" Margin="3">
+                <Label Content="Ingredientes seleccionados:" FontWeight="Bold"/>
+            </Border>
+
+            <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" Margin="7" Grid.Row="1">
+                <StackPanel x:Name="selectedIngredientsPanel" Orientation="Vertical"/>
+            </ScrollViewer>
+
+            <Button Grid.Row="2" Margin="20" Content="Enviar ingredientes" HorizontalAlignment="Center" Padding="5" x:Name="btnSendIngredients"/>
+        </Grid>
     </Grid>
 </Window>

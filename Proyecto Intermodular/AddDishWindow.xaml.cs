@@ -23,15 +23,38 @@ namespace Proyecto_Intermodular
     {
         private Dish dish;
         private Dish updatedDish;
+
+        private List<IngredientQty> dishIngredients = new();
+
         public AddDishWindow()
         {
             InitializeComponent();
         }
+
         public Dish Dish { get => dish; set => dish = value; }
         public Dish UpdatedDish { get => updatedDish; set => updatedDish = value; }
 
+        private bool IsEmpty(string str) => str is null or "";
+
         private void Button_Click(object sender, RoutedEventArgs e)
         {
+            if (dishIngredients.Count == 0)
+            {
+                MessageBox.Show($"Error, el plato debe tener al menos 1 ingrediente.");
+                return;
+            }
+
+            if (IsEmpty(tbName.Text) || IsEmpty(tbPrice.Text))
+            {
+                MessageBox.Show($"Error, no puede haber ningún campo vacío.");
+                return;
+            }
+
+            if (!double.TryParse(tbPrice.Text, out double price))
+            {
+                MessageBox.Show($"Error, el precio debe ser un número.");
+                return;
+            }
             if (dish != null)
             {
                 UpdateDish();
@@ -39,7 +62,6 @@ namespace Proyecto_Intermodular
             }
             CreateDish();
         }
-
 
         private async void CreateDish()
         {
@@ -59,7 +81,7 @@ namespace Proyecto_Intermodular
         }
 
         private async void UpdateDish()
-        { 
+        {
             GetData();
             try
             {
@@ -75,25 +97,12 @@ namespace Proyecto_Intermodular
 
         private void GetData()
         {
-            double price;
-            if (!double.TryParse(tbPrice.Text, out price))
-            {
-                MessageBox.Show("Entre un precio entero o decimal válido!");
-                return;
-            }
-
             dish.Name = tbName.Text;
-            if (cbDishType.Text == "Comida") 
-            {
-                dish.Type = "Food";
-            } 
-            else
-            {
-                dish.Type = "Drink";
-            }
-            
-            dish.Price = price;
+            dish.Type = cbDishType.Text == "Comida" ? "Food" : "Drink";
+
+            dish.Price = double.Parse(tbPrice.Text);
             dish.Description = tbDescription.Text;
+            dish.IngredientQties = dishIngredients;
             dish.Image = tbImageURL.Text;
         }
 
@@ -108,6 +117,46 @@ namespace Proyecto_Intermodular
                 tbImageURL.Text = dish.Image;
                 btnSave.Content = "Modificar Plato";
             }
+        }
+
+        private void btnIngredientsQty_Click(object sender, RoutedEventArgs e)
+        {
+            IngredientSelector ingredientSelector = new()
+            {
+                IngredientsQtiesPreviouslyAdded = dishIngredients
+            };
+            
+            ingredientSelector.btnSendIngredients.Click += (object sender, RoutedEventArgs e) =>
+            {
+                bool isValidOperation = true;
+                dishIngredients.Clear();
+                btnIngredientsQty.ToolTip = "";
+
+                ingredientSelector.IngredientsQtyItemSelected.ForEach(ingredientQtyItem =>
+                {
+                    if (!double.TryParse(ingredientQtyItem.IngredientQuantity, out double quantity))
+                    {
+                        dishIngredients.Clear();
+                        MessageBox.Show($"Error, la cantidad de {ingredientQtyItem.IngredientName} debe ser un número.");
+                        isValidOperation = false;
+                        return;
+                    }
+
+                    dishIngredients.Add(new()
+                    {
+                        Ingredient = ingredientQtyItem.BaseIngredient,
+                        Quantity = quantity
+                    });
+                });
+
+                if (isValidOperation)
+                {
+                    btnIngredientsQty.ToolTip = $"Actuales:\n{dishIngredients.Aggregate("", (acc, cur) => acc += $"{cur}\n")}";
+                    ingredientSelector.Close();
+                }
+            };
+
+            ingredientSelector.ShowDialog();
         }
     }
 }
