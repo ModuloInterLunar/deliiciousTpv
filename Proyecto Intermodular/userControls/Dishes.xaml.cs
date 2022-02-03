@@ -94,22 +94,6 @@ namespace Proyecto_Intermodular.userControls
         private void btnAdd_Click(object sender, RoutedEventArgs e)
         {
             AddDishWindow addDishWindow = new();
-            addDishWindow.btnSave.Click += (object sender, RoutedEventArgs e) =>
-            {
-                for(int i = 0; i < addDishWindow.gridInputs.Children.Count; i++)
-                {
-                    bool IsEmpty(string str) => str is null or "";
-
-                    if (addDishWindow.gridInputs.Children[i] is TextBox textBox && IsEmpty(textBox.Text))
-                    {
-                        MessageBox.Show("Error, no puede haber campos vacios");
-                        return;
-                    }
-                }
-                
-
-
-            };
             addDishWindow.ShowDialog();
             UpdateStackDishes();
         }

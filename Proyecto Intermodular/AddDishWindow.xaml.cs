@@ -55,11 +55,13 @@ namespace Proyecto_Intermodular
                 MessageBox.Show($"Error, el precio debe ser un número.");
                 return;
             }
+
             if (dish != null)
             {
                 UpdateDish();
                 return;
             }
+
             CreateDish();
         }
 
