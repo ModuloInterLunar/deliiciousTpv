@@ -99,7 +99,6 @@ namespace Proyecto_Intermodular.userControls
                 addIngredientWindow.ShowDialog();
                 UpdateStackIngredients();
             };
-
         }
 
         private void btnAdd_Click(object sender, RoutedEventArgs e)

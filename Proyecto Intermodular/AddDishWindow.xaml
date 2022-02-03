@@ -14,7 +14,7 @@
             <RowDefinition/>
         </Grid.RowDefinitions>
         
-        <Grid Width="350" Height="200">
+        <Grid Width="350" Height="200" x:Name="gridInputs">
             
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="4*"/>
@@ -43,15 +43,14 @@
                 <ComboBoxItem Content="Comida"/>
                 <ComboBoxItem Content="Bebida"/>
             </ComboBox>
-            <Button x:Name="btnIngredientsQty" Grid.Column="1" Grid.Row="2" Width="180" Content="Seleccione ingredientes" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="5" Click="Button_Click"/>
-            <TextBox Text="{Binding Name}" Grid.Column="1" Grid.Row="3" Width="180" Height="30" HorizontalAlignment="Left" x:Name="tbPrice" VerticalContentAlignment="Center" MaxLength="2"/>
-            <TextBox Text="{Binding Name}" Grid.Column="1" Grid.Row="4" Width="180" Height="30" HorizontalAlignment="Left" x:Name="tbDescription" VerticalContentAlignment="Center" MaxLength="100"/>
-            <TextBox Text="{Binding Name}" Grid.Column="1" Grid.Row="5" Width="180" Height="30" HorizontalAlignment="Left" x:Name="tbImageURL" VerticalContentAlignment="Center" MaxLength="50"/>
+            <Button x:Name="btnIngredientsQty" Grid.Column="1" Grid.Row="2" Width="180" Content="Seleccione ingredientes" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="5" Click="btnIngredientsQty_Click"/>
+            <TextBox Text="{Binding Name}" Grid.Column="1" Grid.Row="3" Width="180" Height="30" HorizontalAlignment="Left" x:Name="tbPrice" VerticalContentAlignment="Center"/>
+            <TextBox Text="{Binding Name}" Grid.Column="1" Grid.Row="4" Width="180" Height="30" HorizontalAlignment="Left" x:Name="tbDescription" VerticalContentAlignment="Center"/>
+            <TextBox Text="{Binding Name}" Grid.Column="1" Grid.Row="5" Width="180" Height="30" HorizontalAlignment="Left" x:Name="tbImageURL" VerticalContentAlignment="Center"/>
 
         </Grid>
-        
+
         <Button x:Name="btnSave" Grid.Row="1" Height="40" Width="130" Content="Crear plato" FontWeight="SemiBold" Click="Button_Click"/>
-    
     </Grid>
     
 </Window>

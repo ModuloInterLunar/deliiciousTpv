@@ -16,44 +16,27 @@ namespace Proyecto_Intermodular.userControls
             InitializeComponent();
         }
 
-        private bool checkInputs()
+        private bool CheckInputs()
         {
             for(int i = 0; i < inputsGrid.Children.Count; i++)
             {
-                if (inputsGrid.Children[i] is TextBoxHint textBoxHint && isEmpty(textBoxHint.Text))
+                if (inputsGrid.Children[i] is TextBoxHint textBoxHint && IsEmpty(textBoxHint.Text))
                     return false;
-                else if (inputsGrid.Children[i] is PasswordInput password && isEmpty(password.Text))
+                else if (inputsGrid.Children[i] is PasswordInput password && IsEmpty(password.Text))
                     return false;
             }
 
             return true;
         }
 
-        private bool isEmpty(string str) => str == null || str == "";
+        private bool IsEmpty(string str) => str is null or "";
 
         private async void btnCreateEmployee_Click(object sender, RoutedEventArgs e)
         {
-            /*string name = txtBoxName.Text;
-            string surname = txtBoxSurname.Text;
-            string dni = txtBoxDni.Text;
-            string user = txtBoxUser.Text;
-            string password = passwdInput.Text;
-            string passwordConf = passwdInputConfirm.Text;
-            string role = cbRole.Text;
-            bool isAdmin = false;
-            string confDni = @"^\d{8}[A-Z]|[XYZ]\d{7}[A-Z]$";
-
-
-            if (name == "" || surname == "" || dni == "" || user == "" || password == "" || passwordConf == "")
-            {
-                MessageBox.Show("Error, no pueden haber campos vacíos");
-                return;
-            }*/
-
             bool isAdmin = false;
             string confDni = @"^\d{8}[A-Z]|[XYZ]\d{7}[A-Z]$"; 
 
-            if(!checkInputs())
+            if(!CheckInputs())
             {
                 MessageBox.Show("Error, no pueden haber campos vacíos");
                 return;
@@ -79,7 +62,6 @@ namespace Proyecto_Intermodular.userControls
                 MessageBox.Show("Las contraseñas no coinciden, vuelva a introducir la contraseña");
                 return;
             }
-
 
             Employee employee = new() 
             { 

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Proyecto_Intermodular.userControls;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,6 +15,7 @@ namespace Proyecto_Intermodular.models
         private double price;
         private string description;
         private string image = "";
+        private DishItem dishItem;
         private List<IngredientQty> ingredientQties;
 
         public string Id { get => id; set => id = value; }
@@ -25,6 +27,9 @@ namespace Proyecto_Intermodular.models
         public List<IngredientQty> IngredientQties { get => ingredientQties; set => ingredientQties = value; }
 
         public string formattedPrice => price.ToString("0.00") + "€";
+
+        public DishItem DishItem { get => dishItem; set => dishItem = value; }
+
         public override string ToString() => $"Id: { id }, Name: { name }, Type: { type }, Price: { price }, Description: { description }, IngredientQties: { GetIngredients() }, Image: { image }";
         public string GetIngredients() => ingredientQties.Aggregate("", (acc, cur) => acc += $"{cur}\n");
 

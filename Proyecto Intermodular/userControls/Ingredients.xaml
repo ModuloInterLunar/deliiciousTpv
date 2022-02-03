@@ -22,9 +22,7 @@
                 <Label Content="Lista de Ingredientes:" FontWeight="SemiBold"/>
             </Border>
             <ScrollViewer Grid.Row="1" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
-                <StackPanel Grid.Row="1" x:Name="stackIngredients">
-                    
-                </StackPanel>
+                <StackPanel Grid.Row="1" x:Name="stackIngredients"/>
             </ScrollViewer>
         </Grid>
 
