@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Proyecto_Intermodular.api.models
 {
-    public abstract class DishModel
+    public class DishModel
     {
         private string id;
         private string name;
@@ -27,7 +27,9 @@ namespace Proyecto_Intermodular.api.models
             name = dish.Name;
             ingredientQties = dish.IngredientQties.ConvertAll(ingredientQty => new IngredientQtyModel(ingredientQty));
             price = dish.Price;
-
+            type = dish.Type;
+            image = dish.Image;
+            description = dish.Description;
         }
 
         public DishModel() { }

@@ -25,4 +25,20 @@ namespace Proyecto_Intermodular.api
         protected WrongCredentialsException(System.Runtime.Serialization.SerializationInfo info,
             System.Runtime.Serialization.StreamingContext context) : base(info, context) { }
     }
+
+    public class AlreadyInUseException : DeliiApiException
+    {
+        public AlreadyInUseException() : base() { }
+        public AlreadyInUseException(string message) : base(message) { }
+        protected AlreadyInUseException(System.Runtime.Serialization.SerializationInfo info,
+            System.Runtime.Serialization.StreamingContext context) : base(info, context) { }
+    }
+
+    public class NotEnoughStockException : DeliiApiException
+    {
+        public NotEnoughStockException() : base() { }
+        public NotEnoughStockException(string message) : base(message) { }
+        protected NotEnoughStockException(System.Runtime.Serialization.SerializationInfo info,
+            System.Runtime.Serialization.StreamingContext context) : base(info, context) { }
+    }
 }

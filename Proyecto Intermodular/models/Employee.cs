@@ -31,7 +31,7 @@ namespace Proyecto_Intermodular.models
         public string CreatedAt { get => createdAt; set => createdAt = value; }
         public string UpdatedAt { get => updatedAt; set => updatedAt = value; }
 
-        public override string ToString() => $"id: {id}, username: {username}, dni: {dni}, name: {name}, surname: {surname}, password: {password}, isAdmin: {isAdmin}";
+        public override string ToString() => $"id: {id}, username: {username}, dni: {dni}, name: {name}, surname: {surname}, isAdmin: {isAdmin}";
 
         public Employee(string id, string username, string dni, string name, string surname, string password, bool isAdmin)
         {
@@ -60,5 +60,16 @@ namespace Proyecto_Intermodular.models
         }
 
         private string Capitalize(string str) => char.ToUpper(str[0]) + str.Substring(1);
+
+        internal void UpdateData(Employee updatedEmployee)
+        {
+            username = updatedEmployee.username;
+            dni = updatedEmployee.dni;
+            name = updatedEmployee.name;
+            surname = updatedEmployee.surname;
+            isAdmin = updatedEmployee.isAdmin;
+            createdAt = updatedEmployee.createdAt;
+            updatedAt = updatedEmployee.updatedAt;
+        }
     }
 }

@@ -8,10 +8,10 @@
         mc:Ignorable="d"
         MinHeight="480"
         MinWidth="720"
-        Title="MainWindow" Height="450" Width="800" SizeChanged="Window_SizeChanged">
+        Title="MainWindow" Height="600" Width="1000" WindowState="Maximized" SizeChanged="Window_SizeChanged">
 
     <Grid>
-        <Image x:Name="imgTimer" Source="/Proyecto Intermodular;component/images/timer/timer_1.png" Width="30" HorizontalAlignment="Left" Height="41" VerticalAlignment="Bottom" Margin="10,0,0,10" />
+        <Image x:Name="imgTimer" Source="/Proyecto Intermodular;component/images/timer/timer_1.png" Width="30" HorizontalAlignment="Left" Height="41" VerticalAlignment="Bottom" Margin="22,0,0,10" />
         <TabControl TabStripPlacement="Left">
             <TabItem Header="MESAS">
                 <uc:Tables x:Name="ucTables"/>
@@ -78,6 +78,18 @@
                         <uc:KitchenItem DishKitchen="Macarrones" EmployeeKitchen="Saul" TimerKitchen="0s" TableKitchen="Mesa : 1"/>
                     </StackPanel>
                 </ScrollViewer>
+            </TabItem>
+
+            <TabItem Header="Ingredients">
+                <uc:Ingredients x:Name="ucIngredients"/>
+            </TabItem>
+
+            <TabItem Header="Crear empleado">
+                <uc:Employees/>
+            </TabItem>
+
+            <TabItem Header="Platos">
+                <uc:Dishes x:Name="ucDishes"/>
             </TabItem>
         </TabControl>
     </Grid>

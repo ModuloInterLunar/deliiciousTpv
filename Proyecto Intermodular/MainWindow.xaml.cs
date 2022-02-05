@@ -89,6 +89,8 @@ namespace Proyecto_Intermodular
                 UpdateUI();
 
             ucTables.UpdateCanvasTables();
+            ucIngredients.UpdateStackIngredients();
+            ucDishes.UpdateLayout();
             GenerateOrders();
         }
 
@@ -101,6 +103,7 @@ namespace Proyecto_Intermodular
                 ApplicationState.SetValue("current_user", currentUser);
                 Application.Current.Dispatcher.Invoke(() =>
                 {
+                    ucTables.CurrentUser = currentUser;
                     UpdateUI();
                 });
             }
@@ -124,9 +127,8 @@ namespace Proyecto_Intermodular
 
         private async void GenerateOrders()
         {
-
-            List<Order> updatedOrders= await DeliiApi.GetAllOrders();
-
+            List<Order> updatedOrders = await DeliiApi.GetAllOrders();
+            updatedOrders = updatedOrders.FindAll(order => !order.HasBeenServed);
             if (orders == null)
             {
                 orders = updatedOrders;
@@ -139,8 +141,7 @@ namespace Proyecto_Intermodular
                 Order order = orders.Find(order => order.Id == updatedOrder.Id);
                 if (order != null)
                 { 
-                    // TODO
-                    // order.UpdateData(updatedOrder);
+                    order.UpdateData(updatedOrder);
                 }
                 else
                 {
@@ -149,6 +150,20 @@ namespace Proyecto_Intermodular
                 }
             });
 
+            RemoveOldOrders(updatedOrders);
+        }
+
+        private void RemoveOldOrders(List<Order> updatedOrders)
+        {
+            orders = orders.FindAll(order => {
+                Order updatedOrder = updatedOrders.Find(updatedOrder => order.Id == updatedOrder.Id);
+                if (updatedOrder == null)
+                {
+                    panelKitchen.Children.Remove(order.Border);
+                    return false;
+                }
+                return true;
+            });
         }
 
         private void CreateOrder(Order order)
@@ -157,6 +172,7 @@ namespace Proyecto_Intermodular
             stackPanel.Orientation = Orientation.Horizontal;
 
             Border border = new Border();
+            order.Border = border;
             border.Background = Brushes.SkyBlue;
             border.BorderBrush = Brushes.Black;
             border.BorderThickness = new(1);

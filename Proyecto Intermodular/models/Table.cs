@@ -87,6 +87,12 @@ namespace Proyecto_Intermodular.models
             width = updatedTable.Width;
             posX = updatedTable.PosX;
             posY = updatedTable.PosY;
+            if (updatedTable.ActualTicket == null)
+                actualTicket = null;
+            else if (actualTicket == null)
+                actualTicket = updatedTable.actualTicket;
+            else
+                actualTicket.UpdateData(updatedTable.ActualTicket);
             label.Width = width;
             label.Height = height;
             UpdateRelativePosition(frameWidth, frameHeight);

@@ -15,21 +15,18 @@
 
         <Border BorderBrush="Black" BorderThickness="0" CornerRadius="10" Grid.RowSpan="2">
             <Border.Effect>
-                <DropShadowEffect ShadowDepth="1"/>
+                <DropShadowEffect ShadowDepth="3" BlurRadius="7"/>
             </Border.Effect>
 
             <Border.Background>
-                <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
-                    <GradientStop Color="#9AD0EC" Offset="0.3"/>
-                    <GradientStop Color="#99FEFF" Offset="1"/>
-                </LinearGradientBrush>
+                <SolidColorBrush Color="#EAEAEA"/>
             </Border.Background>
         </Border>
 
         <WrapPanel HorizontalAlignment="Center" VerticalAlignment="Top" Margin="10">
-            <Border Name="Image_Game" Width="170" Height="120" BorderBrush="Black" BorderThickness="1" CornerRadius="10,10,0,0" >
+            <Border Name="Image_Game" Width="170" Height="120" BorderThickness="0" CornerRadius="10,10,0,0" >
                 <Border.Background>
-                    <ImageBrush ImageSource="{Binding DishImage}" x:Name="imgDish"/>
+                    <ImageBrush ImageSource="{Binding DishImage}" Stretch="Uniform" x:Name="imgDish"/>
                 </Border.Background>
             </Border>
         </WrapPanel>
@@ -37,23 +34,20 @@
         <Grid Grid.Row="1" Margin="8,0,8,10">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="2*"></ColumnDefinition>
+                <ColumnDefinition Width="45"></ColumnDefinition>
                 <ColumnDefinition Width="40"></ColumnDefinition>
             </Grid.ColumnDefinitions>
             
             <Grid.RowDefinitions>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="*"/>
+                <RowDefinition Height="50"/>
             </Grid.RowDefinitions>
 
-            <Border BorderBrush="black" BorderThickness="0.5" Margin="2" CornerRadius="2" Background="Transparent" HorizontalAlignment="Left" Width="140">
-                <TextBlock Margin="2" Text="{Binding DishName}" FontSize="12" VerticalAlignment="Center" HorizontalAlignment="Center" x:Name="txtBlockDishName" FontWeight="Bold"/>
-            </Border>
+            <TextBlock Margin="4" Text="{Binding DishName}" FontSize="12" VerticalAlignment="Center" Width="auto" MaxWidth="85" Height="auto" HorizontalAlignment="Center" x:Name="txtBlockDishName" FontWeight="Bold" TextWrapping="Wrap"/>
 
-            <Border BorderBrush="black" BorderThickness="0.5" Margin="2" CornerRadius="2" Grid.Row="1" HorizontalAlignment="Right" MinWidth="40">
-                <TextBlock Margin="2" Text="{Binding DishPrice}" FontSize="12" VerticalAlignment="Center" HorizontalAlignment="Center" x:Name="txtBlockPrice" FontWeight="Bold"/>
-            </Border>
-            
-            <Button Name="btnAddDish" Grid.Column="1" BorderBrush="black" BorderThickness="0.5" Content="+" FontSize="12" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Margin="0,2,3,2">
+            <TextBlock Margin="2" Grid.Column="1" Text="{Binding DishPrice}" FontSize="12" VerticalAlignment="Center" HorizontalAlignment="Center" x:Name="txtBlockPrice" FontWeight="Bold"/>
+
+
+            <Button Name="btnAddDish" Grid.Column="2" Margin="5"  Grid.RowSpan="2" BorderBrush="Gray" Background="#E0E0E0" BorderThickness="0.5" Content="+" FontSize="12" VerticalContentAlignment="Center" HorizontalContentAlignment="Center">
                 <Button.Resources>
                     <Style TargetType="Border">
                         <Setter Property="CornerRadius" Value="2"/>
@@ -61,13 +55,6 @@
                 </Button.Resources>
             </Button>
 
-            <Button Name="btnRemoveDish" Grid.Column="1" Grid.Row="1" BorderBrush="black" BorderThickness="0.5" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"  Content="-" FontSize="12" Margin="0,2,3,2">
-                <Button.Resources>
-                    <Style TargetType="Border">
-                        <Setter Property="CornerRadius" Value="2"/>
-                    </Style>
-                </Button.Resources>
-            </Button>
         </Grid>
     </Grid>
 </UserControl>

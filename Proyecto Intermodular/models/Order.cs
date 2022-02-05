@@ -1,4 +1,6 @@
 ﻿using Proyecto_Intermodular.userControls;
+using System.Windows;
+using System.Windows.Controls;
 
 namespace Proyecto_Intermodular.models
 {
@@ -15,6 +17,7 @@ namespace Proyecto_Intermodular.models
         private string updatedAt;
         private Employee employee;
         private string table;
+        private Border border;
         private OrderItem orderItem;
 
         public Order(string id, string ticket, Dish dish, string description, Employee employee)
@@ -28,22 +31,22 @@ namespace Proyecto_Intermodular.models
             this.employee = employee;
         }
 
-        public Order(string id, string ticket, Dish dish, bool isServed, bool isIncluded, Employee employee)
+        public Order(string id, string ticket, Dish dish, bool hasBeenServed, bool isIncluded, Employee employee)
         {
             this.id = id;
             this.ticket = ticket;
             this.dish = dish;
-            this.hasBeenServed = isServed;
+            this.hasBeenServed = hasBeenServed;
             this.isIncluded = isIncluded;
             this.employee = employee;
         }
 
-        public Order(string id, string ticket, Dish dish, bool isServed, bool isIncluded, string description, Employee employee)
+        public Order(string id, string ticket, Dish dish, bool hasBeenServed, bool isIncluded, string description, Employee employee)
         {
             this.id = id;
             this.ticket = ticket;
             this.dish = dish;
-            this.hasBeenServed = isServed;
+            this.hasBeenServed = hasBeenServed;
             this.isIncluded = isIncluded;
             this.description = description;
             this.employee = employee;
@@ -64,10 +67,30 @@ namespace Proyecto_Intermodular.models
 
         public void UpdateData(Order updatedOrder)
         {
+            ticket = updatedOrder.ticket;
+            if (updatedOrder.dish == null)
+                dish = null;
+            else if (dish == null)
+                dish = updatedOrder.dish;
+            else
+                dish.UpdateData(updatedOrder.dish);
+            hasBeenServed = updatedOrder.hasBeenServed;
+            isIncluded = updatedOrder.isIncluded;
+            if (updatedOrder.employee == null)
+                employee = null;
+            else if (employee == null)
+                employee = updatedOrder.employee;
+            else
+                employee.UpdateData(updatedOrder.employee);
+            description = updatedOrder.description;
+            createdAt = updatedOrder.createdAt;
+            updatedAt = updatedOrder.updatedAt;
+            table = updatedOrder.table;
 
         }
 
         public OrderItem OrderItem { get => orderItem; set => orderItem = value; }
         public bool HasBeenCoocked { get => hasBeenCoocked; set => hasBeenCoocked = value; }
+        public Border Border { get => border; set => border = value; }
     }
 }

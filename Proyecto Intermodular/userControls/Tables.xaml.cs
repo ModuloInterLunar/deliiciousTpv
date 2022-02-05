@@ -18,7 +18,9 @@ namespace Proyecto_Intermodular.userControls
         private List<Table> tables;
         private Table selectedTable;
         private bool isEditingTableLayout;
-        private Employee currentUser = new() { Id = "1" };
+        private Employee currentUser;
+
+        public Employee CurrentUser { get => currentUser; set => currentUser = value; }
 
         public Tables()
         {
@@ -51,26 +53,25 @@ namespace Proyecto_Intermodular.userControls
                 }
             });
 
-            RemoveOldTables(updatedTables);
+            RemoveDeletedTables(updatedTables);
 
             if (!tables.Contains(selectedTable))
                 SelectTable(null);
+            if (selectedTable != null)
+                loadOrders();
         }
 
-        private void RemoveOldTables(List<Table> updatedTables)
+        private void RemoveDeletedTables(List<Table> updatedTables)
         {
-            List<Table> tablesToRemove = new();
-            tables.ForEach(table =>
-            {
-                Table updatedTable = updatedTables.Find(updatedTable => updatedTable.Id == table.Id);
+            tables = tables.FindAll(table => {
+                Table updatedTable = updatedTables.Find(updatedTable => table.Id == updatedTable.Id);
                 if (updatedTable == null)
                 {
                     cnvTables.Children.Remove(table.Label);
-                    tablesToRemove.Add(table);
+                    return false;
                 }
+                return true;
             });
-
-            tablesToRemove.ForEach(tableToRemove => tables.Remove(tableToRemove));
         }
 
         private void CreateTable(Table table)
@@ -106,8 +107,14 @@ namespace Proyecto_Intermodular.userControls
         }
         private void SelectTable(Table table)
         {
+            if (selectedTable != null && selectedTable.ActualTicket != null && selectedTable.ActualTicket.Orders != null)
+            {
+                selectedTable.ActualTicket.Orders.ForEach(order => {
+                    stackOrders.Children.Remove(order.OrderItem);
+                    order.OrderItem = null;
+                });
+            }
             selectedTable = table;
-            stackOrders.Children.Clear();
             if (selectedTable == null)
             {
                 lblSelectedTable.Content = $"MESA SELECCIONADA:";
@@ -152,7 +159,7 @@ namespace Proyecto_Intermodular.userControls
 
         public void loadOrders()
         {
-            if (selectedTable.ActualTicket == null) return;
+            if (selectedTable.ActualTicket == null || selectedTable.ActualTicket.Orders == null) return;
             selectedTable.ActualTicket.Orders.ForEach(order => CreateOrderItem(order));
         }
         #endregion
@@ -182,13 +189,30 @@ namespace Proyecto_Intermodular.userControls
             UnSelectTable(selectedTable);
         }
         private void btnSave_Click(object sender, RoutedEventArgs e) => tables.ForEach(async table => await DeliiApi.UpdateTable(table));
-        private void btnReload_Click(object sender, RoutedEventArgs e) => UpdateCanvasTables();
-        private void btnAddOrder_Click(object sender, RoutedEventArgs e)
+        private void btnReload_Click(object sender, RoutedEventArgs e) 
         {
-            if (selectedTable == null || selectedTable.ActualTicket == null) return;
+            UpdateCanvasTables();
+            Table selectedTable = this.selectedTable;
+            SelectTable(null);
+            SelectTable(selectedTable);
+
+        }
+        private async void btnAddOrder_Click(object sender, RoutedEventArgs e)
+        {
+            if (selectedTable == null)
+            {
+                MessageBox.Show("Selecciona una mesa primero!");
+                return;
+            }
+            if (selectedTable.ActualTicket == null)
+            {
+                Ticket ticket = await DeliiApi.CreateTicket();
+                selectedTable.ActualTicket = ticket;
+                await DeliiApi.UpdateTable(selectedTable);
+            }
+
             DishSelector dishSelector = new();
 
-            dishSelector.Show();
 
             dishSelector.btnSendOrders.Click += (object sender, RoutedEventArgs e) =>
             {
@@ -196,6 +220,17 @@ namespace Proyecto_Intermodular.userControls
 
                 dishSelector.SelectedDishes.ForEach(async dish =>
                 {
+                    // En principio, no tendría que entrar nunca en el catch
+                    try
+                    {
+                        await DeliiApi.ReduceIngredientQuantity(dish);
+                    }
+                    catch (NotEnoughStockException e)
+                    {
+                        MessageBox.Show(e.Message);
+                        return;
+                    }
+
                     Order order = await DeliiApi.CreateOrder(new()
                     {
                         Dish = dish,
@@ -203,57 +238,39 @@ namespace Proyecto_Intermodular.userControls
                         HasBeenCoocked = false,
                         HasBeenServed = false,
                         Description = "",
-                        Employee = currentUser,
+                        Employee = CurrentUser,
                         Table = selectedTable.Id
                     });
 
+                    
+
                     CreateOrderItem(order);
-                    await selectedTable.ActualTicket.AddOrder(order, selectedTable.ActualTicket);
+                    await selectedTable.ActualTicket.AddOrder(order);
 
                     dishSelector.Close();
                 });
             };
-            /*
-            List<Dish> dishes = await DeliiApi.GetAllDishes();
-            if (dishes == null || dishes.Count <= 0) return;
-           
-
-            Order order = await DeliiApi.CreateOrder(new()
-            {
-                Dish = dishes[0],
-                Ticket = selectedTable.ActualTicket.Id,
-                HasBeenCoocked = false,
-                HasBeenServed = false,
-                Description = "Esto es la descripción",
-                Employee = currentUser,
-                Table = selectedTable.Id,
-            }
-            );
-            
-
-            CreateOrderItem(order);
-            
-
-            await selectedTable.ActualTicket.AddOrder(order, selectedTable.ActualTicket);
-             */
+            dishSelector.ShowDialog();
         }
 
         private void CreateOrderItem(Order order)
         {
-            string dishImageUrl = (order.Dish.Image == "" || order.Dish.Image == null) ? "https://barradeideas.com/wp-content/uploads/2019/09/fast-food.jpg" : order.Dish.Image;
+            if (order.OrderItem != null)
+                return;
+            
+            string dishImageUrl = (order.Dish.Image == null || order.Dish.Image == "") ? "https://barradeideas.com/wp-content/uploads/2019/09/fast-food.jpg" : order.Dish.Image;
             order.OrderItem = new()
             {
                 DishName = order.Dish.Name,
-                DishPrice = $"{order.Dish.Price} €",
-                DescriptionInput = order.Description,
-                DishImage = new BitmapImage(new Uri(dishImageUrl)),
-                Margin = new(5)
+                DishPrice = order.Dish.formattedPrice,
+                Description = order.Description,
+                DishImage = new BitmapImage(new Uri(dishImageUrl))
             };
 
             order.OrderItem.btnDelete.Click += async (object sender, RoutedEventArgs e) =>
             {
                 stackOrders.Children.Remove(order.OrderItem);
-                await selectedTable.ActualTicket.RemoveOrder(order, selectedTable.ActualTicket);
+                await selectedTable.ActualTicket.RemoveOrder(order);
             };
 
             stackOrders.Children.Add(order.OrderItem);

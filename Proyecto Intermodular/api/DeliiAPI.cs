@@ -47,10 +47,104 @@ namespace Proyecto_Intermodular.api
             }
         }
 
+        public static async Task ReduceIngredientQuantity(Dish dish)
+        {
+            try
+            {
+                List<Task> reduceTasks = dish.IngredientQties.ConvertAll<Task>(async ingredientQty =>
+                {
+                    string uri = API_URL + "ingredients/reduce/" + ingredientQty.Ingredient.Id;
+                    IngredientModel ingredientModel = new()
+                    {
+                        Quantity = ingredientQty.Quantity
+                    };
+                    await DeliiApiClient.Patch(uri, ingredientModel);
+                });
+                await Task.WhenAll(reduceTasks);
+            }
+            catch (DeliiApiException ex)
+            {
+                if (ex.Message.Contains("not enough"))
+                    throw new NotEnoughStockException(ex.Message);
+                throw new DeliiApiException(ex.Message);
+            }
+        }
+
+        public static async Task<List<Ingredient>> GetAllIngredients()
+        {
+            string uri = API_URL + "ingredients";
+            string ingredientsJson = await DeliiApiClient.Get(uri);
+
+            List<Ingredient> ingredients = JsonSerializer.Deserialize<List<Ingredient>>(ingredientsJson, DeliiApiClient.GetJsonOptions());
+
+            return ingredients;
+        }
+
+        public static async Task<Ingredient> CreateIngredient(Ingredient ingredient)
+        {
+            try
+            {
+                string uri = API_URL + "ingredients";
+                IngredientModel ingredientModel = new(ingredient);
+                string ingredientJson = await DeliiApiClient.Post(uri, ingredientModel);
+
+                Ingredient createdIngredient = JsonSerializer.Deserialize<Ingredient>(ingredientJson, DeliiApiClient.GetJsonOptions());
+
+                return createdIngredient;
+            }
+            catch (DeliiApiException ex)
+            {
+                if (ex.Message.Contains("E11000 duplicate key error"))
+                    throw new AlreadyInUseException(ex.Message);
+                throw new DeliiApiException(ex.Message);
+            }
+        }
+
+        public static async Task<Dish> CreateDish(Dish dish)
+        {
+            try
+            {
+                string uri = $"{API_URL}dishes";
+                DishModel dishModel = new(dish);
+                string dishJson = await DeliiApiClient.Post(uri, dishModel);
+
+                Dish createdDish = JsonSerializer.Deserialize<Dish>(dishJson, DeliiApiClient.GetJsonOptions());
+
+                return createdDish;
+            }
+            catch (DeliiApiException ex)
+            {
+                if (ex.Message.Contains("E11000 duplicate key error"))
+                    throw new AlreadyInUseException(ex.Message);
+                throw new DeliiApiException(ex.Message);
+            }
+
+        }
+
+        public static async Task<Ingredient> UpdateIngredient(Ingredient ingredient)
+        {
+            try { 
+                string uri = API_URL + "ingredients/" + ingredient.Id;
+                IngredientModel ingredientModel = new IngredientModel(ingredient);
+                string updatedIngredientJson = await DeliiApiClient.Patch(uri, ingredientModel);
+                Ingredient updatedIngredient = JsonSerializer.Deserialize<Ingredient>(updatedIngredientJson, DeliiApiClient.GetJsonOptions());
+
+                return updatedIngredient;
+            }
+            catch (DeliiApiException ex)
+            {
+                if (ex.Message.Contains("E11000 duplicate key error"))
+                    throw new AlreadyInUseException(ex.Message);
+                throw new DeliiApiException(ex.Message);
+
+            }
+        }
+
         public static async Task<Employee> CreateEmployee(Employee employee)
         {
             string uri = API_URL + "employees";
-            string employeeJson = await DeliiApiClient.Post(uri, employee);
+            EmployeeModel employeeModel = new(employee);
+            string employeeJson = await DeliiApiClient.Post(uri, employeeModel);
 
             Employee emp = JsonSerializer.Deserialize<Employee>(employeeJson, DeliiApiClient.GetJsonOptions());
 
@@ -92,7 +186,8 @@ namespace Proyecto_Intermodular.api
 
             try
             {
-                string createdTableJson = await DeliiApiClient.Post(uri, table);
+                TableModel tableModel = new TableModel(table);
+                string createdTableJson = await DeliiApiClient.Post(uri, tableModel);
                 Table createdTable = JsonSerializer.Deserialize<Table>(createdTableJson, DeliiApiClient.GetJsonOptions());
 
                 return createdTable;
@@ -145,6 +240,7 @@ namespace Proyecto_Intermodular.api
 
             return updatedTicket;
         }
+        
 
         public static async void RemoveTable(Table table)
         {
@@ -180,6 +276,33 @@ namespace Proyecto_Intermodular.api
             return dishes;
         }
 
+        public static async Task<Dish> UpdateDish(Dish dish)
+        {
+            string uri = $"{API_URL}dishes/{dish.Id}";
+            string updatedDishJson = await DeliiApiClient.Patch(uri, dish);
+            Dish updatedDish = JsonSerializer.Deserialize<Dish>(updatedDishJson, DeliiApiClient.GetJsonOptions());
+            return updatedDish;
+        }
+
+
+        internal static async Task<Ticket> CreateTicket()
+        {
+            string uri = API_URL + "tickets";
+            TicketModel ticketModel = new();
+            try
+            {
+                string createdTicketJson = await DeliiApiClient.Post(uri, ticketModel);
+                Ticket createdTicket = JsonSerializer.Deserialize<Ticket>(createdTicketJson, DeliiApiClient.GetJsonOptions());
+
+                return createdTicket;
+            }
+            catch (DeliiApiException ex)
+            {
+                if (ex.Message.Contains("Can't create table!"))
+                    throw new UserNotFoundException(ex.Message);
+                throw new DeliiApiException(ex.Message);
+            }
+        }
     }
 
     class Authentifier

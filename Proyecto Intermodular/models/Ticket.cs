@@ -43,16 +43,46 @@ namespace Proyecto_Intermodular.models
         public string UpdatedAt { get => updatedAt; set => updatedAt = value; }
         public List<Order> Orders { get => orders; set => orders = value; }
 
-        public async Task AddOrder(Order order, Ticket actualTicket)
+        public async Task AddOrder(Order order)
         {
+            if (orders == null) orders = new();
             orders.Add(order);
-            actualTicket = await DeliiApi.UpdateTicket(actualTicket);
+            await DeliiApi.UpdateTicket(this);
         }
-        public async Task RemoveOrder(Order order, Ticket actualTicket)
+        public async Task RemoveOrder(Order order)
         {
             DeliiApi.RemoveOrder(order);
             orders.Remove(order);
-            actualTicket = await DeliiApi.UpdateTicket(actualTicket);
+            await DeliiApi.UpdateTicket(this);
+        }
+
+        public void UpdateData(Ticket updatedTicket)
+        {
+            total = updatedTicket.total;
+            text = updatedTicket.text;
+            isPaid = updatedTicket.isPaid;
+            createdAt = updatedTicket.createdAt;
+            updatedAt = updatedTicket.updatedAt;
+            if (orders == null)
+            {
+                orders = updatedTicket.orders;
+                return;
+            }
+            updatedTicket.orders.ForEach(updatedOrder =>
+            {
+                Order order = orders.Find(order => order.Id == updatedOrder.Id);
+                if (order != null)
+                    order.UpdateData(updatedOrder);
+                else
+                    orders.Add(updatedOrder);
+            });
+
+            // Returns the orders from this list if they are in the updated list
+            orders = orders.FindAll(order =>
+                updatedTicket.orders.Find(updatedOrders =>
+                    order.Id == updatedOrders.Id
+                ) != null
+            );
         }
     }
 }
