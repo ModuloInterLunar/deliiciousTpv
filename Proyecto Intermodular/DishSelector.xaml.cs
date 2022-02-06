@@ -52,7 +52,7 @@ namespace Proyecto_Intermodular
                 DishImage = new BitmapImage(new Uri(dishImageUrl)),
                 DishName = dish.Name,
                 DishPrice = dish.formattedPrice,
-                ToolTip = dish.GetIngredients(),
+                ToolTip = dish.GetFullDescription(),
                 Margin = new(10),
             };
 
