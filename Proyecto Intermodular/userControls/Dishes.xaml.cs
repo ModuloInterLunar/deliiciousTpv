@@ -69,9 +69,12 @@ namespace Proyecto_Intermodular.userControls
 
         private void UpdateDishItem(Dish dish)
         {
+            string dishImageUrl = (dish.Image == null || dish.Image == "") ? "https://barradeideas.com/wp-content/uploads/2019/09/fast-food.jpg" : dish.Image;
+
             dish.DishItem.DishName = dish.Name;
             dish.DishItem.DishPrice = $"{dish.Price} €";
-            dish.DishItem.DishImage = new BitmapImage(new Uri(dish.Image));
+            dish.DishItem.DishImage = new BitmapImage(new Uri(dishImageUrl));
+            dish.DishItem.ToolTip = dish.GetFullDescription();
         }
 
         private void GenerateDishItem(Dish dish)
@@ -83,7 +86,8 @@ namespace Proyecto_Intermodular.userControls
                 DishName = dish.Name,
                 DishImage = new BitmapImage(new Uri(dishImageUrl)),
                 DishPrice = $"{dish.Price} €",
-                Margin = new(5)
+                Margin = new(5),
+                ToolTip = dish.GetFullDescription()
             };
             dishItem.btnAddDish.Visibility = Visibility.Collapsed;
 
