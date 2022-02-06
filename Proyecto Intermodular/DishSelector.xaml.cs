@@ -23,15 +23,15 @@ namespace Proyecto_Intermodular
     public partial class DishSelector : Window
     {
         private List<Dish> dishes;
-        private List<Dish> selectedDishes;
+        private List<OrderItem> orderItems;
 
         public DishSelector()
         {
             InitializeComponent();
-            SelectedDishes = new();
+            OrderItems = new();
             GenerateAllDishes();
         }
-        public List<Dish> SelectedDishes { get => selectedDishes; set => selectedDishes = value; }
+        public List<OrderItem> OrderItems { get => orderItems; set => orderItems = value; }
 
         private async void GenerateAllDishes()
         {
@@ -61,19 +61,20 @@ namespace Proyecto_Intermodular
                 OrderItem orderItem = new()
                 {
                     DishName = dish.Name,
-                    DishPrice = $"{dish.Price} €",
+                    DishPrice = dish.formattedPrice,
                     DishImage = new BitmapImage(new Uri(dishImageUrl)),
-                    Margin = new(5)
+                    Margin = new(5),
+                    Dish = dish
                 };
 
                 orderItem.btnDelete.Click += (object sender, RoutedEventArgs e) =>
                 {
-                    SelectedDishes.RemoveAt(selectedDishesContainer.Children.IndexOf(orderItem));
+                    OrderItems.Remove(orderItem);
                     selectedDishesContainer.Children.Remove(orderItem);
                 };
 
                 selectedDishesContainer.Children.Add(orderItem);
-                SelectedDishes.Add(dish);
+                OrderItems.Add(orderItem);
             };
 
             return dishItem;

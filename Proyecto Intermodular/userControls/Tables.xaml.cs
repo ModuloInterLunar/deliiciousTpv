@@ -216,14 +216,15 @@ namespace Proyecto_Intermodular.userControls
 
             dishSelector.btnSendOrders.Click += (object sender, RoutedEventArgs e) =>
             {
-                if (dishSelector.SelectedDishes == null) return;
+                if (dishSelector.OrderItems == null) return;
 
-                dishSelector.SelectedDishes.ForEach(async dish =>
+                dishSelector.OrderItems.ForEach(async orderItem =>
                 {
-                    // En principio, no tendría que entrar nunca en el catch
+                    // En principio, no tendría que entrar nunca en el catch, porque tenemos que hacer que se desactive
+                    // el botón cuando no haya suficiente cantidad TODO
                     try
                     {
-                        await DeliiApi.ReduceIngredientQuantity(dish);
+                        await DeliiApi.ReduceIngredientQuantity(orderItem.Dish);
                     }
                     catch (NotEnoughStockException e)
                     {
@@ -233,11 +234,11 @@ namespace Proyecto_Intermodular.userControls
 
                     Order order = await DeliiApi.CreateOrder(new()
                     {
-                        Dish = dish,
+                        Dish = orderItem.Dish,
                         Ticket = selectedTable.ActualTicket.Id,
                         HasBeenCoocked = false,
                         HasBeenServed = false,
-                        Description = "",
+                        Description = orderItem.txtBoxDescription.Text,
                         Employee = CurrentUser,
                         Table = selectedTable.Id
                     });

@@ -11,6 +11,7 @@ namespace Proyecto_Intermodular.api.models
     {
         private string id;
         private float price;
+        private string name;
         private List<string> dishes;
         private string image;
 
@@ -19,11 +20,13 @@ namespace Proyecto_Intermodular.api.models
             Id = menu.Id;
             Price = menu.Price;
             Dishes = menu.Dishes.ConvertAll(dish => dish.Id);
+            Name = menu.Name;
         }
 
         public string Id { get => id; set => id = value; }
         public float Price { get => price; set => price = value; }
         public List<string> Dishes { get => dishes; set => dishes = value; }
         public string Image { get => image; set => image = value; }
+        public string Name { get => name; set => name = value; }
     }
 }
