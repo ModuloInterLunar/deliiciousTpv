@@ -176,7 +176,7 @@ namespace Proyecto_Intermodular.userControls
 
         private async void BtnAddTable_Click(object sender, RoutedEventArgs e)
         {
-            Table table = await DeliiApi.CreateTable(new Table(0, 0));
+            Table table = await DeliiApi.CreateTable(new Table(0.5, 0.5));
             tables.Add(table);
             Application.Current.Dispatcher.Invoke(() => CreateTable(table));
         }
