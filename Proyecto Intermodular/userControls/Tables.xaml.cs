@@ -110,14 +110,21 @@ namespace Proyecto_Intermodular.userControls
         }
         private void SelectTable(Table table)
         {
-            if (selectedTable != null && selectedTable.ActualTicket != null && selectedTable.ActualTicket.Orders != null)
+            if (selectedTable != null)
             {
-                selectedTable.ActualTicket.Orders.ForEach(order => {
-                    stackOrders.Children.Remove(order.OrderItem);
-                    order.OrderItem = null;
-                });
+                selectedTable.Border.Background = (SolidColorBrush)new BrushConverter().ConvertFromString("#FF7AA0CD");
+
+                if (selectedTable.ActualTicket != null && selectedTable.ActualTicket.Orders != null)
+                {
+                    selectedTable.ActualTicket.Orders.ForEach(order =>
+                    {
+                        stackOrders.Children.Remove(order.OrderItem);
+                        order.OrderItem = null;
+                    });
+                }
             }
             selectedTable = table;
+            selectedTable.Border.Background = (SolidColorBrush)new BrushConverter().ConvertFromString("#FF92C0F7");
             if (selectedTable == null)
             {
                 lblSelectedTable.Content = $"MESA SELECCIONADA:";
@@ -129,6 +136,7 @@ namespace Proyecto_Intermodular.userControls
 
         private void UnSelectTable(Table table)
         {
+            selectedTable.Border.Background = (SolidColorBrush)new BrushConverter().ConvertFromString("#FF7AA0CD");
             selectedTable = null;
             stackOrders.Children.Clear();
             lblSelectedTable.Content = "MESA SELECCIONADA:";

@@ -279,7 +279,8 @@ namespace Proyecto_Intermodular.api
         public static async Task<Dish> UpdateDish(Dish dish)
         {
             string uri = $"{API_URL}dishes/{dish.Id}";
-            string updatedDishJson = await DeliiApiClient.Patch(uri, dish);
+            DishModel dishModel= new DishModel(dish);
+            string updatedDishJson = await DeliiApiClient.Patch(uri, dishModel);
             Dish updatedDish = JsonSerializer.Deserialize<Dish>(updatedDishJson, DeliiApiClient.GetJsonOptions());
             return updatedDish;
         }

@@ -24,6 +24,7 @@ namespace Proyecto_Intermodular
     {
         private List<Dish> dishes;
         private List<OrderItem> orderItems;
+        private string typeFilter;
 
         public DishSelector()
         {
@@ -82,7 +83,18 @@ namespace Proyecto_Intermodular
 
         private void cmbBoxDishType_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-
+            switch (cmbBoxDishType.Text)
+            {
+                case "Todos":
+                    typeFilter = null;
+                    break;
+                case "Comida":
+                    typeFilter = "Food";
+                    break;
+                case "Bebida":
+                    typeFilter = "Drink";
+                    break;
+            }
         }
     }
 }
