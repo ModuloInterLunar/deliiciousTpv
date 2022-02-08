@@ -124,12 +124,12 @@ namespace Proyecto_Intermodular.userControls
                 }
             }
             selectedTable = table;
-            selectedTable.Border.Background = (SolidColorBrush)new BrushConverter().ConvertFromString("#FF92C0F7");
             if (selectedTable == null)
             {
                 lblSelectedTable.Content = $"MESA SELECCIONADA:";
                 return;
             }
+            selectedTable.Border.Background = (SolidColorBrush)new BrushConverter().ConvertFromString("#FF92C0F7");
             lblSelectedTable.Content = $"MESA SELECCIONADA: {selectedTable.Id}";
             loadOrders();
         }
