@@ -247,7 +247,7 @@ namespace Proyecto_Intermodular.userControls
                     {
                         Dish = orderItem.Dish,
                         Ticket = selectedTable.ActualTicket.Id,
-                        HasBeenCoocked = false,
+                        HasBeenCooked = false,
                         HasBeenServed = false,
                         Description = orderItem.txtBoxDescription.Text,
                         Employee = CurrentUser,

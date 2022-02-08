@@ -8,7 +8,7 @@ namespace Proyecto_Intermodular.api.models
         private string ticket;
         private string dish;
         private bool hasBeenServed;
-        private bool hasBeenCoocked;
+        private bool hasBeenCooked;
         private bool isIncluded;
         private string description;
         private string createdAt;
@@ -22,7 +22,7 @@ namespace Proyecto_Intermodular.api.models
             this.ticket = order.Ticket;
             this.dish = order.Dish.Id;
             this.hasBeenServed = order.HasBeenServed;
-            this.hasBeenCoocked = order.HasBeenCoocked;
+            this.hasBeenCooked = order.HasBeenCooked;
             this.isIncluded = order.IsIncluded;
             this.table = order.Table;
             this.description = order.Description;
@@ -41,6 +41,6 @@ namespace Proyecto_Intermodular.api.models
         public string CreatedAt { get => createdAt; set => createdAt = value; }
         public string UpdatedAt { get => updatedAt; set => updatedAt = value; }
         public string Table { get => table; set => table = value; }
-        public bool HasBeenCoocked { get => hasBeenCoocked; set => hasBeenCoocked = value; }
+        public bool HasBeenCooked { get => hasBeenCooked; set => hasBeenCooked = value; }
     }
 }
