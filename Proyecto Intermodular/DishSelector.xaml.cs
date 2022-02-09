@@ -14,6 +14,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.Data;
 
 namespace Proyecto_Intermodular
 {
@@ -24,6 +25,7 @@ namespace Proyecto_Intermodular
     {
         private List<Dish> dishes;
         private List<OrderItem> orderItems;
+        private string typeFilter;
 
         public DishSelector()
         {
@@ -33,11 +35,20 @@ namespace Proyecto_Intermodular
         }
         public List<OrderItem> OrderItems { get => orderItems; set => orderItems = value; }
 
+        private void ReloadAllDishes()
+        {
+            if (dishesContainer == null) return;
+            dishesContainer.Children.Clear();
+            GenerateAllDishes();
+        }
+
+
         private async void GenerateAllDishes()
         {
             dishes = await DeliiApi.GetAllDishes();
             dishes.ForEach(dish =>
             {
+                if (typeFilter != null && dish.Type != typeFilter) return;
                 DishItem dishItem = CreateDishItem(dish);
                 dishesContainer.Children.Add(dishItem);
             });
@@ -82,7 +93,20 @@ namespace Proyecto_Intermodular
 
         private void cmbBoxDishType_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-
+            string selectedItem = ((ComboBoxItem)e.AddedItems[0]).Content.ToString();
+            switch (selectedItem)
+            {
+                case "Todos":
+                    typeFilter = null;
+                    break;
+                case "Comidas":
+                    typeFilter = "Food";
+                    break;
+                case "Bebidas":
+                    typeFilter = "Drink";
+                    break;
+            }
+            ReloadAllDishes();
         }
     }
 }

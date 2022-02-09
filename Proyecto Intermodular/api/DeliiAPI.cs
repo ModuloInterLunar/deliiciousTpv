@@ -40,7 +40,7 @@ namespace Proyecto_Intermodular.api
             catch (DeliiApiException ex)
             {
                 if (ex.Message.Contains("Employee not found"))
-                    throw new UserNotFoundException(ex.Message);
+                    throw new ItemNotFoundException(ex.Message);
                 if (ex.Message.Contains("Invalid password"))
                     throw new WrongCredentialsException(ex.Message);
                 throw new DeliiApiException(ex.Message);
@@ -211,7 +211,7 @@ namespace Proyecto_Intermodular.api
             catch (DeliiApiException ex)
             {
                 if (ex.Message.Contains("Can't create table!"))
-                    throw new UserNotFoundException(ex.Message);
+                    throw new ItemNotFoundException(ex.Message);
                 throw new DeliiApiException(ex.Message);
             }
         }
@@ -232,7 +232,7 @@ namespace Proyecto_Intermodular.api
             catch (DeliiApiException ex)
             {
                 if (ex.Message.Contains("Can't create table!"))
-                    throw new UserNotFoundException(ex.Message);
+                    throw new ItemNotFoundException(ex.Message);
                 throw new DeliiApiException(ex.Message);
             }
         }
@@ -265,10 +265,9 @@ namespace Proyecto_Intermodular.api
             await DeliiApiClient.Delete(uri);
         }
 
-        public static async void RemoveOrder(Order order)
+        public static async Task RemoveOrder(Order order)
         {
             string uri = $"{API_URL}orders/{order.Id}";
-
             await DeliiApiClient.Delete(uri);
         }
 
@@ -295,7 +294,8 @@ namespace Proyecto_Intermodular.api
         public static async Task<Dish> UpdateDish(Dish dish)
         {
             string uri = $"{API_URL}dishes/{dish.Id}";
-            string updatedDishJson = await DeliiApiClient.Patch(uri, dish);
+            DishModel dishModel= new DishModel(dish);
+            string updatedDishJson = await DeliiApiClient.Patch(uri, dishModel);
             Dish updatedDish = JsonSerializer.Deserialize<Dish>(updatedDishJson, DeliiApiClient.GetJsonOptions());
             return updatedDish;
         }
@@ -305,19 +305,11 @@ namespace Proyecto_Intermodular.api
         {
             string uri = API_URL + "tickets";
             TicketModel ticketModel = new();
-            try
-            {
-                string createdTicketJson = await DeliiApiClient.Post(uri, ticketModel);
-                Ticket createdTicket = JsonSerializer.Deserialize<Ticket>(createdTicketJson, DeliiApiClient.GetJsonOptions());
 
-                return createdTicket;
-            }
-            catch (DeliiApiException ex)
-            {
-                if (ex.Message.Contains("Can't create table!"))
-                    throw new UserNotFoundException(ex.Message);
-                throw new DeliiApiException(ex.Message);
-            }
+            string createdTicketJson = await DeliiApiClient.Post(uri, ticketModel);
+            Ticket createdTicket = JsonSerializer.Deserialize<Ticket>(createdTicketJson, DeliiApiClient.GetJsonOptions());
+
+            return createdTicket;
         }
     }
 

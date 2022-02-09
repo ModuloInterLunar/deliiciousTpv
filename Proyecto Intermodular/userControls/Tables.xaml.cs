@@ -19,6 +19,7 @@ namespace Proyecto_Intermodular.userControls
         private Table selectedTable;
         private bool isEditingTableLayout;
         private Employee currentUser;
+        private bool isUpdating;
 
         public Employee CurrentUser { get => currentUser; set => currentUser = value; }
 
@@ -33,7 +34,7 @@ namespace Proyecto_Intermodular.userControls
         {
             if (isEditingTableLayout) return;
             List<Table> updatedTables = await DeliiApi.GetAllTables();
-
+            isUpdating = true;
             if (tables == null)
             {
                 tables = updatedTables;
@@ -59,6 +60,7 @@ namespace Proyecto_Intermodular.userControls
                 SelectTable(null);
             if (selectedTable != null)
                 loadOrders();
+            isUpdating = false;
         }
 
         private void RemoveDeletedTables(List<Table> updatedTables)
@@ -110,12 +112,19 @@ namespace Proyecto_Intermodular.userControls
         }
         private void SelectTable(Table table)
         {
-            if (selectedTable != null && selectedTable.ActualTicket != null && selectedTable.ActualTicket.Orders != null)
+            if (selectedTable != null)
             {
-                selectedTable.ActualTicket.Orders.ForEach(order => {
-                    stackOrders.Children.Remove(order.OrderItem);
-                    order.OrderItem = null;
-                });
+                selectedTable.Border.Background = (SolidColorBrush)new BrushConverter().ConvertFromString("#FF7AA0CD");
+
+                if (selectedTable.ActualTicket != null && selectedTable.ActualTicket.Orders != null)
+                {
+                    selectedTable.ActualTicket.Orders.ForEach(order =>
+                    {
+                        stackOrders.Children.Remove(order.OrderItem);
+                        order.OrderItem = null;
+                    });
+                    stackOrders.Children.Clear(); // this is just to make sure the list is empty
+                }
             }
             selectedTable = table;
             if (selectedTable == null)
@@ -123,12 +132,14 @@ namespace Proyecto_Intermodular.userControls
                 lblSelectedTable.Content = $"MESA SELECCIONADA:";
                 return;
             }
+            selectedTable.Border.Background = (SolidColorBrush)new BrushConverter().ConvertFromString("#FF92C0F7");
             lblSelectedTable.Content = $"MESA SELECCIONADA: {selectedTable.Id}";
             loadOrders();
         }
 
         private void UnSelectTable(Table table)
         {
+            selectedTable.Border.Background = (SolidColorBrush)new BrushConverter().ConvertFromString("#FF7AA0CD");
             selectedTable = null;
             stackOrders.Children.Clear();
             lblSelectedTable.Content = "MESA SELECCIONADA:";
@@ -176,7 +187,7 @@ namespace Proyecto_Intermodular.userControls
 
         private async void BtnAddTable_Click(object sender, RoutedEventArgs e)
         {
-            Table table = await DeliiApi.CreateTable(new Table(0, 0));
+            Table table = await DeliiApi.CreateTable(new Table(0.5, 0.5));
             tables.Add(table);
             Application.Current.Dispatcher.Invoke(() => CreateTable(table));
         }
@@ -192,7 +203,7 @@ namespace Proyecto_Intermodular.userControls
             UnSelectTable(selectedTable);
         }
         private void btnSave_Click(object sender, RoutedEventArgs e) => tables.ForEach(async table => await DeliiApi.UpdateTable(table));
-        private void btnReload_Click(object sender, RoutedEventArgs e) 
+        private void btnReload_Click(object sender, RoutedEventArgs e)
         {
             UpdateCanvasTables();
             Table selectedTable = this.selectedTable;
@@ -239,7 +250,7 @@ namespace Proyecto_Intermodular.userControls
                     {
                         Dish = orderItem.Dish,
                         Ticket = selectedTable.ActualTicket.Id,
-                        HasBeenCoocked = false,
+                        HasBeenCooked = false,
                         HasBeenServed = false,
                         Description = orderItem.txtBoxDescription.Text,
                         Employee = CurrentUser,
@@ -273,8 +284,16 @@ namespace Proyecto_Intermodular.userControls
 
             order.OrderItem.btnDelete.Click += async (object sender, RoutedEventArgs e) =>
             {
+                if (order.OrderItem.IsDeleting) return;
+                order.OrderItem.IsDeleting = true;
+                try {
+                    await selectedTable.ActualTicket.RemoveOrder(order);
+                }
+                catch (ItemNotFoundException ex)
+                {
+                    MessageBox.Show("Ya se había borrado");
+                }
                 stackOrders.Children.Remove(order.OrderItem);
-                await selectedTable.ActualTicket.RemoveOrder(order);
             };
 
             stackOrders.Children.Add(order.OrderItem);
