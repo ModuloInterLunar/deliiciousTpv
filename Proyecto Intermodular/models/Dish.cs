@@ -33,6 +33,7 @@ namespace Proyecto_Intermodular.models
         public string formattedPrice => price.ToString("0.00") + "€";
         public override string ToString() => $"Id: { id }, Name: { name }, Type: { type }, Price: { price }, Description: { description }, IngredientQties: { GetIngredients() }, Image: { image }";
         public string GetIngredients() => ingredientQties.Aggregate("", (acc, cur) => acc += $"{cur}\n");
+        public string GetFullDescription() => description + "\n\n" + GetIngredients();
 
         // Empty constructor (is used by json library)
         public Dish() { }

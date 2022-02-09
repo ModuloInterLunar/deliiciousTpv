@@ -15,7 +15,7 @@ namespace Proyecto_Intermodular.models
         private double width = DEFAULT_SIZE;
         private double height = DEFAULT_SIZE;
         private Ticket actualTicket;
-        private Label label;
+        private Border border;
 
         public Table(string id, double posX, double posY, double width, double height)
         {
@@ -41,14 +41,14 @@ namespace Proyecto_Intermodular.models
         public string Id { get => id; set => id = value; }
         public double PosXRelative { get => posXRelative; set => posXRelative = value; }
         public double PosYRelative { get => posYRelative; set => posYRelative = value; }
-        public Label Label { get => label; set => label = value; }
+        public Border Border { get => border; set => border = value; }
         public double PosX { get => posX; set => posX = value; }
         public double PosY { get => posY; set => posY = value; }
         public double Width { get => width; set => width = value; }
         public double Height { get => height; set => height = value; }
         public Ticket ActualTicket { get => actualTicket; set => actualTicket = value; }
 
-        public override string ToString() => $"ID: {id}, LABEL: ({Canvas.GetLeft(label)}, {Canvas.GetTop(label)}, {label.Name})";
+        public override string ToString() => $"ID: {id}, LABEL: ({Canvas.GetLeft(border)}, {Canvas.GetTop(border)}, {border.Name})";
 
         public void SetPosition(Point newPoint, double cnvWidth, double cnvHeight)
         {
@@ -69,16 +69,16 @@ namespace Proyecto_Intermodular.models
         {
             width += widthIncrement;
             height += heightIncrement;
-            label.Width = width;
-            label.Height = height;
+            border.Width = width;
+            border.Height = height;
         }
 
         private void CorrectOutOfFrame(double frameWidth, double frameHeight)
         {
-            if (posXRelative + label.Width > frameWidth)
-                posXRelative = frameWidth - label.Width;
-            if (posYRelative + label.Height > frameHeight)
-                posYRelative = frameHeight - label.Height;
+            if (posXRelative + border.Width > frameWidth)
+                posXRelative = frameWidth - border.Width;
+            if (posYRelative + border.Height > frameHeight)
+                posYRelative = frameHeight - border.Height;
         }
 
         internal void UpdateData(Table updatedTable, double frameWidth, double frameHeight)
@@ -93,21 +93,21 @@ namespace Proyecto_Intermodular.models
                 actualTicket = updatedTable.actualTicket;
             else
                 actualTicket.UpdateData(updatedTable.ActualTicket);
-            label.Width = width;
-            label.Height = height;
+            border.Width = width;
+            border.Height = height;
             UpdateRelativePosition(frameWidth, frameHeight);
         }
 
         public void UpdateLabelCoordenates()
         {
-            Canvas.SetLeft(label, posXRelative);
-            Canvas.SetTop(label, posYRelative);
+            Canvas.SetLeft(border, posXRelative);
+            Canvas.SetTop(border, posYRelative);
         }
 
         public void UpdateLabelCoordenates(double left, double top)
         {
-            Canvas.SetLeft(label, left);
-            Canvas.SetTop(label, top);
+            Canvas.SetLeft(border, left);
+            Canvas.SetTop(border, top);
         }
 
         public void MoveLabel(Point dropPos, Size offset, Size cnvSize)

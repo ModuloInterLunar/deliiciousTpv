@@ -85,10 +85,12 @@ namespace Proyecto_Intermodular.userControls
         // Actualiza los datos de un dish item
         private void UpdateDishItem(Dish dish)
         {
-            if (dish.DishItem == null) return;
+            string dishImageUrl = (dish.Image == null || dish.Image == "") ? "https://barradeideas.com/wp-content/uploads/2019/09/fast-food.jpg" : dish.Image;
+
             dish.DishItem.DishName = dish.Name;
-            dish.DishItem.DishPrice = $"{dish.Price} €";
-            dish.DishItem.DishImage = new BitmapImage(new Uri(dish.Image));
+            dish.DishItem.DishPrice = dish.formattedPrice;
+            dish.DishItem.DishImage = new BitmapImage(new Uri(dishImageUrl));
+            dish.DishItem.ToolTip = dish.GetFullDescription();
         }
 
         // Crea un DishItem y se lo asigna a un Dish
@@ -101,11 +103,24 @@ namespace Proyecto_Intermodular.userControls
             {
                 DishName = dish.Name,
                 DishImage = new BitmapImage(new Uri(dishImageUrl)),
-                DishPrice = $"{dish.Price} €",
-                Margin = new(5)
+                DishPrice = dish.formattedPrice,
+                Margin = new(5),
+                ToolTip = dish.GetFullDescription()
             };
             dishItem.btnAddDish.Visibility = Visibility.Collapsed;
-            // lo asigna
+            dishItem.btnModifyDish.Visibility = Visibility.Visible;
+
+            dishItem.btnModifyDish.Click += (object sender, RoutedEventArgs e) =>
+            {
+                AddDishWindow addDishWindow = new()
+                {
+                    Title = "Modificar Plato: " + dish.Name,
+                    Dish = dish
+                };
+                addDishWindow.ShowDialog();
+                UpdateStackDishes();
+            };
+
             dish.DishItem = dishItem;
             // lo añade al stack panel
             stackDishes.Children.Add(dishItem);

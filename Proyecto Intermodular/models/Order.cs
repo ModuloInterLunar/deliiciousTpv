@@ -11,7 +11,7 @@ namespace Proyecto_Intermodular.models
         private Dish dish;
         private bool hasBeenServed;
         private bool isIncluded;
-        private bool hasBeenCoocked;
+        private bool hasBeenCooked;
         private string description;
         private string createdAt;
         private string updatedAt;
@@ -25,6 +25,7 @@ namespace Proyecto_Intermodular.models
             this.id = id;
             this.ticket = ticket;
             this.dish = dish;
+            hasBeenCooked = false;
             hasBeenServed = false;
             isIncluded = false;
             this.description = description;
@@ -90,7 +91,7 @@ namespace Proyecto_Intermodular.models
         }
 
         public OrderItem OrderItem { get => orderItem; set => orderItem = value; }
-        public bool HasBeenCoocked { get => hasBeenCoocked; set => hasBeenCoocked = value; }
+        public bool HasBeenCooked { get => hasBeenCooked; set => hasBeenCooked = value; }
         public Border Border { get => border; set => border = value; }
     }
 }

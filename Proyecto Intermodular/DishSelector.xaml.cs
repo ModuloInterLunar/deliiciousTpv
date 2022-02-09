@@ -14,6 +14,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.Data;
 
 namespace Proyecto_Intermodular
 {
@@ -23,21 +24,31 @@ namespace Proyecto_Intermodular
     public partial class DishSelector : Window
     {
         private List<Dish> dishes;
-        private List<Dish> selectedDishes;
+        private List<OrderItem> orderItems;
+        private string typeFilter;
 
         public DishSelector()
         {
             InitializeComponent();
-            SelectedDishes = new();
+            OrderItems = new();
             GenerateAllDishes();
         }
-        public List<Dish> SelectedDishes { get => selectedDishes; set => selectedDishes = value; }
+        public List<OrderItem> OrderItems { get => orderItems; set => orderItems = value; }
+
+        private void ReloadAllDishes()
+        {
+            if (dishesContainer == null) return;
+            dishesContainer.Children.Clear();
+            GenerateAllDishes();
+        }
+
 
         private async void GenerateAllDishes()
         {
             dishes = await DeliiApi.GetAllDishes();
             dishes.ForEach(dish =>
             {
+                if (typeFilter != null && dish.Type != typeFilter) return;
                 DishItem dishItem = CreateDishItem(dish);
                 dishesContainer.Children.Add(dishItem);
             });
@@ -52,7 +63,7 @@ namespace Proyecto_Intermodular
                 DishImage = new BitmapImage(new Uri(dishImageUrl)),
                 DishName = dish.Name,
                 DishPrice = dish.formattedPrice,
-                ToolTip = dish.GetIngredients(),
+                ToolTip = dish.GetFullDescription(),
                 Margin = new(10),
             };
 
@@ -61,19 +72,20 @@ namespace Proyecto_Intermodular
                 OrderItem orderItem = new()
                 {
                     DishName = dish.Name,
-                    DishPrice = $"{dish.Price} €",
+                    DishPrice = dish.formattedPrice,
                     DishImage = new BitmapImage(new Uri(dishImageUrl)),
-                    Margin = new(5)
+                    Margin = new(5),
+                    Dish = dish
                 };
 
                 orderItem.btnDelete.Click += (object sender, RoutedEventArgs e) =>
                 {
-                    SelectedDishes.RemoveAt(selectedDishesContainer.Children.IndexOf(orderItem));
+                    OrderItems.Remove(orderItem);
                     selectedDishesContainer.Children.Remove(orderItem);
                 };
 
                 selectedDishesContainer.Children.Add(orderItem);
-                SelectedDishes.Add(dish);
+                OrderItems.Add(orderItem);
             };
 
             return dishItem;
@@ -81,7 +93,20 @@ namespace Proyecto_Intermodular
 
         private void cmbBoxDishType_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-
+            string selectedItem = ((ComboBoxItem)e.AddedItems[0]).Content.ToString();
+            switch (selectedItem)
+            {
+                case "Todos":
+                    typeFilter = null;
+                    break;
+                case "Comidas":
+                    typeFilter = "Food";
+                    break;
+                case "Bebidas":
+                    typeFilter = "Drink";
+                    break;
+            }
+            ReloadAllDishes();
         }
     }
 }
