@@ -93,6 +93,7 @@ namespace Proyecto_Intermodular.userControls
 
             dish.DishItem = dishItem;
             stackDishes.Children.Add(dishItem);
+            
         }
 
         private void btnAdd_Click(object sender, RoutedEventArgs e)

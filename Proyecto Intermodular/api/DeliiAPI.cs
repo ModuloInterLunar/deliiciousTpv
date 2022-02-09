@@ -136,7 +136,23 @@ namespace Proyecto_Intermodular.api
                 if (ex.Message.Contains("E11000 duplicate key error"))
                     throw new AlreadyInUseException(ex.Message);
                 throw new DeliiApiException(ex.Message);
+            }
+        }
 
+        public static async Task<Order> UpdateOrder(Order order)
+        {
+            try
+            {
+                string uri = API_URL + "order/" + order.Id;
+                OrderModel orderModel = new OrderModel(order);
+                string updatedOrderJson = await DeliiApiClient.Patch(uri, orderModel);
+                Order updatedOrder = JsonSerializer.Deserialize<Order>(updatedOrderJson, DeliiApiClient.GetJsonOptions());
+
+                return updatedOrder;
+            }
+            catch (DeliiApiException ex)
+            {
+                throw new DeliiApiException(ex.Message);
             }
         }
 

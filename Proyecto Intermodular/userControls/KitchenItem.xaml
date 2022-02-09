@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:Proyecto_Intermodular.userControls"
              mc:Ignorable="d" HorizontalAlignment="Stretch"
              Height="70">
-    <Border BorderBrush="Black" BorderThickness="0" CornerRadius="15" Background="White">
+    <Border BorderBrush="Black" BorderThickness="0" CornerRadius="15" Background="White" x:Name="borderKitchen">
         <Border.Effect>
             <DropShadowEffect ShadowDepth="3" BlurRadius="7" />
         </Border.Effect>
@@ -27,7 +27,7 @@
 
             <Label x:Name="lblTimerKitchen" Content="{Binding TimerKitchen}" Grid.Column="3"></Label>
 
-            <Button BorderThickness="1" Background="Transparent" VerticalAlignment="Center" HorizontalAlignment="Center"  Foreground="Gray" FontWeight="Bold" Grid.Column="4" Margin="5" x:Name="btnDelete">
+            <Button BorderThickness="1" Background="Transparent" VerticalAlignment="Center" HorizontalAlignment="Center"  Foreground="Gray" FontWeight="Bold" Grid.Column="4" Margin="5" x:Name="btnCookingKitchen">
                 <Image x:Name="imgImageKitchen" Source="{Binding ImageKitchen}"></Image>
             </Button>
         </Grid>
