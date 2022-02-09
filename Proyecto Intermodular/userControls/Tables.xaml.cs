@@ -19,6 +19,7 @@ namespace Proyecto_Intermodular.userControls
         private Table selectedTable;
         private bool isEditingTableLayout;
         private Employee currentUser;
+        private bool isUpdating;
 
         public Employee CurrentUser { get => currentUser; set => currentUser = value; }
 
@@ -33,7 +34,7 @@ namespace Proyecto_Intermodular.userControls
         {
             if (isEditingTableLayout) return;
             List<Table> updatedTables = await DeliiApi.GetAllTables();
-
+            isUpdating = true;
             if (tables == null)
             {
                 tables = updatedTables;
@@ -59,6 +60,7 @@ namespace Proyecto_Intermodular.userControls
                 SelectTable(null);
             if (selectedTable != null)
                 loadOrders();
+            isUpdating = false;
         }
 
         private void RemoveDeletedTables(List<Table> updatedTables)
@@ -121,6 +123,7 @@ namespace Proyecto_Intermodular.userControls
                         stackOrders.Children.Remove(order.OrderItem);
                         order.OrderItem = null;
                     });
+                    stackOrders.Children.Clear(); // this is just to make sure the list is empty
                 }
             }
             selectedTable = table;
@@ -171,7 +174,21 @@ namespace Proyecto_Intermodular.userControls
         public void loadOrders()
         {
             if (selectedTable.ActualTicket == null || selectedTable.ActualTicket.Orders == null) return;
-            selectedTable.ActualTicket.Orders.ForEach(order => CreateOrderItem(order));
+
+            List<Order> orders = selectedTable.ActualTicket.Orders;
+
+            RemoveOldOrderItems(orders);
+            orders.ForEach(order => CreateOrderItem(order));
+        }
+
+        private void RemoveOldOrderItems(List<Order> orders)
+        {
+            List<OrderItem> orderItemsToRemove = new();
+            foreach (OrderItem orderItem in stackOrders.Children)
+            {
+                if (!orders.Exists(order => order.OrderItem == orderItem)) orderItemsToRemove.Add(orderItem);
+            }
+            orderItemsToRemove.ForEach(orderItem => stackOrders.Children.Remove(orderItem));
         }
         #endregion
 
@@ -200,7 +217,7 @@ namespace Proyecto_Intermodular.userControls
             UnSelectTable(selectedTable);
         }
         private void btnSave_Click(object sender, RoutedEventArgs e) => tables.ForEach(async table => await DeliiApi.UpdateTable(table));
-        private void btnReload_Click(object sender, RoutedEventArgs e) 
+        private void btnReload_Click(object sender, RoutedEventArgs e)
         {
             UpdateCanvasTables();
             Table selectedTable = this.selectedTable;
@@ -281,8 +298,16 @@ namespace Proyecto_Intermodular.userControls
 
             order.OrderItem.btnDelete.Click += async (object sender, RoutedEventArgs e) =>
             {
+                if (order.OrderItem.IsDeleting) return;
+                order.OrderItem.IsDeleting = true;
+                try {
+                    await selectedTable.ActualTicket.RemoveOrder(order);
+                }
+                catch (ItemNotFoundException ex)
+                {
+                    MessageBox.Show("Ya se había borrado");
+                }
                 stackOrders.Children.Remove(order.OrderItem);
-                await selectedTable.ActualTicket.RemoveOrder(order);
             };
 
             stackOrders.Children.Add(order.OrderItem);
