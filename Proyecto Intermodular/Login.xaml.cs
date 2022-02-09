@@ -49,7 +49,7 @@ namespace Proyecto_Intermodular
             {
                 MessageBox.Show("Fallo de conexión.\nPor favor, compruebe la conexión con la API!", "Fallo de Conexión");
             }
-            catch (UserNotFoundException)
+            catch (ItemNotFoundException)
             {
                 string errorMessage = "El nombre de usuario es inválido.";
                 borderUserName.Background = new SolidColorBrush(Colors.Red);

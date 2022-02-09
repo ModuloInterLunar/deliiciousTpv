@@ -56,7 +56,11 @@ namespace Proyecto_Intermodular.api
             if (response.IsSuccessStatusCode)
                 return await response.Content.ReadAsStringAsync();
             else
+            {
+                if (response.StatusCode == HttpStatusCode.NotFound)
+                    throw new ItemNotFoundException();
                 throw new DeliiApiException(await response.Content.ReadAsStringAsync());
+            }
         }
 
 
@@ -68,7 +72,11 @@ namespace Proyecto_Intermodular.api
             if (response.IsSuccessStatusCode)
                 return await response.Content.ReadAsStringAsync();
             else
+            {
+                if (response.StatusCode == HttpStatusCode.NotFound)
+                    throw new ItemNotFoundException(await response.Content.ReadAsStringAsync());
                 throw new DeliiApiException(await response.Content.ReadAsStringAsync());
+            }
         }
 
 

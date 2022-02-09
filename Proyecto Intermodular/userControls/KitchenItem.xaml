@@ -1,0 +1,35 @@
+﻿<UserControl x:Class="Proyecto_Intermodular.userControls.KitchenItem"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Proyecto_Intermodular.userControls"
+             mc:Ignorable="d" HorizontalAlignment="Stretch"
+             Height="70">
+    <Border BorderBrush="Black" BorderThickness="0" CornerRadius="15" Background="White">
+        <Border.Effect>
+            <DropShadowEffect ShadowDepth="3" BlurRadius="7" />
+        </Border.Effect>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Label x:Name="lblTableKitchen" Content="{Binding TableKitchen}" ></Label>
+
+            <Label x:Name="lblDishKitchen" Content="{Binding DishKitchen}" Grid.Column="1"></Label>
+
+            <Label x:Name="lblEmployeeKitchen" Content="{Binding EmployeeKitchen}" Grid.Column="2"></Label>
+
+            <Label x:Name="lblTimerKitchen" Content="{Binding TimerKitchen}" Grid.Column="3"></Label>
+
+            <Button BorderThickness="1" Background="Transparent" VerticalAlignment="Center" HorizontalAlignment="Center"  Foreground="Gray" FontWeight="Bold" Grid.Column="4" Margin="5" x:Name="btnDelete">
+                <Image x:Name="imgImageKitchen" Source="{Binding ImageKitchen}"></Image>
+            </Button>
+        </Grid>
+    </Border>
+</UserControl>

@@ -51,7 +51,7 @@ namespace Proyecto_Intermodular.models
         }
         public async Task RemoveOrder(Order order)
         {
-            DeliiApi.RemoveOrder(order);
+            await DeliiApi.RemoveOrder(order);
             orders.Remove(order);
             await DeliiApi.UpdateTicket(this);
         }

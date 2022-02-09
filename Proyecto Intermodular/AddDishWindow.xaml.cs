@@ -55,11 +55,13 @@ namespace Proyecto_Intermodular
                 MessageBox.Show($"Error, el precio debe ser un número.");
                 return;
             }
+
             if (dish != null)
             {
                 UpdateDish();
                 return;
             }
+
             CreateDish();
         }
 
@@ -111,11 +113,13 @@ namespace Proyecto_Intermodular
             if (dish != null)
             {
                 tbName.Text = dish.Name;
-                cbDishType.Text = dish.Type;
+                cbDishType.Text = dish.Type == "Food" ? "Comida" : "Bebida";
                 tbPrice.Text = dish.Price.ToString("0.00");
                 tbDescription.Text = dish.Description;
                 tbImageURL.Text = dish.Image;
                 btnSave.Content = "Modificar Plato";
+                dishIngredients = dish.IngredientQties;
+                btnIngredientsQty.ToolTip = dish.GetIngredients();
             }
         }
 

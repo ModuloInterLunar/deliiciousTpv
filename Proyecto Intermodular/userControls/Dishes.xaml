@@ -23,8 +23,8 @@
                 <Label Content="Lista de Platos:" FontWeight="SemiBold"/>
             </Border>
             
-            <ScrollViewer Grid.Row="1" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
-                <StackPanel Grid.Row="1" x:Name="stackDishes" Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+            <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+                <WrapPanel Grid.Row="1" x:Name="stackDishes" Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Top"/>
             </ScrollViewer>
         </Grid>
 
