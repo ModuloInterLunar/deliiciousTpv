@@ -85,11 +85,18 @@ namespace Proyecto_Intermodular.userControls
         // Actualiza los datos de un dish item
         private void UpdateDishItem(Dish dish)
         {
-            string dishImageUrl = (dish.Image == null || dish.Image == "") ? "https://barradeideas.com/wp-content/uploads/2019/09/fast-food.jpg" : dish.Image;
+            string dishImageUrl = (dish.Image == null || dish.Image == "") ? "https://i-ticketing.iwos.com/256x256-th/products/167/products_167_50.jpg" : dish.Image;
 
             dish.DishItem.DishName = dish.Name;
             dish.DishItem.DishPrice = dish.formattedPrice;
-            dish.DishItem.DishImage = new BitmapImage(new Uri(dishImageUrl));
+            try
+            {
+                dish.DishItem.DishImage = new BitmapImage(new Uri(dishImageUrl));
+            }
+            catch
+            {
+                dish.DishItem.DishImage = new BitmapImage(new Uri("https://i-ticketing.iwos.com/256x256-th/products/167/products_167_50.jpg"));
+            }
             dish.DishItem.ToolTip = dish.GetFullDescription();
         }
 
@@ -97,16 +104,23 @@ namespace Proyecto_Intermodular.userControls
         private void GenerateDishItem(Dish dish)
         {
             // asigna la url de la image
-            string dishImageUrl = (dish.Image == null || dish.Image == "") ? "https://barradeideas.com/wp-content/uploads/2019/09/fast-food.jpg" : dish.Image;
+            string dishImageUrl = (dish.Image == null || dish.Image == "") ? "https://i-ticketing.iwos.com/256x256-th/products/167/products_167_50.jpg" : dish.Image;
             // crea el DishItem
             DishItem dishItem = new()
             {
                 DishName = dish.Name,
-                DishImage = new BitmapImage(new Uri(dishImageUrl)),
                 DishPrice = dish.formattedPrice,
                 Margin = new(5),
                 ToolTip = dish.GetFullDescription()
             };
+            try
+            {
+                dishItem.DishImage = new BitmapImage(new Uri(dishImageUrl));
+            }
+            catch 
+            {
+                dishItem.DishImage = new BitmapImage(new Uri("https://i-ticketing.iwos.com/256x256-th/products/167/products_167_50.jpg"));
+            }
             dishItem.btnAddDish.Visibility = Visibility.Collapsed;
             dishItem.btnModifyDish.Visibility = Visibility.Visible;
 
