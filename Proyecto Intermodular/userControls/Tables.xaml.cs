@@ -171,7 +171,21 @@ namespace Proyecto_Intermodular.userControls
         public void loadOrders()
         {
             if (selectedTable.ActualTicket == null || selectedTable.ActualTicket.Orders == null) return;
-            selectedTable.ActualTicket.Orders.ForEach(order => CreateOrderItem(order));
+
+            List<Order> orders = selectedTable.ActualTicket.Orders;
+
+            RemoveOldOrderItems(orders);
+            orders.ForEach(order => CreateOrderItem(order));
+        }
+
+        private void RemoveOldOrderItems(List<Order> orders)
+        {
+            List<OrderItem> orderItemsToRemove = new();
+            foreach (OrderItem orderItem in stackOrders.Children)
+            {
+                if (!orders.Exists(order => order.OrderItem == orderItem)) orderItemsToRemove.Add(orderItem);
+            }
+            orderItemsToRemove.ForEach(orderItem => stackOrders.Children.Remove(orderItem));
         }
         #endregion
 

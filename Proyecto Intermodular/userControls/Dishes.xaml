@@ -24,7 +24,7 @@
             </Border>
             
             <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
-                <WrapPanel Grid.Row="1" x:Name="stackDishes" Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                <WrapPanel Grid.Row="1" x:Name="stackDishes"/>
             </ScrollViewer>
         </Grid>
 
