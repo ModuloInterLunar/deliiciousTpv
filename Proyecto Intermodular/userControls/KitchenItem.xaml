@@ -27,7 +27,9 @@
 
             <Label x:Name="lblTimerKitchen" Content="{Binding TimerKitchen}" Grid.Column="3"></Label>
 
-            <Button BorderThickness="1" Background="Transparent" VerticalAlignment="Center" HorizontalAlignment="Center"  Foreground="Gray" FontWeight="Bold" Grid.Column="4" Margin="5" x:Name="btnCookingKitchen">
+            <Label x:Name="lblDescriptionKitchen" Content="{Binding DescriptionKitchen}" Grid.Column="4"></Label>
+
+            <Button BorderThickness="1" Background="Transparent" VerticalAlignment="Center" HorizontalAlignment="Center"  Foreground="Gray" FontWeight="Bold" Grid.Column="5" Margin="5" x:Name="btnCookingKitchen">
                 <Image x:Name="imgImageKitchen" Source="{Binding ImageKitchen}"></Image>
             </Button>
         </Grid>

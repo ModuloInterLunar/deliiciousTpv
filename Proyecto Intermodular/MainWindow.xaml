@@ -73,7 +73,7 @@
             -->
 
             <TabItem Header="Cocina">
-                <uc:Kitchen/>
+                <uc:Kitchen x:Name="ucKitchen"/>
             </TabItem>
 
             <TabItem Header="Ingredients">

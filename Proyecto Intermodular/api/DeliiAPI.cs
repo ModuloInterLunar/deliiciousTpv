@@ -143,7 +143,7 @@ namespace Proyecto_Intermodular.api
         {
             try
             {
-                string uri = API_URL + "order/" + order.Id;
+                string uri = API_URL + "orders/" + order.Id;
                 OrderModel orderModel = new OrderModel(order);
                 string updatedOrderJson = await DeliiApiClient.Patch(uri, orderModel);
                 Order updatedOrder = JsonSerializer.Deserialize<Order>(updatedOrderJson, DeliiApiClient.GetJsonOptions());
@@ -274,6 +274,16 @@ namespace Proyecto_Intermodular.api
         public static async Task<List<Order>> GetAllOrders()
         {
             string uri = API_URL + "orders";
+            string ordersJson = await DeliiApiClient.Get(uri);
+
+            List<Order> orders = JsonSerializer.Deserialize<List<Order>>(ordersJson, DeliiApiClient.GetJsonOptions());
+
+            return orders;
+        }
+
+        public static async Task<List<Order>> GetAllOrdersNotServed()
+        {
+            string uri = API_URL + "orders/notserved";
             string ordersJson = await DeliiApiClient.Get(uri);
 
             List<Order> orders = JsonSerializer.Deserialize<List<Order>>(ordersJson, DeliiApiClient.GetJsonOptions());

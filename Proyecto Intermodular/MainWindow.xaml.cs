@@ -91,6 +91,7 @@ namespace Proyecto_Intermodular
             ucTables.UpdateCanvasTables();
             ucIngredients.UpdateStackIngredients();
             ucDishes.UpdateLayout();
+            ucKitchen.UpdateKitchen();
             //GenerateOrders();
         }
 
@@ -125,7 +126,7 @@ namespace Proyecto_Intermodular
 
         #region Cocina
 
-        private async void GenerateOrders()
+        /*private async void GenerateOrders()
         {
             List<Order> updatedOrders = await DeliiApi.GetAllOrders();
             updatedOrders = updatedOrders.FindAll(order => !order.HasBeenServed);
@@ -159,7 +160,7 @@ namespace Proyecto_Intermodular
                 Order updatedOrder = updatedOrders.Find(updatedOrder => order.Id == updatedOrder.Id);
                 if (updatedOrder == null)
                 {
-                    panelKitchen.Children.Remove(order.Border);
+                    ucKitchen.Children.Remove(order.Border);
                     return false;
                 }
                 return true;
@@ -201,7 +202,7 @@ namespace Proyecto_Intermodular
             stackPanel.Children.Add(lblEmployee);
             stackPanel.Children.Add(btnCookedDish);
             panelKitchen.Children.Add(border);
-        }
+        }*/
         #endregion
         /*
 

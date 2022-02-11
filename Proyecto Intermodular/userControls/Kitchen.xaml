@@ -7,9 +7,8 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
-        <ScrollViewer>
-            <StackPanel x:Name="panelKitchen" Orientation="Vertical">
-            </StackPanel>
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+            <StackPanel Grid.Row="1" x:Name="stackKitchen" Orientation="Vertical" HorizontalAlignment="Left" VerticalAlignment="Top"/>
         </ScrollViewer>
     </Grid>
 </UserControl>
