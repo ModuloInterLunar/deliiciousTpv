@@ -63,17 +63,18 @@ namespace Proyecto_Intermodular.userControls
                 return;
             }
 
-            Employee employee = new() 
+            Employee employee = new()
             { 
                 Username = txtBoxName.Text,
                 Dni = txtBoxDni.Text,
                 Name = txtBoxName.Text,
                 Surname = txtBoxSurname.Text,
+                Password = passwdInput.Text,
                 IsAdmin = isAdmin
             };
 
             Employee createdEmployee = await DeliiApi.CreateEmployee(employee);
-            MessageBox.Show(createdEmployee.ToString());
+            MessageBox.Show($"Se ha creado correctamente el empleado '{employee.Username}'");
         }
     }
 }

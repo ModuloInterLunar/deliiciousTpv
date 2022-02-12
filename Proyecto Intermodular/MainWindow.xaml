@@ -80,15 +80,15 @@
                 </ScrollViewer>
             </TabItem>
 
-            <TabItem Header="Ingredients">
+            <TabItem x:Name="adminTabIngredients" Header="Ingredients" Visibility="Collapsed">
                 <uc:Ingredients x:Name="ucIngredients"/>
             </TabItem>
 
-            <TabItem Header="Crear empleado">
+            <TabItem x:Name="adminTabEmployees" Header="Crear empleado" Visibility="Collapsed">
                 <uc:Employees/>
             </TabItem>
 
-            <TabItem Header="Platos">
+            <TabItem x:Name="adminTabDishes" Header="Platos" Visibility="Collapsed">
                 <uc:Dishes x:Name="ucDishes"/>
             </TabItem>
         </TabControl>

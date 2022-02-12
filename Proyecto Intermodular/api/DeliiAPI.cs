@@ -54,11 +54,11 @@ namespace Proyecto_Intermodular.api
                 List<Task> reduceTasks = dish.IngredientQties.ConvertAll<Task>(async ingredientQty =>
                 {
                     string uri = API_URL + "ingredients/reduce/" + ingredientQty.Ingredient.Id;
-                    IngredientModel ingredientModel = new()
+                    IngredientQtyModel ingredientQtyModel = new()
                     {
                         Quantity = ingredientQty.Quantity
                     };
-                    await DeliiApiClient.Patch(uri, ingredientModel);
+                    await DeliiApiClient.Patch(uri, ingredientQtyModel);
                 });
                 await Task.WhenAll(reduceTasks);
             }
@@ -149,6 +149,12 @@ namespace Proyecto_Intermodular.api
             Employee emp = JsonSerializer.Deserialize<Employee>(employeeJson, DeliiApiClient.GetJsonOptions());
 
             return emp;
+        }
+
+        public static async void RemoveTicket(Ticket ticket)
+        {
+            string uri = $"{API_URL}tickets/{ticket.Id}";
+            await DeliiApiClient.Delete(uri);
         }
 
         public static async Task<Ticket> GetTicket(string ticketId)

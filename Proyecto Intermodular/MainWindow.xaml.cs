@@ -41,6 +41,8 @@ namespace Proyecto_Intermodular
             StartTimer();
         }
 
+
+
         //private async void showDishes()
         //{
         //    List<Dish> dishes = await DeliiApi.GetAllDishes();
@@ -104,14 +106,24 @@ namespace Proyecto_Intermodular
                 Application.Current.Dispatcher.Invoke(() =>
                 {
                     ucTables.CurrentUser = currentUser;
+                    if (currentUser.IsAdmin) 
+                        ShowAdminTabs();
                     UpdateUI();
                 });
+                
             }
             catch (DeliiApiException ex)
             {
                 MessageBox.Show(ex.Message);
                 Close();
             }
+        }
+
+        private void ShowAdminTabs()
+        {
+            adminTabEmployees.Visibility = Visibility.Visible;
+            adminTabIngredients.Visibility = Visibility.Visible;
+            adminTabDishes.Visibility = Visibility.Visible;
         }
 
         private void UpdateUI()
