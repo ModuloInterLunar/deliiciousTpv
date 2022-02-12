@@ -12,6 +12,9 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Proyecto_Intermodular.api;
+using Proyecto_Intermodular.models;
+using System.Windows.Threading;
 
 namespace Proyecto_Intermodular.userControls
 {
@@ -35,6 +38,9 @@ namespace Proyecto_Intermodular.userControls
 
         public String TimerKitchen { set => lblTimerKitchen.Content = value; get => lblTimerKitchen.Content.ToString(); }
 
+        //public String DescriptionKitchen { set => lblDescriptionKitchen.Content = value; get => lblDescriptionKitchen.Content.ToString(); }
+
         public ImageSource ImageKitchen { set => imgImageKitchen.Source = value; get => imgImageKitchen.Source; }
     }
 }
+        

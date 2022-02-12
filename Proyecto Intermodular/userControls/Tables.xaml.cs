@@ -19,7 +19,6 @@ namespace Proyecto_Intermodular.userControls
         private Table selectedTable;
         private bool isEditingTableLayout;
         private Employee currentUser;
-        private bool isUpdating;
 
         public Employee CurrentUser { get => currentUser; set => currentUser = value; }
 
@@ -34,7 +33,6 @@ namespace Proyecto_Intermodular.userControls
         {
             if (isEditingTableLayout) return;
             List<Table> updatedTables = await DeliiApi.GetAllTables();
-            isUpdating = true;
             if (tables == null)
             {
                 tables = updatedTables;
@@ -60,7 +58,6 @@ namespace Proyecto_Intermodular.userControls
                 SelectTable(null);
             if (selectedTable != null)
                 loadOrders();
-            isUpdating = false;
         }
 
         private void RemoveDeletedTables(List<Table> updatedTables)

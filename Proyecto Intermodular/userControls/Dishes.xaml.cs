@@ -138,6 +138,7 @@ namespace Proyecto_Intermodular.userControls
             dish.DishItem = dishItem;
             // lo añade al stack panel
             stackDishes.Children.Add(dishItem);
+            
         }
 
         // Abre la venta de creación de un Dish

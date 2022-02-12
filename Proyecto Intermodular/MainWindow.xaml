@@ -73,11 +73,7 @@
             -->
 
             <TabItem Header="Cocina">
-                <ScrollViewer>
-                    <StackPanel x:Name="panelKitchen" Orientation="Vertical">
-                        <uc:KitchenItem DishKitchen="Macarrones" EmployeeKitchen="Saul" TimerKitchen="0s" TableKitchen="Mesa : 1"/>
-                    </StackPanel>
-                </ScrollViewer>
+                <uc:Kitchen x:Name="ucKitchen"/>
             </TabItem>
 
             <TabItem x:Name="adminTabIngredients" Header="Ingredients" Visibility="Collapsed">
