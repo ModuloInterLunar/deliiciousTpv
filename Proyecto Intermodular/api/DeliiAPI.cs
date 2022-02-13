@@ -327,6 +327,16 @@ namespace Proyecto_Intermodular.api
 
             return createdTicket;
         }
+
+        public static async Task<List<Ticket>> GetAllTickets()
+        {
+            string uri = API_URL + "tickets";
+            string ticketsJson = await DeliiApiClient.Get(uri);
+
+            List<Ticket> tickets = JsonSerializer.Deserialize<List<Ticket>>(ticketsJson, DeliiApiClient.GetJsonOptions());
+
+            return tickets;
+        }
     }
 
     class Authentifier

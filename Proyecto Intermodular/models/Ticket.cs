@@ -4,6 +4,7 @@ using Proyecto_Intermodular.api;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Proyecto_Intermodular.userControls;
 
 namespace Proyecto_Intermodular.models
 {
@@ -16,8 +17,10 @@ namespace Proyecto_Intermodular.models
         private string createdAt;
         private string updatedAt;
         private List<Order> orders;
+        private TicketItem ticketItem;
 
         // Cosntructor por defecto, se llamará cuando creamos un ticket nuevo
+        
         public Ticket()
         {
             /*total = 0.0f;
@@ -42,6 +45,9 @@ namespace Proyecto_Intermodular.models
         public string CreatedAt { get => createdAt; set => createdAt = value; }
         public string UpdatedAt { get => updatedAt; set => updatedAt = value; }
         public List<Order> Orders { get => orders; set => orders = value; }
+        public TicketItem TicketItem { get => ticketItem; set => ticketItem = value; }
+        public string PriceFormatted { get => total.ToString("0.00"); }
+        public string PriceNoIVAFormatted { get => (total/1.1).ToString("0.00"); }
 
         public async Task AddOrder(Order order)
         {
