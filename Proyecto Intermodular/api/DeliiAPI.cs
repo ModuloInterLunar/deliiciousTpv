@@ -54,11 +54,11 @@ namespace Proyecto_Intermodular.api
                 List<Task> reduceTasks = dish.IngredientQties.ConvertAll<Task>(async ingredientQty =>
                 {
                     string uri = API_URL + "ingredients/reduce/" + ingredientQty.Ingredient.Id;
-                    IngredientModel ingredientModel = new()
+                    IngredientQtyModel ingredientQtyModel = new()
                     {
                         Quantity = ingredientQty.Quantity
                     };
-                    await DeliiApiClient.Patch(uri, ingredientModel);
+                    await DeliiApiClient.Patch(uri, ingredientQtyModel);
                 });
                 await Task.WhenAll(reduceTasks);
             }
@@ -136,7 +136,23 @@ namespace Proyecto_Intermodular.api
                 if (ex.Message.Contains("E11000 duplicate key error"))
                     throw new AlreadyInUseException(ex.Message);
                 throw new DeliiApiException(ex.Message);
+            }
+        }
 
+        public static async Task<Order> UpdateOrder(Order order)
+        {
+            try
+            {
+                string uri = API_URL + "orders/" + order.Id;
+                OrderModel orderModel = new OrderModel(order);
+                string updatedOrderJson = await DeliiApiClient.Patch(uri, orderModel);
+                Order updatedOrder = JsonSerializer.Deserialize<Order>(updatedOrderJson, DeliiApiClient.GetJsonOptions());
+
+                return updatedOrder;
+            }
+            catch (DeliiApiException ex)
+            {
+                throw new DeliiApiException(ex.Message);
             }
         }
 
@@ -149,6 +165,12 @@ namespace Proyecto_Intermodular.api
             Employee emp = JsonSerializer.Deserialize<Employee>(employeeJson, DeliiApiClient.GetJsonOptions());
 
             return emp;
+        }
+
+        public static async void RemoveTicket(Ticket ticket)
+        {
+            string uri = $"{API_URL}tickets/{ticket.Id}";
+            await DeliiApiClient.Delete(uri);
         }
 
         public static async Task<Ticket> GetTicket(string ticketId)
@@ -258,6 +280,16 @@ namespace Proyecto_Intermodular.api
         public static async Task<List<Order>> GetAllOrders()
         {
             string uri = API_URL + "orders";
+            string ordersJson = await DeliiApiClient.Get(uri);
+
+            List<Order> orders = JsonSerializer.Deserialize<List<Order>>(ordersJson, DeliiApiClient.GetJsonOptions());
+
+            return orders;
+        }
+
+        public static async Task<List<Order>> GetAllOrdersNotServed()
+        {
+            string uri = API_URL + "orders/notserved";
             string ordersJson = await DeliiApiClient.Get(uri);
 
             List<Order> orders = JsonSerializer.Deserialize<List<Order>>(ordersJson, DeliiApiClient.GetJsonOptions());

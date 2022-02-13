@@ -22,19 +22,14 @@ namespace Proyecto_Intermodular
     public partial class AddDishWindow : Window
     {
         private Dish dish;
-        private Dish updatedDish;
-
         private List<IngredientQty> dishIngredients = new();
+        public Dish Dish { get => dish; set => dish = value; }
+        private bool IsEmpty(string str) => str is null or "";
 
         public AddDishWindow()
         {
             InitializeComponent();
         }
-
-        public Dish Dish { get => dish; set => dish = value; }
-        public Dish UpdatedDish { get => updatedDish; set => updatedDish = value; }
-
-        private bool IsEmpty(string str) => str is null or "";
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
@@ -71,7 +66,7 @@ namespace Proyecto_Intermodular
             GetData();
             try
             {
-                updatedDish = await DeliiApi.CreateDish(dish);
+                await DeliiApi.CreateDish(dish);
             }
             catch (AlreadyInUseException)
             {
@@ -87,7 +82,7 @@ namespace Proyecto_Intermodular
             GetData();
             try
             {
-                updatedDish = await DeliiApi.UpdateDish(dish);
+                await DeliiApi.UpdateDish(dish);
             }
             catch (AlreadyInUseException)
             {

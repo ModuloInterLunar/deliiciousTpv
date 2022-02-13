@@ -22,7 +22,7 @@ namespace Proyecto_Intermodular.api.models
             total = ticket.Total;
             text = ticket.Text;
             isPaid = ticket.IsPaid;
-            orders = ticket.Orders.Select(order => order.Id).ToList();
+            orders = ticket.Orders.Select(order => order.Id).ToList() ?? new List<string>();
         }
 
         public string Id { get => id; set => id = value; }

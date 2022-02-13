@@ -41,6 +41,8 @@ namespace Proyecto_Intermodular
             StartTimer();
         }
 
+
+
         //private async void showDishes()
         //{
         //    List<Dish> dishes = await DeliiApi.GetAllDishes();
@@ -90,8 +92,9 @@ namespace Proyecto_Intermodular
 
             ucTables.UpdateCanvasTables();
             ucIngredients.UpdateStackIngredients();
-            ucDishes.UpdateStackDishes();
-            GenerateOrders();
+            ucDishes.UpdateLayout();
+            ucKitchen.UpdateKitchen();
+            //GenerateOrders();
         }
 
 
@@ -104,14 +107,24 @@ namespace Proyecto_Intermodular
                 Application.Current.Dispatcher.Invoke(() =>
                 {
                     ucTables.CurrentUser = currentUser;
+                    if (currentUser.IsAdmin) 
+                        ShowAdminTabs();
                     UpdateUI();
                 });
+                
             }
             catch (DeliiApiException ex)
             {
                 MessageBox.Show(ex.Message);
                 Close();
             }
+        }
+
+        private void ShowAdminTabs()
+        {
+            adminTabEmployees.Visibility = Visibility.Visible;
+            adminTabIngredients.Visibility = Visibility.Visible;
+            adminTabDishes.Visibility = Visibility.Visible;
         }
 
         private void UpdateUI()
@@ -125,7 +138,7 @@ namespace Proyecto_Intermodular
 
         #region Cocina
 
-        private async void GenerateOrders()
+        /*private async void GenerateOrders()
         {
             List<Order> updatedOrders = await DeliiApi.GetAllOrders();
             updatedOrders = updatedOrders.FindAll(order => !order.HasBeenServed);
@@ -159,7 +172,7 @@ namespace Proyecto_Intermodular
                 Order updatedOrder = updatedOrders.Find(updatedOrder => order.Id == updatedOrder.Id);
                 if (updatedOrder == null)
                 {
-                    panelKitchen.Children.Remove(order.Border);
+                    ucKitchen.Children.Remove(order.Border);
                     return false;
                 }
                 return true;
@@ -201,7 +214,7 @@ namespace Proyecto_Intermodular
             stackPanel.Children.Add(lblEmployee);
             stackPanel.Children.Add(btnCookedDish);
             panelKitchen.Children.Add(border);
-        }
+        }*/
         #endregion
         /*
 

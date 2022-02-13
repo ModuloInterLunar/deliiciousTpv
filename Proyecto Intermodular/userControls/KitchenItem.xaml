@@ -5,13 +5,14 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Proyecto_Intermodular.userControls"
              mc:Ignorable="d" HorizontalAlignment="Stretch"
-             Height="70">
-    <Border BorderBrush="Black" BorderThickness="0" CornerRadius="15" Background="White">
+             Height="70" Margin="0 0 0 10">
+    <Border BorderBrush="Black" BorderThickness="0" CornerRadius="15" Background="White" x:Name="borderKitchen" >
         <Border.Effect>
             <DropShadowEffect ShadowDepth="3" BlurRadius="7" />
         </Border.Effect>
         <Grid>
             <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto"/>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
@@ -19,17 +20,23 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <Label x:Name="lblTableKitchen" Content="{Binding TableKitchen}" ></Label>
+            <Label x:Name="lblTableKitchen" Content="{Binding TableKitchen}"/>
 
-            <Label x:Name="lblDishKitchen" Content="{Binding DishKitchen}" Grid.Column="1"></Label>
+            <Image x:Name="imgDishImage" Source="{Binding DishImage}" Margin="5" Grid.Column="1"/>
 
-            <Label x:Name="lblEmployeeKitchen" Content="{Binding EmployeeKitchen}" Grid.Column="2"></Label>
 
-            <Label x:Name="lblTimerKitchen" Content="{Binding TimerKitchen}" Grid.Column="3"></Label>
+            <Label x:Name="lblDishKitchen" Content="{Binding DishKitchen}" FontWeight="SemiBold" Grid.Column="2"/>
 
-            <Button BorderThickness="1" Background="Transparent" VerticalAlignment="Center" HorizontalAlignment="Center"  Foreground="Gray" FontWeight="Bold" Grid.Column="4" Margin="5" x:Name="btnDelete">
-                <Image x:Name="imgImageKitchen" Source="{Binding ImageKitchen}"></Image>
+            <TextBlock x:Name="lblDescriptionKitchen" Text="{Binding DescriptionKitchen}" Grid.Column="3" TextWrapping="Wrap" Margin="5" FontWeight="SemiBold"/>
+            
+            <Label x:Name="lblEmployeeKitchen" Content="{Binding EmployeeKitchen}" Grid.Column="4"/>
+
+            <Label x:Name="lblTimerKitchen" Content="{Binding TimerKitchen}" Grid.Column="5"/>
+
+            <Button BorderThickness="1" Background="Transparent" VerticalAlignment="Center" HorizontalAlignment="Center"  Foreground="Gray" FontWeight="Bold" Grid.Column="6" Margin="8" x:Name="btnCookingKitchen">
+                <Image x:Name="imgImageKitchen" Source="{Binding ImageKitchen}"/>
             </Button>
+
         </Grid>
     </Border>
 </UserControl>

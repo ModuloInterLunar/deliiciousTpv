@@ -19,6 +19,7 @@ namespace Proyecto_Intermodular.models
         private string table;
         private Border border;
         private OrderItem orderItem;
+        private KitchenItem kitchenItem;
 
         public Order(string id, string ticket, Dish dish, string description, Employee employee)
         {
@@ -91,6 +92,8 @@ namespace Proyecto_Intermodular.models
         }
 
         public OrderItem OrderItem { get => orderItem; set => orderItem = value; }
+
+        public KitchenItem KitchenItem { get => kitchenItem; set => kitchenItem = value; }
         public bool HasBeenCooked { get => hasBeenCooked; set => hasBeenCooked = value; }
         public Border Border { get => border; set => border = value; }
     }

@@ -19,7 +19,6 @@ namespace Proyecto_Intermodular.userControls
         private Table selectedTable;
         private bool isEditingTableLayout;
         private Employee currentUser;
-        private bool isUpdating;
 
         public Employee CurrentUser { get => currentUser; set => currentUser = value; }
 
@@ -34,7 +33,6 @@ namespace Proyecto_Intermodular.userControls
         {
             if (isEditingTableLayout) return;
             List<Table> updatedTables = await DeliiApi.GetAllTables();
-            isUpdating = true;
             if (tables == null)
             {
                 tables = updatedTables;
@@ -60,7 +58,6 @@ namespace Proyecto_Intermodular.userControls
                 SelectTable(null);
             if (selectedTable != null)
                 loadOrders();
-            isUpdating = false;
         }
 
         private void RemoveDeletedTables(List<Table> updatedTables)
@@ -148,6 +145,14 @@ namespace Proyecto_Intermodular.userControls
         private void DeleteTable(Table table)
         {
             if (table == null) return;
+            if (table.ActualTicket != null)
+            {
+                if (table.ActualTicket.Orders != null)
+                {
+                    table.ActualTicket.Orders.ForEach(async order => await DeliiApi.RemoveOrder(order));
+                }
+                DeliiApi.RemoveTicket(table.ActualTicket);
+            }
             DeliiApi.RemoveTable(table);
             cnvTables.Children.Remove(table.Border);
             tables.Remove(table);
@@ -174,7 +179,21 @@ namespace Proyecto_Intermodular.userControls
         public void loadOrders()
         {
             if (selectedTable.ActualTicket == null || selectedTable.ActualTicket.Orders == null) return;
-            selectedTable.ActualTicket.Orders.ForEach(order => CreateOrderItem(order));
+
+            List<Order> orders = selectedTable.ActualTicket.Orders;
+
+            RemoveOldOrderItems(orders);
+            orders.ForEach(order => CreateOrderItem(order));
+        }
+
+        private void RemoveOldOrderItems(List<Order> orders)
+        {
+            List<OrderItem> orderItemsToRemove = new();
+            foreach (OrderItem orderItem in stackOrders.Children)
+            {
+                if (!orders.Exists(order => order.OrderItem == orderItem)) orderItemsToRemove.Add(orderItem);
+            }
+            orderItemsToRemove.ForEach(orderItem => stackOrders.Children.Remove(orderItem));
         }
         #endregion
 
@@ -257,7 +276,6 @@ namespace Proyecto_Intermodular.userControls
                         Table = selectedTable.Id
                     });
 
-                    
 
                     CreateOrderItem(order);
                     await selectedTable.ActualTicket.AddOrder(order);
