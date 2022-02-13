@@ -145,8 +145,14 @@ namespace Proyecto_Intermodular.userControls
         private void DeleteTable(Table table)
         {
             if (table == null) return;
-            table.ActualTicket.Orders.ForEach(async order => await DeliiApi.RemoveOrder(order));
-            DeliiApi.RemoveTicket(table.ActualTicket);
+            if (table.ActualTicket != null)
+            {
+                if (table.ActualTicket.Orders != null)
+                {
+                    table.ActualTicket.Orders.ForEach(async order => await DeliiApi.RemoveOrder(order));
+                }
+                DeliiApi.RemoveTicket(table.ActualTicket);
+            }
             DeliiApi.RemoveTable(table);
             cnvTables.Children.Remove(table.Border);
             tables.Remove(table);

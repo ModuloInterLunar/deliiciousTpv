@@ -41,6 +41,7 @@ namespace Proyecto_Intermodular.userControls
         private void CreateOrder(Order order)
         {
             int timerCount = 0;
+            string dishImageUrl = (order.Dish.Image == "" || order.Dish.Image == null) ? "https://barradeideas.com/wp-content/uploads/2019/09/fast-food.jpg" : order.Dish.Image;
             string url = !order.HasBeenCooked ? "https://image.flaticon.com/icons/png/512/113/113339.png" : "https://cdn-icons-png.flaticon.com/512/1046/1046874.png";
             KitchenItem kitchenItem = new KitchenItem()
             {
@@ -48,9 +49,18 @@ namespace Proyecto_Intermodular.userControls
                 EmployeeKitchen = "Camarero: " + order.Employee.FullName,
                 DishKitchen = "Plato: " + order.Dish.Name,
                 TimerKitchen = "Tiempo transcurrido: " + timerCount + " s.",
-                //DescriptionKitchen = "Descripción: " + order.Description,
+                DescriptionKitchen = "Descripción: " + order.Description,
                 ImageKitchen = new BitmapImage(new Uri(url))
             };
+
+            try
+            {
+                kitchenItem.DishImage = new BitmapImage(new Uri(dishImageUrl));
+            }
+            catch
+            {
+                kitchenItem.DishImage = new BitmapImage(new Uri("https://barradeideas.com/wp-content/uploads/2019/09/fast-food.jpg"));
+            }
 
             StartTimer();
 

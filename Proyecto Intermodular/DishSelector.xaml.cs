@@ -56,7 +56,7 @@ namespace Proyecto_Intermodular
 
         private DishItem CreateDishItem(Dish dish)
         {
-            string dishImageUrl = (dish.Image == "" || dish.Image == null) ? "https://upload.wikimedia.org/wikipedia/commons/6/62/NCI_Visuals_Food_Hamburger.jpg" : dish.Image;
+            string dishImageUrl = (dish.Image == "" || dish.Image == null) ? "https://barradeideas.com/wp-content/uploads/2019/09/fast-food.jpg" : dish.Image;
 
             DishItem dishItem = new()
             {
@@ -66,6 +66,15 @@ namespace Proyecto_Intermodular
                 ToolTip = dish.GetFullDescription(),
                 Margin = new(10),
             };
+
+            try
+            {
+                dishItem.DishImage = new BitmapImage(new Uri(dishImageUrl));
+            }
+            catch
+            {
+                dishItem.DishImage = new BitmapImage(new Uri("https://barradeideas.com/wp-content/uploads/2019/09/fast-food.jpg"));
+            }
 
             dishItem.btnAddDish.Click += (object sender, RoutedEventArgs e) =>
             {

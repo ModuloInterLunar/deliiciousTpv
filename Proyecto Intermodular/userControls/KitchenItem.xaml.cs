@@ -33,14 +33,16 @@ namespace Proyecto_Intermodular.userControls
         public String TableKitchen { set => lblTableKitchen.Content = value; get => lblTableKitchen.Content.ToString(); }
 
         public String EmployeeKitchen { set => lblEmployeeKitchen.Content = value; get => lblEmployeeKitchen.Content.ToString(); }
-
+        
         public String DishKitchen { set => lblDishKitchen.Content = value; get => lblDishKitchen.Content.ToString(); }
 
         public String TimerKitchen { set => lblTimerKitchen.Content = value; get => lblTimerKitchen.Content.ToString(); }
 
-        //public String DescriptionKitchen { set => lblDescriptionKitchen.Content = value; get => lblDescriptionKitchen.Content.ToString(); }
+        public String DescriptionKitchen { set => lblDescriptionKitchen.Text = value; get => lblDescriptionKitchen.Text.ToString(); }
 
         public ImageSource ImageKitchen { set => imgImageKitchen.Source = value; get => imgImageKitchen.Source; }
+
+        public ImageSource DishImage { set => imgDishImage.Source = value; get => imgDishImage.Source; }
     }
 }
         
