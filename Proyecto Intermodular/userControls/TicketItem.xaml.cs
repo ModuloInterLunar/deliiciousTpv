@@ -23,8 +23,12 @@ namespace Proyecto_Intermodular.userControls
         public TicketItem()
         {
             InitializeComponent();
+            DataContext = this;
         }
 
-        public static DateTime Now { get; }
+        public string PriceNoIVA { set => priceNoIVA.Text = value; get => priceNoIVA.Text; }
+        public string IVA { set => iva.Text = value; get => iva.Text; }
+        public string TotalPrice { set => totalPrice.Text = value; get => totalPrice.Text; }
+        public string EmployeeName { set => employeeName.Text = value; get => employeeName.Text; }
     }
 }
