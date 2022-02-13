@@ -24,7 +24,8 @@ namespace Proyecto_Intermodular.userControls
     public partial class Kitchen : UserControl
     {
 
-        List<Order> allOrders;
+        List<Order> notServedOrders;
+        List<Order> notServedFoodOrders;
         public Kitchen()
         {
             InitializeComponent();
@@ -33,9 +34,9 @@ namespace Proyecto_Intermodular.userControls
 
         private async void GenerateOrders()
         {
-            allOrders = await DeliiApi.GetAllOrdersNotServed();
-            List<Order> notServedOrders = allOrders.FindAll(order => order.Dish.Type == "Food");
-            notServedOrders.ForEach(order => CreateOrder(order));
+            this.notServedOrders = await DeliiApi.GetAllOrdersNotServed();
+            notServedFoodOrders = notServedOrders.FindAll(order => order.Dish.Type == "Food");
+            notServedFoodOrders.ForEach(order => CreateOrder(order));
         }
 
         private void CreateOrder(Order order)
@@ -116,26 +117,30 @@ namespace Proyecto_Intermodular.userControls
         {
             List<Order> updatedOrders = await DeliiApi.GetAllOrdersNotServed();
 
-            updatedOrders.ForEach(updatedOrder =>
+            List<Order> updatedFoodOrders = updatedOrders.FindAll(order => order.Dish.Type == "Food");
+
+            updatedFoodOrders.ForEach(updatedFoodOrder =>
             {
-                Order order = allOrders.Find(order => order.Id == updatedOrder.Id);
+                Order order = notServedFoodOrders.Find(order => order.Id == updatedFoodOrder.Id);
                 if (order != null)
-                    order.UpdateData(updatedOrder);
+                {
+                    order.UpdateData(updatedFoodOrder);
+                }
                 else
                 {
-                    allOrders.Add(updatedOrder);
-                    CreateOrder(updatedOrder);
+                    notServedFoodOrders.Add(updatedFoodOrder);
+                    CreateOrder(updatedFoodOrder);
                 }
             });
 
-            RemoveServedOrders(updatedOrders);
+            RemoveServedOrders(updatedFoodOrders);
         }
 
-        private void RemoveServedOrders(List<Order> updatedOrders)
+        private void RemoveServedOrders(List<Order> updatedFoodOrders)
         {
-            allOrders = allOrders.FindAll(order =>
+            notServedFoodOrders = notServedFoodOrders.FindAll(order =>
             {
-                Order updatedOrder = updatedOrders.Find(updatedOrder => order.Id == updatedOrder.Id);
+                Order updatedOrder = updatedFoodOrders.Find(updatedOrder => order.Id == updatedOrder.Id);
                 if (updatedOrder == null)
                 {
                     stackKitchen.Children.Remove(order.KitchenItem);
@@ -143,6 +148,14 @@ namespace Proyecto_Intermodular.userControls
                 }
                 return true;
             });
+        }
+
+        private Brush GetColorFromOrderState(Order order)
+        {
+            Brush color = (SolidColorBrush)new BrushConverter().ConvertFromString("#FFFFDDDD");
+            if (order.HasBeenCooked) color = (SolidColorBrush)new BrushConverter().ConvertFromString("#FFFFE8CC");
+            if (order.HasBeenServed) color = (SolidColorBrush)new BrushConverter().ConvertFromString("#FFDDFFDD");
+            return color;
         }
     }
 }

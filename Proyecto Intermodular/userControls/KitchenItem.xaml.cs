@@ -43,6 +43,8 @@ namespace Proyecto_Intermodular.userControls
         public ImageSource ImageKitchen { set => imgImageKitchen.Source = value; get => imgImageKitchen.Source; }
 
         public ImageSource DishImage { set => imgDishImage.Source = value; get => imgDishImage.Source; }
+
+        public Brush Color { set =>  borderCard.Background = value; get => borderCard.Background; }
     }
 }
         

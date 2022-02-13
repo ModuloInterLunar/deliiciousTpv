@@ -22,5 +22,6 @@ namespace Proyecto_Intermodular.userControls
         public string DishPrice { set => lblPrice.Content = value; get => lblPrice.Content.ToString(); }
         public string Description { set => txtBoxDescription.Text = value; get => txtBoxDescription.Text; }
         public bool IsDeleting { get; internal set; }
+        public Brush Color { set => borderCard.Background = value; get => borderCard.Background; }
     }
 }

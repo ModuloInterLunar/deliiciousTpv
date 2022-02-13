@@ -8,7 +8,7 @@
              HorizontalAlignment="Stretch"
              Height="70">
 
-    <Border BorderBrush="Black" BorderThickness="0" CornerRadius="15" Background="White" Margin="5">
+    <Border x:Name="borderCard" BorderBrush="Black" BorderThickness="0" CornerRadius="15" Background="White" Margin="5">
         <Border.Effect>
             <DropShadowEffect ShadowDepth="3" BlurRadius="7" />
         </Border.Effect>

@@ -1,6 +1,8 @@
 ﻿using Proyecto_Intermodular.userControls;
+using System;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 
 namespace Proyecto_Intermodular.models
 {
@@ -88,7 +90,10 @@ namespace Proyecto_Intermodular.models
             createdAt = updatedOrder.createdAt;
             updatedAt = updatedOrder.updatedAt;
             table = updatedOrder.table;
-
+            if (KitchenItem != null)
+                kitchenItem.Color = GetColorFromState();
+            if (OrderItem != null)
+                OrderItem.Color = GetColorFromState();
         }
 
         public OrderItem OrderItem { get => orderItem; set => orderItem = value; }
@@ -96,5 +101,13 @@ namespace Proyecto_Intermodular.models
         public KitchenItem KitchenItem { get => kitchenItem; set => kitchenItem = value; }
         public bool HasBeenCooked { get => hasBeenCooked; set => hasBeenCooked = value; }
         public Border Border { get => border; set => border = value; }
+
+        public Brush GetColorFromState()
+        {
+            Brush color = (SolidColorBrush)new BrushConverter().ConvertFromString("#FFFFDDDD");
+            if (HasBeenCooked) color = (SolidColorBrush)new BrushConverter().ConvertFromString("#FFFFE8CC");
+            if (HasBeenServed) color = (SolidColorBrush)new BrushConverter().ConvertFromString("#FFDDFFDD");
+            return color;
+        }
     }
 }
