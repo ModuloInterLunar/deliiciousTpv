@@ -26,6 +26,7 @@ namespace Proyecto_Intermodular.userControls
 
         List<Order> notServedOrders;
         List<Order> notServedFoodOrders;
+        Border emptyKitchen;
         public Kitchen()
         {
             InitializeComponent();
@@ -37,6 +38,22 @@ namespace Proyecto_Intermodular.userControls
             this.notServedOrders = await DeliiApi.GetAllOrdersNotServed();
             notServedFoodOrders = notServedOrders.FindAll(order => order.Dish.Type == "Food");
             notServedFoodOrders.ForEach(order => CreateOrder(order));
+            generateEmptyKitchenBorder();
+        }
+
+        private void generateEmptyKitchenBorder()
+        {
+            emptyKitchen = new()
+            {
+                HorizontalAlignment = HorizontalAlignment.Stretch,
+            };
+            emptyKitchen.Child = new Label()
+            {
+                Content = "👩‍🍳 No hay pedidos pendientes!",
+                FontSize = 20,
+                Margin = new Thickness(0, 10, 0, 0),
+                HorizontalAlignment = HorizontalAlignment.Center
+            };
         }
 
         private void CreateOrder(Order order)
@@ -134,6 +151,17 @@ namespace Proyecto_Intermodular.userControls
             });
 
             RemoveServedOrders(updatedFoodOrders);
+
+            if (notServedFoodOrders.Count == 0)
+            {
+                if (!stackKitchen.Children.Contains(emptyKitchen))
+                    stackKitchen.Children.Add(emptyKitchen);
+            } 
+            else
+            {
+                if (stackKitchen.Children.Contains(emptyKitchen))
+                    stackKitchen.Children.Remove(emptyKitchen);
+            }
         }
 
         private void RemoveServedOrders(List<Order> updatedFoodOrders)
