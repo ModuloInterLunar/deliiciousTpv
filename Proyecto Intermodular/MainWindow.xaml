@@ -73,19 +73,23 @@
             -->
 
             <TabItem Header="Cocina">
-                <uc:Kitchen x:Name="ucKitchen"/>
+                <uc:Kitchen x:Name="ucKitchen" DishType="Food" />
+            </TabItem>
+
+            <TabItem Header="Barra">
+                <uc:Kitchen x:Name="ucBar" DishType="Drink" />
             </TabItem>
 
             <TabItem x:Name="adminTabIngredients" Header="Ingredients" Visibility="Collapsed">
                 <uc:Ingredients x:Name="ucIngredients"/>
             </TabItem>
 
-            <TabItem x:Name="adminTabEmployees" Header="Crear empleado" Visibility="Collapsed">
-                <uc:Employees/>
-            </TabItem>
-
             <TabItem x:Name="adminTabDishes" Header="Platos" Visibility="Collapsed">
                 <uc:Dishes x:Name="ucDishes"/>
+            </TabItem>
+
+            <TabItem x:Name="adminTabEmployees" Header="Crear empleado" Visibility="Collapsed">
+                <uc:Employees/>
             </TabItem>
         </TabControl>
     </Grid>

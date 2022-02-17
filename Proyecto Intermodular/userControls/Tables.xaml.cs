@@ -308,7 +308,7 @@ namespace Proyecto_Intermodular.userControls
                 try {
                     await selectedTable.ActualTicket.RemoveOrder(order);
                 }
-                catch (ItemNotFoundException ex)
+                catch (ItemNotFoundException)
                 {
                     MessageBox.Show("Ya se había borrado");
                 }

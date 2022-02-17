@@ -86,6 +86,8 @@ namespace Proyecto_Intermodular
                     Margin = new(5),
                     Dish = dish
                 };
+                orderItem.txtBoxDescription.Visibility = Visibility.Visible;
+                orderItem.lblDescription.Visibility = Visibility.Collapsed;
 
                 orderItem.btnDelete.Click += (object sender, RoutedEventArgs e) =>
                 {

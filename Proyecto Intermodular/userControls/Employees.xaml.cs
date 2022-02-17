@@ -65,7 +65,7 @@ namespace Proyecto_Intermodular.userControls
 
             Employee employee = new()
             { 
-                Username = txtBoxName.Text,
+                Username = txtBoxUser.Text,
                 Dni = txtBoxDni.Text,
                 Name = txtBoxName.Text,
                 Surname = txtBoxSurname.Text,

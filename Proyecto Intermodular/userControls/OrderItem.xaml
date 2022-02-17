@@ -8,7 +8,7 @@
              HorizontalAlignment="Stretch"
              Height="70">
 
-    <Border x:Name="borderCard" BorderBrush="Black" BorderThickness="0" CornerRadius="15" Background="White" Margin="5">
+    <Border x:Name="borderCard" BorderBrush="Black" BorderThickness="0" CornerRadius="15" Background="#EAEAEA" Margin="5">
         <Border.Effect>
             <DropShadowEffect ShadowDepth="3" BlurRadius="7" />
         </Border.Effect>
@@ -27,7 +27,8 @@
 
             <Label x:Name="lblPrice" Content="{Binding DishPrice}" VerticalContentAlignment="Center" Grid.Column="1" HorizontalAlignment="Right" FontWeight="Bold"/>
 
-            <local:TextBoxHint x:Name="txtBoxDescription" Hint="Descripción" VerticalAlignment="Center" Grid.Column="2" HorizontalContentAlignment="Right" Margin="5"/>
+            <local:TextBoxHint x:Name="txtBoxDescription" Hint="Descripción" VerticalAlignment="Center" Grid.Column="2" HorizontalContentAlignment="Right" Margin="5" Visibility="Collapsed"/>
+            <Label x:Name="lblDescription" VerticalAlignment="Center" Grid.Column="2" HorizontalContentAlignment="Right" Margin="5"/>
 
             <Button BorderThickness="0" Background="Transparent" VerticalAlignment="Center" HorizontalAlignment="Right" Content="x" Foreground="Gray" FontWeight="Bold" Grid.Column="3" Margin="5,5,20,5" x:Name="btnDelete"/>
         </Grid>

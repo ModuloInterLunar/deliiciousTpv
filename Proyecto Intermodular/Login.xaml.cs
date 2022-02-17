@@ -19,7 +19,7 @@ namespace Proyecto_Intermodular
             InitializeComponent();
             txtBoxUserName.Text = "alvaro";
             passwdInput.Text = "12345";
-            btnLogin_Click(null, null);
+            //btnLogin_Click(null, null);
         }
 
         // LOGIN
