@@ -178,10 +178,15 @@ namespace Proyecto_Intermodular.userControls
 
         public void loadOrders()
         {
-            if (selectedTable.ActualTicket == null || selectedTable.ActualTicket.Orders == null) return;
 
+            if (selectedTable.ActualTicket == null || selectedTable.ActualTicket.Orders == null)
+            {
+                btnGetTicket.Visibility = Visibility.Collapsed;
+                stackOrders.Children.Clear();
+                return;
+            }
             List<Order> orders = selectedTable.ActualTicket.Orders;
-
+            btnGetTicket.Visibility = (orders.Count == 0) ? Visibility.Collapsed : Visibility.Visible;
             RemoveOldOrderItems(orders);
             orders.ForEach(order => CreateOrderItem(order));
         }
@@ -317,6 +322,14 @@ namespace Proyecto_Intermodular.userControls
 
             stackOrders.Children.Add(order.OrderItem);
         }
-        #endregion
+
+        private void btnGetTicket_Click(object sender, RoutedEventArgs e)
+        {
+            Payment payment = new(selectedTable, selectedTable.ActualTicket);
+            payment.ShowDialog();
+        }
+    #endregion
+
+
     }
 }

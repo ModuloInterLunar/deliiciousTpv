@@ -1,0 +1,21 @@
+﻿<Window x:Class="Proyecto_Intermodular.Payment"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Proyecto_Intermodular"
+        mc:Ignorable="d"
+        xmlns:uc="clr-namespace:Proyecto_Intermodular.userControls"
+        MinHeight="500"
+        MinWidth="410"
+        MaxWidth="410"
+        Title="Pago">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="60"/>
+        </Grid.RowDefinitions>
+        <uc:TicketItem x:Name="ucTicketItem"/>
+        <Button Grid.Row="1" x:Name="btnPay" Click="btnPay_Click" Content="Pagar" Margin="10"/>
+    </Grid>
+</Window>

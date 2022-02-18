@@ -31,8 +31,7 @@ namespace Proyecto_Intermodular.userControls
 
         public async void UpdateStackTickets()
         {
-            List<Ticket> receivedTickets = await DeliiApi.GetAllTickets();
-            List<Ticket> updatedTickets = receivedTickets.FindAll(ticket => ticket.Total > 0);
+            List<Ticket> updatedTickets = await DeliiApi.GetAllTicketsPaid();
 
 
             if (tickets == null)
@@ -76,9 +75,12 @@ namespace Proyecto_Intermodular.userControls
 
         private void UpdateTicketItem(Ticket ticket)
         {
-            ticket.TicketItem.TotalPrice = ticket.Total.ToString();
-            ticket.TicketItem.EmployeeName = ApplicationState.GetValue<Employee>("current_user").FullName;
+            ticket.TicketItem.TotalPrice = ticket.PriceFormatted;
+            ticket.TicketItem.EmployeeName = ticket.Orders[0].Employee.FullName;
+            ticket.TicketItem.IVA = ticket.IVAFormatted;
             ticket.TicketItem.PriceNoIVA = ticket.PriceNoIVAFormatted;
+            ticket.TicketItem.Hour = ticket.Hour;
+            ticket.TicketItem.Date = ticket.Date;
         }
 
         private void GenerateTicketItem(Ticket ticket)
@@ -86,13 +88,18 @@ namespace Proyecto_Intermodular.userControls
             TicketItem ticketItem = new()
             {
                 TotalPrice = ticket.PriceFormatted,
-                EmployeeName = ApplicationState.GetValue<Employee>("current_user").FullName,
-                Margin = new(5),
-                PriceNoIVA = ticket.PriceNoIVAFormatted
+                EmployeeName = ticket.Orders[0].Employee.FullName,
+                Margin = new(10),
+                IVA = ticket.IVAFormatted,
+                PriceNoIVA = ticket.PriceNoIVAFormatted,
+                Hour = ticket.Hour,
+                Date = ticket.Date
             };
 
+            ticketItem.AddOrders(ticket.Orders);
             ticket.TicketItem = ticketItem;
             stackTickets.Children.Add(ticketItem);
         }
+
     }
 }

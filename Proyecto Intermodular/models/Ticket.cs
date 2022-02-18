@@ -21,13 +21,7 @@ namespace Proyecto_Intermodular.models
 
         // Cosntructor por defecto, se llamará cuando creamos un ticket nuevo
         
-        public Ticket()
-        {
-            /*total = 0.0f;
-            text = "";
-            isPaid = false;
-            orders = new();*/
-        }
+        public Ticket() { }
 
 
         public Ticket(string id, double total, string text, bool isPaid, List<Order> orders){
@@ -46,8 +40,11 @@ namespace Proyecto_Intermodular.models
         public string UpdatedAt { get => updatedAt; set => updatedAt = value; }
         public List<Order> Orders { get => orders; set => orders = value; }
         public TicketItem TicketItem { get => ticketItem; set => ticketItem = value; }
-        public string PriceFormatted { get => total.ToString("0.00"); }
-        public string PriceNoIVAFormatted { get => (total/1.1).ToString("0.00"); }
+        public string PriceFormatted => total.ToString("0.00") + "€";
+        public string PriceNoIVAFormatted => (total / 1.1).ToString("0.00") + "€";
+        public string IVAFormatted => (total - total / 1.1).ToString("0.00") + "€";
+        public string Hour => updatedAt.Substring(11, 5);
+        public string Date => updatedAt.Substring(0, 10);
 
         public async Task AddOrder(Order order)
         {

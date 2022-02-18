@@ -328,9 +328,9 @@ namespace Proyecto_Intermodular.api
             return createdTicket;
         }
 
-        public static async Task<List<Ticket>> GetAllTickets()
+        public static async Task<List<Ticket>> GetAllTicketsPaid()
         {
-            string uri = API_URL + "tickets";
+            string uri = API_URL + "tickets/paid";
             string ticketsJson = await DeliiApiClient.Get(uri);
 
             List<Ticket> tickets = JsonSerializer.Deserialize<List<Ticket>>(ticketsJson, DeliiApiClient.GetJsonOptions());

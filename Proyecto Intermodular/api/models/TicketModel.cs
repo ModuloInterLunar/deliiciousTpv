@@ -10,8 +10,6 @@ namespace Proyecto_Intermodular.api.models
         private double total;
         private string text;
         private bool isPaid;
-        private string createdAt;
-        private string updatedAt;
         private List<string> orders;
 
         public TicketModel() { }
@@ -29,8 +27,6 @@ namespace Proyecto_Intermodular.api.models
         public double Total { get => total; set => total = value; }
         public string Text { get => text; set => text = value; }
         public bool IsPaid { get => isPaid; set => isPaid = value; }
-        public string CreatedAt { get => createdAt; set => createdAt = value; }
-        public string UpdatedAt { get => updatedAt; set => updatedAt = value; }
         public List<string> Orders { get => orders; set => orders = value; }
     }
 }

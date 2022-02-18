@@ -93,6 +93,8 @@ namespace Proyecto_Intermodular
             ucIngredients.UpdateStackIngredients();
             ucDishes.UpdateLayout();
             ucKitchen.UpdateKitchen();
+            ucBar.UpdateKitchen();
+            ucTickets.UpdateStackTickets();
             //GenerateOrders();
         }
 
