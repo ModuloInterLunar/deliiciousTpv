@@ -46,12 +46,15 @@ namespace Proyecto_Intermodular
         private async void GenerateAllDishes()
         {
             dishes = await DeliiApi.GetAllDishes();
-            dishes.ForEach(dish =>
-            {
-                if (typeFilter != null && dish.Type != typeFilter) return;
-                DishItem dishItem = CreateDishItem(dish);
-                dishesContainer.Children.Add(dishItem);
-            });
+            dishes.OrderBy(dish => dish.Name)
+                .ToList()
+                .ForEach(dish =>
+                {
+                    if (typeFilter != null && dish.Type != typeFilter) return;
+                    DishItem dishItem = CreateDishItem(dish);
+                    dishesContainer.Children.Add(dishItem);
+                });
+
         }
 
         private DishItem CreateDishItem(Dish dish)
