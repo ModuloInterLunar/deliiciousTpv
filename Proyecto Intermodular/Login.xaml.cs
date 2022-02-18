@@ -17,9 +17,6 @@ namespace Proyecto_Intermodular
         public Login()
         {
             InitializeComponent();
-            txtBoxUserName.Text = "alvaro";
-            passwdInput.Text = "12345";
-            //btnLogin_Click(null, null);
         }
 
         // LOGIN
@@ -37,10 +34,6 @@ namespace Proyecto_Intermodular
                     {
                         MainWindow mainWindow = new();
                         mainWindow.Show();
-                        /*
-                        DishSelector dishSelector = new();
-                        dishSelector.Show();
-                        */
                         Close();
                     }
                 );
