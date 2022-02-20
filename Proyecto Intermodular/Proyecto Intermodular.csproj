@@ -5,6 +5,7 @@
     <TargetFramework>net5.0-windows</TargetFramework>
     <RootNamespace>Proyecto_Intermodular</RootNamespace>
     <UseWPF>true</UseWPF>
+    <ApplicationIcon>logo_min.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
