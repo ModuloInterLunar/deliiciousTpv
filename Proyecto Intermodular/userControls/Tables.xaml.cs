@@ -2,6 +2,7 @@
 using Proyecto_Intermodular.models;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -325,6 +326,11 @@ namespace Proyecto_Intermodular.userControls
 
         private void btnGetTicket_Click(object sender, RoutedEventArgs e)
         {
+            if (selectedTable.ActualTicket.Orders.FindIndex(order => order.HasBeenServed == false) != -1)
+            {
+                MessageBox.Show("Solo se puede pedir la cuenta cuando todos los platos han sido servidos!");
+                return;
+            }
             Payment payment = new(selectedTable, selectedTable.ActualTicket);
             payment.ShowDialog();
         }

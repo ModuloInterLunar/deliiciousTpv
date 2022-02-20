@@ -32,6 +32,7 @@ namespace Proyecto_Intermodular.userControls
         public async void UpdateStackTickets()
         {
             List<Ticket> updatedTickets = await DeliiApi.GetAllTicketsPaid();
+            updatedTickets = updatedTickets.OrderBy(ticket => ticket.UpdatedAt).ToList();
 
 
             if (tickets == null)

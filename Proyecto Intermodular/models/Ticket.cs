@@ -71,6 +71,11 @@ namespace Proyecto_Intermodular.models
                 orders = updatedTicket.orders;
                 return;
             }
+            if (updatedTicket.orders == null)
+            {
+                orders = null;
+                return;
+            }
             updatedTicket.orders.ForEach(updatedOrder =>
             {
                 Order order = orders.Find(order => order.Id == updatedOrder.Id);

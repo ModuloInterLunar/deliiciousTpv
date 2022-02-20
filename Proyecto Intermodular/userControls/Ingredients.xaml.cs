@@ -32,6 +32,7 @@ namespace Proyecto_Intermodular.userControls
         public async void UpdateStackIngredients()
         {
             List<Ingredient> updatedIngredients = await DeliiApi.GetAllIngredients();
+            updatedIngredients = updatedIngredients.OrderBy(ingredient => ingredient.Name).ToList();
 
             if (ingredients == null)
             {

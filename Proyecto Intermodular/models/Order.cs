@@ -62,6 +62,8 @@ namespace Proyecto_Intermodular.models
         public string Ticket { get => ticket; set => ticket = value; }
         public Dish Dish { get => dish; set => dish = value; }
         public bool HasBeenServed { get => hasBeenServed; set => hasBeenServed = value; }
+        public bool HasBeenCooked { get => hasBeenCooked; set => hasBeenCooked = value; }
+
         public bool IsIncluded { get => isIncluded; set => isIncluded = value; }
         public Employee Employee { get => employee; set => employee = value; }
         public string Description { get => description; set => description = value; }
@@ -79,6 +81,7 @@ namespace Proyecto_Intermodular.models
             else
                 dish.UpdateData(updatedOrder.dish);
             hasBeenServed = updatedOrder.hasBeenServed;
+            hasBeenCooked = updatedOrder.hasBeenCooked;
             isIncluded = updatedOrder.isIncluded;
             if (updatedOrder.employee == null)
                 employee = null;
@@ -99,15 +102,13 @@ namespace Proyecto_Intermodular.models
         public OrderItem OrderItem { get => orderItem; set => orderItem = value; }
 
         public KitchenItem KitchenItem { get => kitchenItem; set => kitchenItem = value; }
-        public bool HasBeenCooked { get => hasBeenCooked; set => hasBeenCooked = value; }
         public Border Border { get => border; set => border = value; }
 
         public Brush GetColorFromState()
         {
-            Brush color = (SolidColorBrush)new BrushConverter().ConvertFromString("#FFFFDDDD");
-            if (HasBeenCooked) color = (SolidColorBrush)new BrushConverter().ConvertFromString("#FFFFE8CC");
-            if (HasBeenServed) color = (SolidColorBrush)new BrushConverter().ConvertFromString("#FFDDFFDD");
-            return color;
+            if (HasBeenServed) return (SolidColorBrush)new BrushConverter().ConvertFromString("#FFDDFFDD");
+            if (HasBeenCooked) return (SolidColorBrush)new BrushConverter().ConvertFromString("#FFFFE8CC");
+            return (SolidColorBrush)new BrushConverter().ConvertFromString("#FFFFDDDD");
         }
     }
 }

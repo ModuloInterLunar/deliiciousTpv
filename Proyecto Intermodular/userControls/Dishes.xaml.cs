@@ -5,6 +5,7 @@ using Proyecto_Intermodular.api;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
+using System.Linq;
 
 namespace Proyecto_Intermodular.userControls
 {
@@ -28,6 +29,7 @@ namespace Proyecto_Intermodular.userControls
         {
             // Get all dishes from database
             List<Dish> updatedDishes = await DeliiApi.GetAllDishes();
+            updatedDishes = updatedDishes.OrderBy(dish => dish.Name).ToList();
 
             // Si dishes es nulo es porque es la primera vez que se ejecuta el método
             // como no hay nada que actualizar simplemente los generamos
@@ -142,7 +144,7 @@ namespace Proyecto_Intermodular.userControls
             
         }
 
-        // Abre la venta de creación de un Dish
+        // Abre la ventana de creación de un Dish
         private void btnAdd_Click(object sender, RoutedEventArgs e)
         {
             AddDishWindow addDishWindow = new();

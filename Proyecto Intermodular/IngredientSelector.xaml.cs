@@ -38,7 +38,9 @@ namespace Proyecto_Intermodular
         private async void GenerateIngredientsList()
         {
             ingredients = await DeliiApi.GetAllIngredients();
-            ingredients.ForEach(ingredient => CreateIngredientItem(ingredient));
+            ingredients.OrderBy(ingredient => ingredient.Name)
+                .ToList()
+                .ForEach(ingredient => CreateIngredientItem(ingredient));
         }
 
         private void CreateIngredientItem(Ingredient ingredient)
